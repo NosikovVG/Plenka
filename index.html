@@ -8,29 +8,18 @@
 <title>Пленка для всех</title>
 <style>
   :root {
-    --bg: #f6f5ff;
-    --bg-2: #eef2ff;
-    --surface: #ffffff;
-    --surface-2: #fafaff;
-    --primary: #6366f1;
-    --primary-600: #4f46e5;
-    --violet: #8b5cf6;
-    --pink: #ec4899;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --text: #14122e;
-    --text-2: #6b7280;
-    --text-3: #9ca3af;
-    --border: #e8e7f2;
-    --border-2: #d9d7ea;
+    --bg: #f6f5ff; --bg-2: #eef2ff;
+    --surface: #ffffff; --surface-2: #fafaff;
+    --primary: #6366f1; --primary-600: #4f46e5;
+    --violet: #8b5cf6; --pink: #ec4899;
+    --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+    --text: #14122e; --text-2: #6b7280; --text-3: #9ca3af;
+    --border: #e8e7f2; --border-2: #d9d7ea;
     --shadow-sm: 0 1px 2px rgba(20,18,46,.04);
     --shadow-md: 0 4px 16px rgba(20,18,46,.06);
     --shadow-lg: 0 20px 40px rgba(20,18,46,.18);
     --topbar-bg: rgba(255,255,255,.82);
-    --radius: 14px;
-    --radius-sm: 10px;
-    --radius-lg: 20px;
+    --radius: 14px; --radius-sm: 10px; --radius-lg: 20px;
     --body-gradient:
       radial-gradient(1200px 600px at 10% -10%, #e0e7ff 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #fce7f3 0%, transparent 55%);
@@ -94,15 +83,6 @@
     background: var(--surface); color: var(--primary);
     box-shadow: var(--shadow-sm); font-weight: 600;
   }
-  .tab-badge {
-    background: linear-gradient(135deg, var(--pink), #f97316);
-    color: #fff; font-size: 10px; font-weight: 700;
-    padding: 1px 6px; border-radius: 10px; line-height: 1.5;
-    min-width: 18px; text-align: center;
-    box-shadow: 0 2px 8px rgba(236,72,153,.4);
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
   .topbar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 
   .search-wrap { position: relative; }
@@ -133,10 +113,7 @@
   }
   .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(99,102,241,.42); }
   .btn.primary:disabled { background: var(--border); color: var(--text-3); box-shadow: none; cursor: not-allowed; transform: none; }
-  .btn.ghost {
-    background: var(--surface-2); color: var(--text-2);
-    border: 1px solid var(--border);
-  }
+  .btn.ghost { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); }
   .btn.ghost:hover { background: var(--surface); color: var(--text); border-color: var(--border-2); }
   .btn.danger { background: rgba(239,68,68,.12); color: var(--danger); border: 1px solid rgba(239,68,68,.2); }
   .btn.danger:hover { background: rgba(239,68,68,.2); }
@@ -148,39 +125,39 @@
   .tab-panel.active { display: block; }
   @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-  .orders-banner {
-    background: linear-gradient(135deg, rgba(99,102,241,.12) 0%, rgba(236,72,153,.12) 100%);
-    border: 1px solid rgba(99,102,241,.25);
+  .today-banner {
+    background: linear-gradient(135deg, rgba(16,185,129,.12) 0%, rgba(99,102,241,.12) 100%);
+    border: 1px solid rgba(16,185,129,.28);
     border-radius: var(--radius); padding: 14px 18px; margin-bottom: 18px;
     display: flex; align-items: center; gap: 14px;
     cursor: pointer; transition: all .2s; animation: fade .3s ease;
   }
-  .orders-banner:hover {
-    border-color: var(--primary); transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(99,102,241,.15);
+  .today-banner:hover {
+    border-color: var(--success); transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(16,185,129,.15);
   }
-  .orders-banner .bell {
-    font-size: 22px; line-height: 1;
-    animation: bellShake 1.5s ease-in-out infinite; transform-origin: top center;
+  .today-banner .scissors {
+    font-size: 22px; line-height: 1; transform-origin: center;
+    animation: snip 2.4s ease-in-out infinite;
   }
-  @keyframes bellShake {
-    0%,60%,100% { transform: rotate(0); }
-    10%,30% { transform: rotate(-12deg); }
-    20%,40% { transform: rotate(12deg); }
+  @keyframes snip {
+    0%, 60%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-18deg); }
+    35% { transform: rotate(12deg); }
   }
-  .orders-banner .banner-body { flex: 1; }
-  .orders-banner .banner-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
-  .orders-banner .banner-sub {
+  .today-banner .banner-body { flex: 1; }
+  .today-banner .banner-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+  .today-banner .banner-sub {
     font-size: 12.5px; color: var(--text-2);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .orders-banner .banner-badge {
-    background: linear-gradient(135deg, var(--primary), var(--violet));
+  .today-banner .banner-badge {
+    background: linear-gradient(135deg, var(--success), #059669);
     color: #fff; font-weight: 700; font-size: 15px;
     padding: 6px 14px; border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(99,102,241,.35);
+    box-shadow: 0 4px 12px rgba(16,185,129,.35);
   }
-  .orders-banner .arrow { color: var(--primary); font-size: 18px; font-weight: 700; }
+  .today-banner .arrow { color: var(--success); font-size: 18px; font-weight: 700; }
 
   .stats {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -205,6 +182,11 @@
     background: linear-gradient(135deg, var(--primary), var(--violet));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  .stat-value small {
+    font-size: 13px; font-weight: 500;
+    -webkit-text-fill-color: var(--text-3);
+    color: var(--text-3); margin-left: 4px;
+  }
 
   .card {
     background: var(--surface); border: 1px solid var(--border);
@@ -219,15 +201,11 @@
   .card-title { font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
   .card-title small { color: var(--text-3); font-weight: 500; margin-left: 8px; }
 
-  /* Кнопка фильтров — видна только на мобильных */
   .filters-toggle {
-    display: none;
-    margin: 12px 16px 0;
-    width: calc(100% - 32px);
-    justify-content: center;
+    display: none; margin: 12px 16px 0;
+    width: calc(100% - 32px); justify-content: center;
     border: 1px dashed var(--border-2);
-    background: var(--surface-2);
-    color: var(--text-2);
+    background: var(--surface-2); color: var(--text-2);
   }
   .filters-toggle:hover { color: var(--text); border-color: var(--border); }
   .filter-count {
@@ -265,9 +243,7 @@
   }
   th[data-sort] { cursor: pointer; user-select: none; }
   th[data-sort]:hover { color: var(--text); }
-  th[data-sort] .sort-ind {
-    font-size: 10px; opacity: .4; margin-left: 4px;
-  }
+  th[data-sort] .sort-ind { font-size: 10px; opacity: .4; margin-left: 4px; }
   th[data-sort].sorted .sort-ind { opacity: 1; color: var(--primary); }
   td {
     padding: 12px 16px; font-size: 13.5px;
@@ -276,13 +252,22 @@
   tbody tr:last-child td { border-bottom: none; }
   tbody tr { transition: background .12s; }
   tbody tr:hover { background: var(--surface-2); }
-  tbody tr.deleted { opacity: .55; }
-  tbody tr.deleted td { text-decoration: line-through; }
   .empty {
     text-align: center; color: var(--text-3);
     padding: 40px 20px; font-size: 13px;
   }
   .empty-icon { font-size: 36px; display: block; margin-bottom: 8px; opacity: .4; }
+
+  .cut-count {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 9px; border-radius: 12px;
+    font-size: 12px; font-weight: 600;
+    background: rgba(16,185,129,.14); color: #059669;
+  }
+  .cut-count.zero {
+    background: transparent; color: var(--text-3); font-weight: 400;
+  }
+  .cut-count small { color: inherit; opacity: .7; font-weight: 500; }
 
   .actions { white-space: nowrap; text-align: right; width: 1%; }
   .icon-btn {
@@ -302,16 +287,89 @@
 
   .status { font-size: 12px; color: var(--text-3); margin-top: 12px; text-align: center; }
 
-  .pill {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 11px; border-radius: 20px;
-    font-size: 12px; font-weight: 600; letter-spacing: .01em;
+  /* ====== Мобильные карточки каталога ====== */
+  .mobile-list { display: none; }
+  .mobile-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    transition: border-color .15s;
   }
-  .pill.new    { background: rgba(59,130,246,.18); color: #3b82f6; }
-  .pill.work   { background: rgba(245,158,11,.18); color: #d97706; }
-  .pill.done   { background: rgba(16,185,129,.18); color: #059669; }
-  .pill.issued { background: rgba(107,114,128,.18); color: var(--text-2); }
-  .pill.cancel { background: rgba(239,68,68,.18); color: #dc2626; }
+  .mobile-card:active { border-color: var(--primary); }
+  .mc-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px; gap: 8px;
+  }
+  .mc-id {
+    display: flex; gap: 8px; align-items: center;
+    font-weight: 600; min-width: 0;
+  }
+  .mc-pp {
+    background: var(--bg-2); color: var(--text-3);
+    padding: 2px 8px; border-radius: 6px;
+    font-size: 11px; flex: none;
+  }
+  .mc-art {
+    color: var(--primary); font-weight: 700;
+    font-size: 14px;
+  }
+  .mc-cut {
+    background: linear-gradient(135deg, var(--primary), var(--violet));
+    color: #fff; border: none; border-radius: 9px;
+    padding: 7px 14px; font-size: 12.5px; font-weight: 600;
+    font-family: inherit; cursor: pointer;
+    box-shadow: 0 3px 10px rgba(99,102,241,.3);
+    flex: none; white-space: nowrap;
+    transition: all .15s;
+  }
+  .mc-cut:active { transform: scale(.96); }
+  .mc-car {
+    font-weight: 700; font-size: 16px; letter-spacing: -.01em;
+    line-height: 1.25; word-break: break-word;
+    margin-bottom: 3px;
+  }
+  .mc-sub {
+    color: var(--text-3); font-size: 12px; margin-bottom: 10px;
+    word-break: break-word;
+  }
+  .mc-metrics {
+    display: flex; flex-wrap: wrap; gap: 14px 18px;
+    padding: 10px 0;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text-2);
+  }
+  .mc-metric b { color: var(--text); font-weight: 700; }
+  .mc-metric.green b { color: var(--success); }
+  .mc-metric.danger { color: var(--danger); }
+  .mc-metric.danger b { color: var(--danger); }
+  .mc-actions {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .mc-actions button {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 10px 4px;
+    font-size: 16px; cursor: pointer; font-family: inherit;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-2);
+    transition: all .15s;
+    min-height: 42px;
+  }
+  .mc-actions button:active { background: var(--bg-2); transform: scale(.96); }
+  .mc-actions button.danger { color: var(--danger); }
+  .mc-actions .badge {
+    position: absolute; top: 4px; right: 8px;
+    background: var(--primary); color: #fff;
+    font-size: 9px; padding: 1px 5px; border-radius: 6px;
+    font-weight: 700; line-height: 1.3;
+  }
 
   .modal {
     position: fixed; inset: 0; background: rgba(20,18,46,.55);
@@ -349,6 +407,9 @@
     box-shadow: 0 0 0 3px rgba(99,102,241,.14);
   }
   .field textarea { resize: vertical; min-height: 70px; }
+  .field input:disabled, .field select:disabled {
+    opacity: .7; cursor: not-allowed;
+  }
   .hint { font-size: 11px; color: var(--text-3); margin-top: 4px; }
   .modal-actions {
     display: flex; justify-content: flex-end; gap: 8px;
@@ -358,6 +419,22 @@
     font-size: 14px; line-height: 1.55; color: var(--text-2);
     white-space: pre-line; margin-bottom: 8px;
   }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .cut-preview {
+    background: linear-gradient(135deg,
+      rgba(99,102,241,.10) 0%, rgba(236,72,153,.10) 100%);
+    border: 1px solid rgba(99,102,241,.22);
+    border-radius: 12px; padding: 14px 16px; margin-top: 4px;
+    font-size: 13px; line-height: 1.65;
+  }
+  .cut-preview .row { display: flex; justify-content: space-between; gap: 8px; }
+  .cut-preview .row + .row { margin-top: 4px; }
+  .cut-preview .row b { font-weight: 700; }
+  .cut-preview .accent { color: var(--primary); font-weight: 700; }
+  .cut-preview .warn { color: var(--warning); font-weight: 700; }
+  .cut-preview .ok { color: var(--success); font-weight: 700; }
+  .cut-preview .danger { color: var(--danger); font-weight: 700; }
 
   .subtabs {
     display: flex; gap: 4px; background: var(--surface-2);
@@ -433,7 +510,8 @@
   .hist-icon.delete  { background: rgba(239,68,68,.18); color: #dc2626; }
   .hist-icon.attach  { background: rgba(245,158,11,.18); color: #d97706; }
   .hist-icon.detach  { background: rgba(139,92,246,.18); color: #7c3aed; }
-  .hist-icon.order   { background: rgba(236,72,153,.18); color: #db2777; }
+  .hist-icon.order   { background: rgba(16,185,129,.18); color: #059669; }
+  .hist-icon.stock   { background: rgba(236,72,153,.18); color: #db2777; }
   .hist-body { flex: 1; min-width: 0; }
   .hist-title { font-weight: 600; margin-bottom: 2px; }
   .hist-desc { color: var(--text-2); font-size: 12.5px; word-break: break-word; }
@@ -452,25 +530,27 @@
     outline: none; border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(99,102,241,.14);
   }
-  .order-row {
+  .cut-row {
     display: flex; align-items: center; gap: 12px;
-    padding: 12px 16px; border-radius: 12px;
-    background: var(--surface-2); border: 1px solid var(--border);
-    margin-bottom: 8px; font-size: 13px; flex-wrap: wrap;
+    padding: 12px 16px;
+    background: var(--surface-2); border-top: 1px solid var(--border);
+    font-size: 13px; flex-wrap: wrap;
   }
-  .order-row:hover { border-color: var(--border-2); }
-  .order-row.flat {
-    border-radius: 0; border-left: none; border-right: none;
-    margin: 0; border-top: none;
+  .cut-row:first-child { border-top: none; }
+  .cut-row:hover { background: var(--surface); }
+  .cut-row .cut-main { flex: 1; min-width: 180px; }
+  .cut-row .cut-title { font-weight: 600; }
+  .cut-row .cut-sub { color: var(--text-3); font-size: 12px; margin-top: 2px; }
+  .cut-row .cut-qty {
+    font-weight: 700; font-size: 15px; color: var(--success);
+    min-width: 60px; text-align: right;
   }
-  .order-row .order-main { flex: 1; min-width: 180px; }
-  .order-row .order-title { font-weight: 600; }
-  .order-row .order-sub { color: var(--text-3); font-size: 12px; margin-top: 2px; }
-  .order-row .order-qty { font-weight: 700; font-size: 15px; color: var(--primary); }
-  .order-row select {
-    padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px;
-    background: var(--surface); color: var(--text);
-    font-family: inherit; font-size: 12px;
+  .cut-row .cut-defect {
+    font-weight: 600; font-size: 12px; color: var(--danger);
+  }
+  .cut-row .cut-meters {
+    font-size: 12px; color: var(--text-3);
+    min-width: 90px; text-align: right;
   }
 
   .overlay {
@@ -502,6 +582,13 @@
   .toast .check { color: #10b981; font-weight: 700; }
   .toast.error { background: #7f1d1d; }
   .toast.error .check { color: #fca5a5; }
+  .toast.big {
+    padding: 16px 22px; font-size: 14px; max-width: 520px;
+    align-items: flex-start; gap: 12px; line-height: 1.5;
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    box-shadow: 0 20px 50px rgba(99,102,241,.35);
+  }
+  .toast.big .check { font-size: 20px; }
 
   .rolls-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -554,7 +641,6 @@
   .backup-date { font-weight: 600; }
   .backup-size { color: var(--text-3); font-size: 11px; margin-top: 2px; }
 
-  /* ===== About ===== */
   .about-box { max-width: 620px; }
   .about-header {
     display: flex; align-items: center; gap: 14px;
@@ -580,9 +666,7 @@
     letter-spacing: .09em; color: var(--text-3);
     font-weight: 700; margin: 0 0 10px;
   }
-  .feature-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-  }
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .feature-item {
     display: flex; gap: 10px; align-items: flex-start;
     padding: 10px 12px; border-radius: 10px;
@@ -600,9 +684,7 @@
   .feature-item .fi-desc {
     color: var(--text-3); font-size: 11.5px; line-height: 1.45;
   }
-  .hotkeys {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-  }
+  .hotkeys { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .hk-row {
     display: flex; align-items: center; gap: 8px;
     padding: 8px 12px; border-radius: 9px;
@@ -633,7 +715,7 @@
     color: var(--text-2);
   }
   @media (max-width: 560px) {
-    .feature-grid, .hotkeys { grid-template-columns: 1fr; }
+    .feature-grid, .hotkeys, .field-row { grid-template-columns: 1fr; }
   }
 
   @media print {
@@ -643,9 +725,10 @@
     .topbar { display: none; }
     main { padding: 0; max-width: none; }
     .card { box-shadow: none; border-radius: 0; border: none; }
-    .stats, .orders-banner, .filters-bar { display: none; }
+    .stats, .today-banner, .filters-bar { display: none; }
     .filters-toggle { display: none !important; }
     .rolls-grid { display: none; }
+    .mobile-list { display: none !important; }
     th { background: #fff !important; color: #000; border-bottom: 2px solid #000; }
     td { border-bottom: 1px solid #ccc; }
     .modal { display: none !important; }
@@ -655,6 +738,7 @@
     table { font-size: 11px; }
   }
 
+  /* ===== Мобильная адаптация ===== */
   @media (max-width: 760px) {
     .topbar { flex-wrap: wrap; padding: 10px 12px; gap: 10px; }
     .tabs { order: 3; width: 100%; overflow-x: auto; }
@@ -662,9 +746,15 @@
     .search-wrap { flex: 1; }
     .search-wrap input { width: 100%; }
     main { padding: 12px; }
-    .rolls-grid { grid-template-columns: 1fr; padding: 12px; }
 
-    /* Мобильная панель фильтров */
+    .stats { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .stat { padding: 12px 14px; }
+    .stat-label { font-size: 10px; margin-bottom: 5px; }
+    .stat-value { font-size: 20px; }
+
+    .rolls-grid { grid-template-columns: 1fr; padding: 12px; gap: 8px; }
+    .roll-card { padding: 12px 14px; }
+
     .filters-toggle { display: flex; }
     .filters-bar { display: none; flex-direction: column; gap: 8px; padding: 12px 16px; }
     .filters-bar.open { display: flex; }
@@ -675,8 +765,55 @@
     .orders-controls { gap: 6px; }
     .orders-controls select { flex: 1; min-width: 0; }
 
-    /* Кнопка «Добавить» в шапке карточки — на всю ширину */
+    .card-head { padding: 12px 14px; gap: 8px; }
     .card-head #btnAdd { flex: 1; justify-content: center; }
+    .card-head .card-title { font-size: 14px; }
+
+    /* Скрываем таблицу, показываем карточки */
+    .table-wrap.desktop-only { display: none; }
+    .mobile-list { display: block; padding: 12px; }
+
+    .cut-row { padding: 12px 14px; }
+    .cut-row .cut-meters { min-width: 70px; font-size: 11.5px; }
+    .cut-row .cut-qty { min-width: 50px; font-size: 14px; }
+
+    /* Модалки — на всю ширину с отступами */
+    .modal { padding: 12px; align-items: flex-end; }
+    .modal-box { padding: 20px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; max-height: 92vh; }
+    .modal-actions { flex-direction: column-reverse; }
+    .modal-actions .btn { width: 100%; justify-content: center; }
+
+    /* Файлы — кнопки в столбик на узком экране */
+    .file-row { padding: 10px; }
+    .file-row .btn { padding: 6px 10px; font-size: 11px; }
+    .file-name { flex-basis: 100%; margin-top: 4px; }
+    .file-thumb { width: 40px; height: 40px; font-size: 17px; }
+
+    /* История */
+    .hist-item { padding: 10px 12px; gap: 10px; }
+
+    .today-banner { padding: 12px 14px; gap: 10px; }
+    .today-banner .banner-badge { padding: 4px 11px; font-size: 14px; }
+    .today-banner .arrow { display: none; }
+    .today-banner .banner-sub { font-size: 12px; }
+
+    .toast { font-size: 12.5px; padding: 10px 16px; }
+    .toast.big { padding: 14px 18px; font-size: 13px; max-width: 92vw; }
+
+    .about-header { gap: 10px; }
+    .about-logo { width: 46px; height: 46px; font-size: 22px; }
+    .about-header h2 { font-size: 17px; }
+
+    .backup-item { flex-wrap: wrap; gap: 8px; }
+    .backup-item .btn { flex: 1; }
+  }
+
+  /* Очень узкие экраны */
+  @media (max-width: 380px) {
+    .stats { grid-template-columns: 1fr; }
+    .mc-cut { padding: 6px 10px; font-size: 11.5px; }
+    .mc-car { font-size: 15px; }
+    .mc-actions button { min-height: 38px; font-size: 15px; }
   }
 </style>
 <script>
@@ -701,15 +838,8 @@
 
   <nav class="tabs">
     <button class="tab active" data-tab="sklad">📦 Склад</button>
-    <button class="tab" data-tab="orders">
-      📋 Заказы
-      <span class="tab-badge" id="ordersTabBadge" style="display:none;">0</span>
-    </button>
+    <button class="tab" data-tab="cuts">✂️ Нарезка</button>
     <button class="tab" data-tab="history">🕘 История</button>
-    <button class="tab" data-tab="trash">
-      🗑️ Корзина
-      <span class="tab-badge" id="trashTabBadge" style="display:none;">0</span>
-    </button>
   </nav>
 
   <div class="topbar-actions">
@@ -726,7 +856,7 @@
 
 <main>
   <section class="tab-panel active" id="panel-sklad">
-    <div id="activeOrdersBanner"></div>
+    <div id="todayCutsBanner"></div>
     <div class="stats" id="statsRow"></div>
 
     <div class="card" style="margin-bottom:20px;">
@@ -741,10 +871,10 @@
 
     <div class="card">
       <div class="card-head">
-        <div class="card-title">Позиции склада <small id="status"></small></div>
+        <div class="card-title">Каталог лекал <small id="status"></small></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn primary small" id="btnAdd">+ Добавить</button>
-          <button class="btn ghost small" id="btnPrintTable">🖨️ Печать таблицы</button>
+          <button class="btn ghost small" id="btnPrintTable">🖨️ Печать</button>
           <button class="btn ghost small" id="btnExportCsv">📄 CSV</button>
         </div>
       </div>
@@ -770,7 +900,7 @@
         <button class="btn ghost small" id="btnResetFilters">Сбросить фильтры</button>
       </div>
 
-      <div class="table-wrap">
+      <div class="table-wrap desktop-only">
         <table>
           <thead>
             <tr>
@@ -780,37 +910,29 @@
               <th data-sort="marka">Марка <span class="sort-ind">↕</span></th>
               <th data-sort="model">Модель <span class="sort-ind">↕</span></th>
               <th data-sort="rashod">Расход, м <span class="sort-ind">↕</span></th>
-              <th data-sort="nalichie" style="text-align:right;">Наличие <span class="sort-ind">↕</span></th>
-              <th data-sort="cena">Цена <span class="sort-ind">↕</span></th>
               <th data-sort="artikul">Артикул <span class="sort-ind">↕</span></th>
+              <th>Нарезано</th>
               <th class="no-print"></th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
+
+      <div class="mobile-list" id="mobileList"></div>
     </div>
   </section>
 
-  <section class="tab-panel" id="panel-orders">
+  <section class="tab-panel" id="panel-cuts">
     <div class="orders-controls">
-      <button class="btn primary" id="btnNewOrder">+ Новый заказ</button>
-      <select id="ordersStatusFilter">
-        <option value="">Все статусы</option>
-        <option value="new">Новые</option>
-        <option value="work">В работе</option>
-        <option value="done">Готовые</option>
-        <option value="issued">Выданные</option>
-        <option value="cancel">Отменённые</option>
-      </select>
-      <select id="ordersMarkaFilter" title="Марка автомобиля">
+      <button class="btn primary" id="btnNewCut">✂️ Отметить нарезку</button>
+      <select id="cutsMarkaFilter" title="Марка автомобиля">
         <option value="">Все марки авто</option>
       </select>
-      <button class="btn ghost" id="btnOrdersPdf">📊 Отчёт PDF</button>
-      <span class="status" id="ordersStatus" style="margin:0 0 0 auto;"></span>
+      <span class="status" id="cutsStatus" style="margin:0 0 0 auto;"></span>
     </div>
     <div class="card">
-      <div id="ordersList"></div>
+      <div id="cutsList"></div>
     </div>
   </section>
 
@@ -823,42 +945,14 @@
         <option value="delete">Удаление</option>
         <option value="attach">Прикрепление файла</option>
         <option value="detach">Удаление файла</option>
-        <option value="order">Заказы</option>
+        <option value="cut">Нарезка</option>
         <option value="stock">Склад плёнки</option>
-        <option value="restore">Восстановление</option>
-        <option value="purge">Очистка корзины</option>
       </select>
       <button class="btn ghost small" id="btnClearHistory">Очистить историю</button>
       <span class="status" id="historyStatus" style="margin:0 0 0 auto;"></span>
     </div>
     <div class="card">
       <div class="history-list" id="historyList" style="padding:12px;"></div>
-    </div>
-  </section>
-
-  <section class="tab-panel" id="panel-trash">
-    <div class="orders-controls">
-      <button class="btn danger" id="btnEmptyTrash">🗑️ Очистить корзину</button>
-      <span class="status" id="trashStatus" style="margin:0 0 0 auto;"></span>
-    </div>
-    <div class="card">
-      <div class="card-title" style="padding:16px 20px 0;">Удалённые позиции</div>
-      <div class="table-wrap" style="margin-top:12px;">
-        <table>
-          <thead>
-            <tr>
-              <th>ПП</th>
-              <th>Тип плёнки</th>
-              <th>Марка</th>
-              <th>Модель</th>
-              <th>Артикул</th>
-              <th>Удалено</th>
-              <th class="no-print"></th>
-            </tr>
-          </thead>
-          <tbody id="trashBody"></tbody>
-        </table>
-      </div>
     </div>
   </section>
 </main>
@@ -881,7 +975,7 @@
     <div class="subtabs">
       <button class="subtab active" data-subtab="files">📎 Файлы</button>
       <button class="subtab" data-subtab="history">🕘 История</button>
-      <button class="subtab" data-subtab="orders">📋 Заказы</button>
+      <button class="subtab" data-subtab="cuts">✂️ Нарезка</button>
     </div>
 
     <div class="subtab-panel active" id="subtab-files">
@@ -910,13 +1004,13 @@
       <div class="history-list" id="detailHistory"></div>
     </div>
 
-    <div class="subtab-panel" id="subtab-orders">
+    <div class="subtab-panel" id="subtab-cuts">
       <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
-        <button class="btn primary small" id="btnNewOrderForRecord">
-          + Заказ для этой позиции
+        <button class="btn primary small" id="btnNewCutForRecord">
+          ✂️ Отметить нарезку
         </button>
       </div>
-      <div id="detailOrders"></div>
+      <div id="detailCuts"></div>
     </div>
 
     <div class="modal-actions" style="justify-content:space-between;">
@@ -928,13 +1022,13 @@
   </div>
 </div>
 
-<div class="modal hidden" id="orderModal">
+<div class="modal hidden" id="cutModal">
   <div class="modal-box" role="dialog" aria-modal="true">
-    <h2 id="orderModalTitle">Новый заказ</h2>
-    <div id="orderFields"></div>
+    <h2 id="cutModalTitle">Отметить нарезку</h2>
+    <div id="cutFields"></div>
     <div class="modal-actions">
-      <button class="btn ghost" id="btnOrderCancel">Отмена</button>
-      <button class="btn primary" id="btnOrderSave">Сохранить</button>
+      <button class="btn ghost" id="btnCutCancel">Отмена</button>
+      <button class="btn primary" id="btnCutSave">Сохранить</button>
     </div>
   </div>
 </div>
@@ -946,7 +1040,7 @@
     <div style="display:flex;flex-direction:column;gap:10px;">
       <button class="btn primary" id="btnExportDb">💾 Сохранить базу (.db)</button>
       <button class="btn ghost" id="btnImportDb">📂 Загрузить базу (.db)</button>
-      <button class="btn ghost" id="btnImportCsv">📥 Импорт CSV (позиции склада)</button>
+      <button class="btn ghost" id="btnImportCsv">📥 Импорт CSV (каталог лекал)</button>
       <button class="btn ghost" id="btnExportCsv2">📄 Экспорт таблицы в CSV</button>
       <button class="btn ghost" id="btnBackupNow">🕒 Создать резервную копию сейчас</button>
       <button class="btn ghost" id="btnAbout">ℹ️ О программе</button>
@@ -987,7 +1081,7 @@
       <div class="about-logo">П</div>
       <div>
         <h2>Пленка для всех</h2>
-        <div class="about-sub">Учёт лекал на стёкла фар · v1.1</div>
+        <div class="about-sub">Учёт лекал на стёкла фар · v2.2</div>
       </div>
     </div>
 
@@ -997,36 +1091,29 @@
         <div class="feature-item">
           <div class="fi-icon">📦</div>
           <div class="fi-body">
-            <div class="fi-title">Склад позиций</div>
-            <div class="fi-desc">Тип плёнки, марка, модель, цена, артикул, расположение</div>
+            <div class="fi-title">Каталог лекал</div>
+            <div class="fi-desc">Список купленных лекал — что можно резать прямо сейчас</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">✂️</div>
+          <div class="fi-body">
+            <div class="fi-title">Нарезка</div>
+            <div class="fi-desc">Журнал: что резал, сколько, брак, сколько плёнки ушло</div>
           </div>
         </div>
         <div class="feature-item">
           <div class="fi-icon">🎞️</div>
           <div class="fi-body">
             <div class="fi-title">Рулоны плёнки</div>
-            <div class="fi-desc">Остаток в рулонах (1 рулон = 10 м), минимум и заказ</div>
-          </div>
-        </div>
-        <div class="feature-item">
-          <div class="fi-icon">📋</div>
-          <div class="fi-body">
-            <div class="fi-title">Заказы</div>
-            <div class="fi-desc">Клиенты, статусы, автосписание и возврат плёнки</div>
-          </div>
-        </div>
-        <div class="feature-item">
-          <div class="fi-icon">🏷️</div>
-          <div class="fi-body">
-            <div class="fi-title">Этикетки</div>
-            <div class="fi-desc">PDF-этикетки A4 по 8 шт. на листе, с логотипом</div>
+            <div class="fi-desc">Остаток по факту: 1 рулон = 10 метров</div>
           </div>
         </div>
         <div class="feature-item">
           <div class="fi-icon">📎</div>
           <div class="fi-body">
             <div class="fi-title">Файлы лекал</div>
-            <div class="fi-desc">Вложения .cdr/.ai/.pdf/.png, печать PDF и картинок</div>
+            <div class="fi-desc">Вложения .cdr/.ai/.pdf, печать картинок и PDF</div>
           </div>
         </div>
         <div class="feature-item">
@@ -1037,30 +1124,45 @@
           </div>
         </div>
         <div class="feature-item">
-          <div class="fi-icon">🗑️</div>
-          <div class="fi-body">
-            <div class="fi-title">Корзина</div>
-            <div class="fi-desc">Мягкое удаление с восстановлением и очисткой</div>
-          </div>
-        </div>
-        <div class="feature-item">
           <div class="fi-icon">💾</div>
           <div class="fi-body">
             <div class="fi-title">Резервные копии</div>
             <div class="fi-desc">Авто-бэкапы раз в сутки, восстановление из UI</div>
           </div>
         </div>
+        <div class="feature-item">
+          <div class="fi-icon">🔎</div>
+          <div class="fi-body">
+            <div class="fi-title">Фильтры</div>
+            <div class="fi-desc">По типу плёнки, марке, модели, расположению</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🏷️</div>
+          <div class="fi-body">
+            <div class="fi-title">Этикетки</div>
+            <div class="fi-desc">PDF-этикетки A4 по 8 шт. на листе, с логотипом</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="about-section">
-      <h3>🔎 Фильтры</h3>
+      <h3>🔗 Как всё связано</h3>
       <div class="about-note">
-        На вкладке <b>Склад</b> можно фильтровать позиции сразу по
-        <b>типу плёнки → марке авто → модели → расположению</b>.
-        В каждом списке показано количество активных позиций.
-        На телефоне панель фильтров скрыта под кнопкой
-        <b>🔍 Фильтры</b> — бейдж рядом показывает, сколько фильтров включено.
+        В <b>каталоге</b> у каждой позиции указан <b>расход плёнки</b> на одну штуку.
+        Когда вы отмечаете нарезку (сколько штук сделали), программа
+        умножает количество на расход и <b>списывает плёнку с рулонов</b>.
+        Остаток плёнки всегда виден в карточках сверху.
+      </div>
+    </div>
+
+    <div class="about-section">
+      <h3>📱 На телефоне</h3>
+      <div class="about-note">
+        Каталог автоматически превращается в <b>карточки</b> — ничего
+        двигать в стороны не нужно. Кнопка <b>✂️ Нарезать</b> всегда
+        в правом верхнем углу карточки. Остальные действия — внизу.
       </div>
     </div>
 
@@ -1068,7 +1170,7 @@
       <h3>⌨️ Горячие клавиши</h3>
       <div class="hotkeys">
         <div class="hk-row"><kbd>/</kbd><span>Поиск по базе</span></div>
-        <div class="hk-row"><kbd>N</kbd><span>Новая позиция на складе</span></div>
+        <div class="hk-row"><kbd>N</kbd><span>Новое лекало</span></div>
         <div class="hk-row"><kbd>Enter</kbd><span>Сохранить в форме</span></div>
         <div class="hk-row"><kbd>Esc</kbd><span>Закрыть модалку</span></div>
         <div class="hk-row"><kbd>Tab</kbd><span>Навигация по форме</span></div>
@@ -1083,8 +1185,7 @@
         вложения отдельным хранилищем. Интернет нужен только для
         подгрузки библиотек sql.js и pdf-lib.<br><br>
         Экспорт базы — через <b>⚙️ в шапке</b> (файл <code>.db</code>,
-        без вложений). Для полного переноса используйте кнопку
-        <b>💾</b> — она создаёт резервную копию внутри браузера.
+        без вложений). Резервную копию создаёт кнопка <b>💾</b>.
       </div>
     </div>
 
@@ -1133,16 +1234,8 @@ const DATALISTS = { tip_plenki:'dl-tip_plenki', marka:'dl-marka' };
 const HINTS = {
   tip_plenki:'Выберите из списка или введите новый',
   marka:'Выберите из списка или введите новую',
-  rashod:'Сколько метров уходит на одну машину (заполняется вручную)',
+  rashod:'Сколько метров уходит на одну машину — используется для списания плёнки при нарезке',
   cena:'Цена может меняться'
-};
-
-const STATUSES = {
-  new:    { label:'Новый',    cls:'new' },
-  work:   { label:'В работе', cls:'work' },
-  done:   { label:'Готов',    cls:'done' },
-  issued: { label:'Выдан',    cls:'issued' },
-  cancel: { label:'Отменён',  cls:'cancel' }
 };
 
 const SEED = [
@@ -1172,7 +1265,7 @@ const SHYMKA_URL = 'https://www.shymka.ru/';
 let SQL, db;
 let editingId = null;
 let detailRecordId = null;
-let editingOrderId = null;
+let editingCutId = null;
 let editingRollType = null;
 let currentTab = 'sklad';
 let searchDebounce = null;
@@ -1211,6 +1304,16 @@ function fmtDate(iso) {
     { day:'2-digit', month:'2-digit', year:'2-digit',
       hour:'2-digit', minute:'2-digit' });
 }
+function fmtDateOnly(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('ru-RU',
+    { day:'2-digit', month:'2-digit', year:'2-digit' });
+}
+function todayIso() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+}
 function showOverlay(text) {
   $('overlayText').textContent = text || 'Обработка…';
   $('overlay').classList.remove('hidden');
@@ -1219,14 +1322,23 @@ function hideOverlay() { $('overlay').classList.add('hidden'); }
 let toastTimer;
 function toast(msg) {
   const t = $('toast');
-  t.classList.remove('error');
+  t.classList.remove('error', 'big');
   t.innerHTML = '<span class="check">✓</span> ' + esc(msg);
   t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
 }
+function toastBig(html) {
+  const t = $('toast');
+  t.classList.remove('error');
+  t.innerHTML = html;
+  t.classList.add('show', 'big');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show', 'big'), 5000);
+}
 function toastError(msg) {
   const t = $('toast');
+  t.classList.remove('big');
   t.innerHTML = '<span class="check">⚠</span> ' + esc(msg);
   t.classList.add('show', 'error');
   clearTimeout(toastTimer);
@@ -1282,7 +1394,7 @@ function toggleTheme() {
 const IDB_NAME = 'uchet_idb';
 const IDB_KV = 'kv';
 const IDB_FILES = 'files';
-const IDB_KEY = 'sqlite_v6';
+const IDB_KEY = 'sqlite_v8';
 
 function idbOpen() {
   return new Promise((res, rej) => {
@@ -1332,7 +1444,6 @@ async function idbDelete(key) {
     tx.onerror = () => rej(tx.error);
   });
 }
-
 async function idbPutFile(key, blob) {
   const idb = await idbOpen();
   return new Promise((res, rej) => {
@@ -1379,17 +1490,13 @@ function ensureSchema(target) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       pp INTEGER, tip_plenki TEXT, raspolozhenie TEXT,
       marka TEXT, model TEXT, rashod TEXT,
-      nalichie TEXT, cena TEXT, artikul TEXT,
-      deleted_at TEXT DEFAULT NULL
+      nalichie TEXT, cena TEXT, artikul TEXT
     )
   `);
   try {
     const cols = target.exec("PRAGMA table_info(plenki)")[0].values.map(v => v[1]);
     if (!cols.includes('rashod')) {
       target.run('ALTER TABLE plenki ADD COLUMN rashod TEXT DEFAULT ""');
-    }
-    if (!cols.includes('deleted_at')) {
-      target.run('ALTER TABLE plenki ADD COLUMN deleted_at TEXT DEFAULT NULL');
     }
   } catch(e) {}
 
@@ -1398,9 +1505,7 @@ function ensureSchema(target) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       record_id INTEGER NOT NULL,
       filename TEXT, mime TEXT, size INTEGER,
-      storage_key TEXT,
-      data BLOB,
-      uploaded_at TEXT
+      storage_key TEXT, data BLOB, uploaded_at TEXT
     )
   `);
   try {
@@ -1417,14 +1522,35 @@ function ensureSchema(target) {
       old_value TEXT, new_value TEXT, details TEXT, created_at TEXT
     )
   `);
+
   target.run(`
     CREATE TABLE IF NOT EXISTS orders (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      record_id INTEGER NOT NULL, customer TEXT, qty INTEGER,
-      status TEXT, notes TEXT, created_at TEXT, updated_at TEXT,
-      film_consumed INTEGER DEFAULT 0
+      record_id INTEGER NOT NULL,
+      qty INTEGER DEFAULT 0,
+      defect_qty INTEGER DEFAULT 0,
+      meters_consumed REAL DEFAULT 0,
+      cut_date TEXT,
+      notes TEXT,
+      created_at TEXT,
+      updated_at TEXT,
+      customer TEXT, status TEXT, film_consumed INTEGER DEFAULT 0
     )
   `);
+  try {
+    const ocols = target.exec("PRAGMA table_info(orders)")[0].values.map(v => v[1]);
+    if (!ocols.includes('defect_qty')) {
+      target.run('ALTER TABLE orders ADD COLUMN defect_qty INTEGER DEFAULT 0');
+    }
+    if (!ocols.includes('meters_consumed')) {
+      target.run('ALTER TABLE orders ADD COLUMN meters_consumed REAL DEFAULT 0');
+    }
+    if (!ocols.includes('cut_date')) {
+      target.run('ALTER TABLE orders ADD COLUMN cut_date TEXT');
+      target.run("UPDATE orders SET cut_date = substr(created_at,1,10) WHERE cut_date IS NULL");
+    }
+  } catch(e) {}
+
   target.run(`
     CREATE TABLE IF NOT EXISTS film_stock (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1433,22 +1559,21 @@ function ensureSchema(target) {
       min_rolls REAL DEFAULT 1
     )
   `);
+
   try {
-    const ocols = target.exec("PRAGMA table_info(orders)")[0].values.map(v => v[1]);
-    if (!ocols.includes('film_consumed')) {
-      target.run('ALTER TABLE orders ADD COLUMN film_consumed INTEGER DEFAULT 0');
-      target.run("UPDATE orders SET film_consumed = 1 WHERE status != 'cancel'");
+    const pcols = target.exec("PRAGMA table_info(plenki)")[0].values.map(v => v[1]);
+    if (pcols.includes('deleted_at')) {
+      target.run('UPDATE plenki SET deleted_at = NULL WHERE deleted_at IS NOT NULL');
     }
   } catch(e) {}
 
   target.run(`CREATE INDEX IF NOT EXISTS idx_att_record ON attachments(record_id)`);
   target.run(`CREATE INDEX IF NOT EXISTS idx_hist_record ON history(record_id)`);
-  target.run(`CREATE INDEX IF NOT EXISTS idx_order_record ON orders(record_id)`);
-  target.run(`CREATE INDEX IF NOT EXISTS idx_order_status ON orders(status)`);
+  target.run(`CREATE INDEX IF NOT EXISTS idx_cut_record ON orders(record_id)`);
+  target.run(`CREATE INDEX IF NOT EXISTS idx_cut_date ON orders(cut_date)`);
   target.run(`CREATE INDEX IF NOT EXISTS idx_plenki_tip ON plenki(tip_plenki)`);
   target.run(`CREATE INDEX IF NOT EXISTS idx_plenki_marka ON plenki(marka)`);
   target.run(`CREATE INDEX IF NOT EXISTS idx_plenki_model ON plenki(model)`);
-  target.run(`CREATE INDEX IF NOT EXISTS idx_plenki_deleted ON plenki(deleted_at)`);
 }
 function createSchema() { ensureSchema(db); }
 
@@ -1483,19 +1608,14 @@ async function autoBackup() {
     keys.sort();
     while (keys.length > 7) await idbDelete(keys.shift());
     localStorage.setItem('last_backup_date', today);
-    toast('Автоматическая резервная копия создана');
   } catch (e) { console.warn('autoBackup', e); }
 }
 
 /* ============ Запросы ============ */
-function allRows(q, opts) {
-  opts = opts || {};
-  const includeDeleted = !!opts.includeDeleted;
-  let sql = `SELECT id, ${COLUMNS.join(',')}, deleted_at FROM plenki`;
+function allRows(q) {
+  let sql = `SELECT id, ${COLUMNS.join(',')} FROM plenki`;
   const where = [];
   const params = [];
-  if (!includeDeleted) where.push('deleted_at IS NULL');
-  else if (opts.onlyDeleted) where.push('deleted_at IS NOT NULL');
   if (q) {
     const like = COLUMNS.map(c => `${c} LIKE ?`).join(' OR ');
     where.push('(' + like + ')');
@@ -1523,31 +1643,56 @@ function allRows(q, opts) {
   return out;
 }
 function countRows() {
-  const stmt = db.prepare('SELECT COUNT(*) AS c FROM plenki WHERE deleted_at IS NULL');
+  const stmt = db.prepare('SELECT COUNT(*) AS c FROM plenki');
   stmt.step();
   const c = stmt.getAsObject().c;
   stmt.free();
   return c;
 }
-function countDeleted() {
-  const stmt = db.prepare('SELECT COUNT(*) AS c FROM plenki WHERE deleted_at IS NOT NULL');
+function totalCutQty() {
+  const stmt = db.prepare('SELECT COALESCE(SUM(qty),0) AS s FROM orders');
   stmt.step();
-  const c = stmt.getAsObject().c;
+  const s = stmt.getAsObject().s || 0;
   stmt.free();
-  return c;
+  return s;
 }
-function countActiveOrders() {
+function todayCutQty() {
   const stmt = db.prepare(
-    "SELECT COUNT(*) AS c FROM orders WHERE status IN ('new','work')"
+    'SELECT COALESCE(SUM(qty),0) AS s FROM orders WHERE cut_date = ?'
   );
+  stmt.bind([todayIso()]);
   stmt.step();
-  const c = stmt.getAsObject().c;
+  const s = stmt.getAsObject().s || 0;
   stmt.free();
-  return c || 0;
+  return s;
+}
+function cutQtyByRecord() {
+  const stmt = db.prepare(
+    'SELECT record_id, COALESCE(SUM(qty),0) AS s FROM orders GROUP BY record_id'
+  );
+  const map = {};
+  while (stmt.step()) {
+    const r = stmt.getAsObject();
+    map[r.record_id] = r.s;
+  }
+  stmt.free();
+  return map;
+}
+function cutDefectByRecord() {
+  const stmt = db.prepare(
+    'SELECT record_id, COALESCE(SUM(defect_qty),0) AS s FROM orders GROUP BY record_id'
+  );
+  const map = {};
+  while (stmt.step()) {
+    const r = stmt.getAsObject();
+    map[r.record_id] = r.s;
+  }
+  stmt.free();
+  return map;
 }
 function getRecord(id) {
   const stmt = db.prepare(
-    `SELECT ${COLUMNS.join(',')}, deleted_at FROM plenki WHERE id = ?`
+    `SELECT ${COLUMNS.join(',')} FROM plenki WHERE id = ?`
   );
   stmt.bind([id]);
   const row = stmt.step() ? stmt.getAsObject() : null;
@@ -1561,14 +1706,12 @@ function nextPp() {
   stmt.free();
   return (Number(m) || 0) + 1;
 }
-function distinctValues(col, opts) {
-  opts = opts || {};
-  const includeDeleted = !!opts.includeDeleted;
-  let sql = `SELECT DISTINCT ${col} AS v FROM plenki
-             WHERE ${col} IS NOT NULL AND TRIM(${col}) <> ''`;
-  if (!includeDeleted) sql += ' AND deleted_at IS NULL';
-  sql += ` ORDER BY ${col}`;
-  const stmt = db.prepare(sql);
+function distinctValues(col) {
+  const stmt = db.prepare(
+    `SELECT DISTINCT ${col} AS v FROM plenki
+     WHERE ${col} IS NOT NULL AND TRIM(${col}) <> ''
+     ORDER BY ${col}`
+  );
   const out = [];
   while (stmt.step()) out.push(stmt.getAsObject().v);
   stmt.free();
@@ -1615,23 +1758,27 @@ function setStock(tip, rolls, minRolls) {
   );
 }
 function consumeFilm(tip, meters) {
-  if (!tip || !meters) return;
+  if (!tip || !meters) return null;
   const s = getStock(tip);
-  if (!s) return;
-  const newRolls = Math.max(0, (s.rolls || 0) - meters / 10);
-  setStock(tip, newRolls, s.min_rolls);
+  if (!s) return null;
+  const before = s.rolls || 0;
+  const after = Math.max(0, before - meters / 10);
+  setStock(tip, after, s.min_rolls);
   logHistory({
     recordId: null, action: 'stock',
-    details: `Расход ${tip}: ${meters} м (${(meters/10).toFixed(2)} рулона). ` +
-             `Остаток: ${newRolls.toFixed(2)} рул.`
+    details: `Расход ${tip}: ${meters} м (${(meters/10).toFixed(2)} рул). ` +
+             `Остаток: ${before.toFixed(2)} → ${after.toFixed(2)} рул.`
   });
+  return { before, after };
 }
 function returnFilm(tip, meters) {
-  if (!tip || !meters) return;
+  if (!tip || !meters) return null;
   const s = getStock(tip);
-  if (!s) return;
-  const newRolls = (s.rolls || 0) + meters / 10;
-  setStock(tip, newRolls, s.min_rolls);
+  if (!s) return null;
+  const before = s.rolls || 0;
+  const after = before + meters / 10;
+  setStock(tip, after, s.min_rolls);
+  return { before, after };
 }
 function totalFilmMeters() {
   const stmt = db.prepare('SELECT SUM(rolls) AS r FROM film_stock');
@@ -2067,231 +2214,6 @@ async function printSelectedFiles() {
   }
 }
 
-/* ============ Отчёт по заказам ============ */
-async function buildOrdersReportPdf(orders, filterLabel) {
-  if (!window.PDFLib) throw new Error('pdf-lib не загружен');
-  const { PDFDocument } = PDFLib;
-  const pdfDoc = await PDFDocument.create();
-
-  const W = 1240, H = 1754, margin = 60;
-  const footerH = 60;
-
-  const cols = [
-    { key: 'num',  title:'№',       w: 55,  align:'left' },
-    { key: 'date', title:'Создан',  w: 150, align:'left' },
-    { key: 'cust', title:'Клиент',  w: 190, align:'left' },
-    { key: 'pos',  title:'Позиция', w: 300, align:'left' },
-    { key: 'art',  title:'Артикул', w: 120, align:'left' },
-    { key: 'qty',  title:'Кол-во',  w: 90,  align:'right' },
-    { key: 'stat', title:'Статус',  w: 130, align:'left' }
-  ];
-
-  const pageW = W - margin * 2;
-  const rowH = 44, headH = 50;
-
-  let canvas, ctx, y, pageNum = 0;
-  const pages = [];
-
-  function newPage() {
-    canvas = document.createElement('canvas');
-    canvas.width = W; canvas.height = H;
-    ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, W, H);
-    y = margin;
-    pages.push(canvas);
-    pageNum++;
-
-    if (pageNum === 1) {
-      ctx.fillStyle = '#14122e';
-      ctx.font = 'bold 40px Arial';
-      ctx.fillText('Отчёт по заказам', margin, y + 30);
-      y += 60;
-
-      ctx.fillStyle = '#6b7280';
-      ctx.font = '20px Arial';
-      const now = new Date().toLocaleString('ru-RU');
-      ctx.fillText('Дата формирования: ' + now, margin, y + 20);
-      y += 34;
-      if (filterLabel) {
-        ctx.fillText('Фильтр: ' + filterLabel, margin, y + 20);
-        y += 34;
-      }
-      y += 12;
-
-      ctx.strokeStyle = '#e8e7f2';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(margin, y);
-      ctx.lineTo(W - margin, y);
-      ctx.stroke();
-      y += 24;
-    }
-
-    ctx.fillStyle = '#f8fafc';
-    ctx.fillRect(margin, y, pageW, headH);
-
-    let x = margin;
-    ctx.fillStyle = '#475569';
-    ctx.font = 'bold 16px Arial';
-    ctx.textBaseline = 'middle';
-    for (const c of cols) {
-      const tx = c.align === 'right' ? x + c.w - 12 : x + 12;
-      ctx.textAlign = c.align === 'right' ? 'right' : 'left';
-      ctx.fillText(c.title, tx, y + headH / 2);
-      x += c.w;
-    }
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'alphabetic';
-    y += headH;
-
-    ctx.strokeStyle = '#e8e7f2';
-    ctx.beginPath();
-    ctx.moveTo(margin, y);
-    ctx.lineTo(W - margin, y);
-    ctx.stroke();
-  }
-
-  function ensureSpace(h) { if (y + h > H - margin - footerH) newPage(); }
-
-  newPage();
-
-  if (!orders.length) {
-    ctx.fillStyle = '#9ca3af';
-    ctx.font = '22px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('Заказов по выбранному фильтру нет', W / 2, y + 80);
-    ctx.textAlign = 'left';
-  } else {
-    for (let i = 0; i < orders.length; i++) {
-      ensureSpace(rowH);
-      const o = orders[i];
-      const st = STATUSES[o.status] || STATUSES.new;
-      const pos = (o.marka || '') + ' ' + (o.model || '');
-      const values = [
-        String(i + 1),
-        fmtDate(o.created_at),
-        o.customer || '—',
-        pos || ('Позиция #' + o.record_id),
-        o.artikul || '—',
-        (o.qty || 0) + ' шт',
-        st.label
-      ];
-
-      if (i % 2 === 1) {
-        ctx.fillStyle = '#f8fafc';
-        ctx.fillRect(margin, y, pageW, rowH);
-      }
-
-      let x = margin;
-      ctx.fillStyle = '#14122e';
-      ctx.font = '17px Arial';
-      for (let ci = 0; ci < cols.length; ci++) {
-        const c = cols[ci];
-        const v = values[ci];
-        const tx = c.align === 'right' ? x + c.w - 12 : x + 12;
-        ctx.textAlign = c.align === 'right' ? 'right' : 'left';
-        let out = v;
-        const maxW = c.w - 20;
-        if (ctx.measureText(out).width > maxW) {
-          while (out.length > 1 && ctx.measureText(out + '…').width > maxW)
-            out = out.slice(0, -1);
-          out += '…';
-        }
-        if (c.key === 'stat') {
-          const colors = {
-            new: '#2563eb', work: '#d97706', done: '#059669',
-            issued: '#6b7280', cancel: '#dc2626'
-          };
-          ctx.fillStyle = colors[o.status] || '#14122e';
-          ctx.font = 'bold 17px Arial';
-        } else {
-          ctx.fillStyle = '#14122e';
-          ctx.font = '17px Arial';
-        }
-        ctx.fillText(out, tx, y + rowH / 2 + 6);
-        x += c.w;
-      }
-      ctx.textAlign = 'left';
-
-      y += rowH;
-      ctx.strokeStyle = '#eef1f6';
-      ctx.beginPath();
-      ctx.moveTo(margin, y);
-      ctx.lineTo(W - margin, y);
-      ctx.stroke();
-    }
-
-    y += 24;
-    ensureSpace(140);
-    const total = orders.length;
-    const totalQty = orders.reduce((s, o) => s + (o.qty || 0), 0);
-    const byStatus = {};
-    for (const o of orders) byStatus[o.status] = (byStatus[o.status] || 0) + 1;
-
-    ctx.fillStyle = '#f8fafc';
-    ctx.fillRect(margin, y, pageW, 120);
-    ctx.strokeStyle = '#e8e7f2';
-    ctx.strokeRect(margin, y, pageW, 120);
-
-    ctx.fillStyle = '#14122e';
-    ctx.font = 'bold 20px Arial';
-    ctx.fillText('Итого:', margin + 20, y + 34);
-
-    ctx.font = '18px Arial';
-    ctx.fillText('Всего заказов: ' + total, margin + 20, y + 64);
-    ctx.fillText('Суммарное количество: ' + totalQty + ' шт', margin + 20, y + 92);
-
-    ctx.font = '16px Arial';
-    let sx = margin + 520;
-    for (const [k, v] of Object.entries(byStatus)) {
-      const st = STATUSES[k] || { label:k };
-      ctx.fillStyle = '#6b7280';
-      ctx.fillText(st.label + ': ' + v, sx, y + 64);
-      sx += 130;
-    }
-  }
-
-  for (let i = 0; i < pages.length; i++) {
-    const c = pages[i];
-    const cctx = c.getContext('2d');
-    cctx.fillStyle = '#9ca3af';
-    cctx.font = '14px Arial';
-    cctx.textAlign = 'center';
-    cctx.fillText('Стр. ' + (i + 1) + ' из ' + pages.length, W / 2, H - 30);
-    cctx.textAlign = 'left';
-
-    const pngBytes = await new Promise(res =>
-      c.toBlob(b => b.arrayBuffer().then(ab =>
-        res(new Uint8Array(ab))), 'image/png'));
-    const img = await pdfDoc.embedPng(pngBytes);
-    const page = pdfDoc.addPage([A4_W, A4_H]);
-    page.drawImage(img, { x: 0, y: 0, width: A4_W, height: A4_H });
-  }
-  return await pdfDoc.save();
-}
-async function exportOrdersPdf() {
-  const filter = $('ordersStatusFilter').value;
-  const markaFilter = $('ordersMarkaFilter').value;
-  const list = ordersList(filter, markaFilter);
-
-  const parts = [];
-  if (filter) parts.push(STATUSES[filter]?.label || filter);
-  if (markaFilter) parts.push('марка: ' + markaFilter);
-  const filterLabel = parts.join(', ');
-
-  try {
-    showOverlay('Готовлю отчёт по заказам…');
-    const bytes = await buildOrdersReportPdf(list, filterLabel);
-    hideOverlay();
-    const name = 'заказы_' + new Date().toISOString().slice(0,10) + '.pdf';
-    openGeneratedPdf(bytes, name);
-  } catch (e) {
-    hideOverlay();
-    toastError('Не удалось создать отчёт: ' + e.message);
-  }
-}
-
 /* ============ Этикетки ============ */
 function wrapCanvasText(ctx, text, maxWidth) {
   const words = String(text || '').split(/\s+/);
@@ -2456,19 +2378,16 @@ async function printLabel(recordId) {
   }
 }
 
-/* ============ Заказы ============ */
-function ordersList(filterStatus, filterMarka) {
+/* ============ Нарезка ============ */
+function cutsList(filterMarka) {
   let sql = `
-    SELECT o.*, p.marka, p.model, p.artikul, p.pp, p.tip_plenki, p.rashod
-    FROM orders o
-    LEFT JOIN plenki p ON p.id = o.record_id
+    SELECT c.*, p.marka, p.model, p.artikul, p.pp, p.tip_plenki, p.rashod
+    FROM orders c
+    LEFT JOIN plenki p ON p.id = c.record_id
   `;
   const params = [];
-  const where = [];
-  if (filterStatus) { where.push('o.status = ?'); params.push(filterStatus); }
-  if (filterMarka)  { where.push('p.marka = ?');  params.push(filterMarka); }
-  if (where.length) sql += ' WHERE ' + where.join(' AND ');
-  sql += ' ORDER BY o.id DESC';
+  if (filterMarka) { sql += ' WHERE p.marka = ?'; params.push(filterMarka); }
+  sql += ' ORDER BY COALESCE(c.cut_date, c.created_at) DESC, c.id DESC';
   const stmt = db.prepare(sql);
   if (params.length) stmt.bind(params);
   const out = [];
@@ -2476,7 +2395,7 @@ function ordersList(filterStatus, filterMarka) {
   stmt.free();
   return out;
 }
-function ordersFor(recordId) {
+function cutsFor(recordId) {
   const stmt = db.prepare(
     `SELECT * FROM orders WHERE record_id = ? ORDER BY id DESC`
   );
@@ -2486,171 +2405,129 @@ function ordersFor(recordId) {
   stmt.free();
   return out;
 }
-function getOrder(id) {
+function getCut(id) {
   const stmt = db.prepare('SELECT * FROM orders WHERE id = ?');
   stmt.bind([id]);
   const row = stmt.step() ? stmt.getAsObject() : null;
   stmt.free();
   return row;
 }
-function saveOrder(data, id) {
+function saveCut(data, id) {
   const now = new Date().toISOString();
   const rec = getRecord(data.record_id);
   const rashodPerUnit = rec ? parseNum(rec.rashod) : 0;
-  const totalMeters = rashodPerUnit * (data.qty || 0);
+  const qty = parseInt(data.qty, 10) || 0;
+  const defect = parseInt(data.defect_qty, 10) || 0;
+  const totalMeters = rashodPerUnit * qty;
 
   if (id) {
-    const old = getOrder(id);
-    if (old && old.film_consumed) {
+    const old = getCut(id);
+    if (old && old.meters_consumed) {
       const oldRec = getRecord(old.record_id);
-      if (oldRec) {
-        const oldMeters = parseNum(oldRec.rashod) * (old.qty || 0);
-        returnFilm(oldRec.tip_plenki, oldMeters);
-      }
+      if (oldRec) returnFilm(oldRec.tip_plenki, old.meters_consumed);
     }
-    let consumed = 0;
-    if (data.status !== 'cancel' && rec && totalMeters) {
-      consumeFilm(rec.tip_plenki, totalMeters);
-      consumed = 1;
-    }
+    let consumeInfo = null;
+    if (rec && totalMeters) consumeInfo = consumeFilm(rec.tip_plenki, totalMeters);
     db.run(
-      `UPDATE orders SET record_id=?, customer=?, qty=?, status=?, notes=?,
-       updated_at=?, film_consumed=? WHERE id=?`,
-      [data.record_id, data.customer, data.qty, data.status,
-       data.notes, now, consumed, id]
+      `UPDATE orders SET record_id=?, qty=?, defect_qty=?, meters_consumed=?,
+       cut_date=?, notes=?, updated_at=? WHERE id=?`,
+      [data.record_id, qty, defect, totalMeters,
+       data.cut_date || todayIso(), data.notes || '', now, id]
     );
     logHistory({
-      recordId: data.record_id, action: 'order',
-      details: 'Обновлён заказ #' + id +
-               ' (' + (STATUSES[data.status]?.label || data.status) + ')'
+      recordId: data.record_id, action: 'cut',
+      details: `Изменена нарезка #${id}: ${qty} шт` +
+               (defect ? `, брак ${defect} шт` : '') +
+               (totalMeters ? `, списано ${totalMeters.toFixed(1)} м` : '')
     });
+    return { updated: true, qty, defect, totalMeters, consumeInfo };
   } else {
-    let consumed = 0;
-    if (data.status !== 'cancel' && rec && totalMeters) {
-      consumeFilm(rec.tip_plenki, totalMeters);
-      consumed = 1;
-    }
+    let consumeInfo = null;
+    if (rec && totalMeters) consumeInfo = consumeFilm(rec.tip_plenki, totalMeters);
     db.run(
       `INSERT INTO orders
-        (record_id, customer, qty, status, notes, created_at, updated_at, film_consumed)
+        (record_id, qty, defect_qty, meters_consumed, cut_date, notes,
+         created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [data.record_id, data.customer, data.qty, data.status,
-       data.notes, now, now, consumed]
+      [data.record_id, qty, defect, totalMeters,
+       data.cut_date || todayIso(), data.notes || '', now, now]
     );
-    const res = db.exec('SELECT last_insert_rowid() AS id');
-    const newId = res[0]?.values[0][0];
+    const newId = db.exec('SELECT last_insert_rowid() AS id')[0].values[0][0];
     logHistory({
-      recordId: data.record_id, action: 'order',
-      details: 'Создан заказ #' + newId + ' — ' +
-               (data.customer || 'без клиента') +
-               ', ' + data.qty + ' шт.' +
-               (totalMeters ? ' Расход: ' + totalMeters.toFixed(1) + ' м' : '')
+      recordId: data.record_id, action: 'cut',
+      details: `Нарезано: ${qty} шт` +
+               (defect ? ` (брак ${defect} шт)` : '') +
+               (totalMeters ? `, списано ${totalMeters.toFixed(1)} м` : '')
     });
+    return { created: true, newId, qty, defect, totalMeters, consumeInfo };
   }
-  persist();
 }
-async function deleteOrder(id) {
-  const o = getOrder(id);
-  if (!o) return;
+async function deleteCut(id) {
+  const c = getCut(id);
+  if (!c) return;
   const yes = await confirmDialog({
-    title: 'Удалить заказ?',
-    message: 'Заказ #' + id + ' будет удалён безвозвратно.',
+    title: 'Удалить запись нарезки?',
+    message: 'Запись от ' + fmtDate(c.created_at) + ' будет удалена.\n' +
+             'Плёнка вернётся на остаток.',
     okText: 'Удалить', danger: true
   });
   if (!yes) return;
-  if (o.film_consumed) {
-    const rec = getRecord(o.record_id);
-    if (rec) {
-      const meters = parseNum(rec.rashod) * (o.qty || 0);
-      returnFilm(rec.tip_plenki, meters);
-    }
+  if (c.meters_consumed) {
+    const rec = getRecord(c.record_id);
+    if (rec) returnFilm(rec.tip_plenki, c.meters_consumed);
   }
   db.run('DELETE FROM orders WHERE id=?', [id]);
   logHistory({
-    recordId: o.record_id, action: 'order',
-    details: 'Удалён заказ #' + id
+    recordId: c.record_id, action: 'cut',
+    details: `Удалена запись нарезки #${id} (${c.qty} шт). ` +
+             `Возвращено ${(c.meters_consumed || 0).toFixed(1)} м плёнки.`
   });
   await persist();
 }
-function updateOrderStatus(id, status) {
-  const o = getOrder(id);
-  if (!o) return;
-  if (o.status === status) return;
-  const rec = getRecord(o.record_id);
-  let consumed = o.film_consumed ? 1 : 0;
-  let filmMsg = '';
-  if (rec) {
-    const meters = parseNum(rec.rashod) * (o.qty || 0);
-    if (status === 'cancel' && consumed) {
-      returnFilm(rec.tip_plenki, meters);
-      consumed = 0;
-      filmMsg = ` Возвращено ${meters.toFixed(1)} м «${rec.tip_plenki}».`;
-    } else if (status !== 'cancel' && !consumed) {
-      consumeFilm(rec.tip_plenki, meters);
-      consumed = 1;
-      filmMsg = ` Списано ${meters.toFixed(1)} м «${rec.tip_plenki}».`;
+
+/* ============ Баннер ============ */
+function renderTodayCutsBanner() {
+  const todayQty = todayCutQty();
+  const el = $('todayCutsBanner');
+  if (!todayQty) { el.innerHTML = ''; return; }
+
+  const stmt = db.prepare(`
+    SELECT c.qty, p.marka, p.model, p.artikul
+    FROM orders c
+    LEFT JOIN plenki p ON p.id = c.record_id
+    WHERE c.cut_date = ?
+    ORDER BY c.id DESC LIMIT 6
+  `);
+  stmt.bind([todayIso()]);
+  const lines = [];
+  let totalRecords = 0;
+  while (stmt.step()) {
+    const r = stmt.getAsObject();
+    totalRecords++;
+    if (lines.length < 3) {
+      const pos = ((r.marka || '') + ' ' + (r.model || '')).trim() ||
+                  ('#' + (r.artikul || ''));
+      lines.push((pos || '?') + ' — ' + r.qty + ' шт');
     }
   }
-  db.run('UPDATE orders SET status=?, updated_at=?, film_consumed=? WHERE id=?',
-         [status, new Date().toISOString(), consumed, id]);
-  logHistory({
-    recordId: o.record_id, action: 'order',
-    details: 'Заказ #' + id + ' → ' +
-             (STATUSES[status]?.label || status) + filmMsg
-  });
-  persist();
-  return filmMsg;
-}
-
-/* ============ Баннер активных заказов ============ */
-function activeOrders() {
-  const stmt = db.prepare(`
-    SELECT o.*, p.marka, p.model, p.artikul
-    FROM orders o
-    LEFT JOIN plenki p ON p.id = o.record_id
-    WHERE o.status IN ('new','work')
-    ORDER BY o.id DESC LIMIT 6
-  `);
-  const out = [];
-  while (stmt.step()) out.push(stmt.getAsObject());
   stmt.free();
-  return out;
-}
-function renderActiveOrdersBanner() {
-  const list = activeOrders();
-  const totalActive = countActiveOrders();
-  const badge = $('ordersTabBadge');
-  if (totalActive) {
-    badge.textContent = totalActive > 99 ? '99+' : totalActive;
-    badge.style.display = '';
-  } else {
-    badge.style.display = 'none';
-  }
 
-  const el = $('activeOrdersBanner');
-  if (!list.length) { el.innerHTML = ''; return; }
-
-  const lines = list.slice(0, 3).map(o => {
-    const pos = (o.marka || '') + ' ' + (o.model || '');
-    const st = STATUSES[o.status] || STATUSES.new;
-    return (o.customer || 'без клиента') + ' — ' +
-           (pos.trim() || ('#' + o.record_id)) +
-           ' · ' + (o.qty || 0) + ' шт (' + st.label + ')';
-  }).join(' • ');
+  const sub = lines.join(' • ') +
+    (totalRecords > 3 ? ` • +ещё ${totalRecords - 3}` : '');
 
   el.innerHTML = `
-    <div class="orders-banner" id="bannerClick">
-      <div class="bell">🔔</div>
+    <div class="today-banner" id="todayBannerClick">
+      <div class="scissors">✂️</div>
       <div class="banner-body">
-        <div class="banner-title">Активные заказы: ${totalActive}</div>
-        <div class="banner-sub">${esc(lines)}</div>
+        <div class="banner-title">Сегодня нарезано: ${todayQty} шт</div>
+        <div class="banner-sub">${esc(sub)}</div>
       </div>
-      <div class="banner-badge">${totalActive}</div>
+      <div class="banner-badge">${todayQty}</div>
       <div class="arrow">→</div>
     </div>
   `;
-  $('bannerClick').onclick = () => {
-    document.querySelector('.tab[data-tab="orders"]').click();
+  $('todayBannerClick').onclick = () => {
+    document.querySelector('.tab[data-tab="cuts"]').click();
   };
 }
 
@@ -2662,8 +2539,7 @@ function renderRolls() {
   const usage = {};
   try {
     const stmt = db.prepare(
-      `SELECT tip_plenki, COUNT(*) AS c FROM plenki
-       WHERE deleted_at IS NULL GROUP BY tip_plenki`
+      `SELECT tip_plenki, COUNT(*) AS c FROM plenki GROUP BY tip_plenki`
     );
     while (stmt.step()) {
       const r = stmt.getAsObject();
@@ -2729,38 +2605,24 @@ async function deleteRollType(stockId) {
   stmt.free();
 
   const activeCheck = db.prepare(
-    'SELECT COUNT(*) AS c FROM plenki WHERE tip_plenki = ? AND deleted_at IS NULL'
+    'SELECT COUNT(*) AS c FROM plenki WHERE tip_plenki = ?'
   );
   activeCheck.bind([s.tip_plenki]);
   activeCheck.step();
   const activeCnt = activeCheck.getAsObject().c || 0;
   activeCheck.free();
 
-  const deletedCheck = db.prepare(
-    'SELECT COUNT(*) AS c FROM plenki WHERE tip_plenki = ? AND deleted_at IS NOT NULL'
-  );
-  deletedCheck.bind([s.tip_plenki]);
-  deletedCheck.step();
-  const deletedCnt = deletedCheck.getAsObject().c || 0;
-  deletedCheck.free();
-
   if (activeCnt > 0) {
     toastError(
-      `Тип «${s.tip_plenki}» используется в ${activeCnt} активных позиц. ` +
+      `Тип «${s.tip_plenki}» используется в ${activeCnt} лекалах. ` +
       `Смените им тип плёнки или удалите их.`
     );
     return;
   }
 
-  let msg = `«${s.tip_plenki}» будет удалён.`;
-  if (deletedCnt) {
-    msg += `\n\nВ корзине: ${deletedCnt} позиц. с этим типом. ` +
-           `Если восстановите их — карточка рулона создастся заново.`;
-  }
-
   const yes = await confirmDialog({
     title: 'Удалить тип плёнки?',
-    message: msg,
+    message: `«${s.tip_plenki}» будет удалён.`,
     okText: 'Удалить', danger: true
   });
   if (!yes) return;
@@ -2768,8 +2630,7 @@ async function deleteRollType(stockId) {
   db.run('DELETE FROM film_stock WHERE id = ?', [stockId]);
   logHistory({
     recordId: null, action: 'stock',
-    details: `Удалён тип плёнки «${s.tip_plenki}»` +
-             (deletedCnt ? ` (в корзине: ${deletedCnt})` : '')
+    details: `Удалён тип плёнки «${s.tip_plenki}»`
   });
   await persist();
   renderRolls(); renderStats();
@@ -2779,36 +2640,29 @@ async function deleteRollType(stockId) {
 /* ============ Склад ============ */
 function renderStats() {
   const total = countRows();
-  const deleted = countDeleted();
-  const withFiles = db.exec(
-    'SELECT COUNT(DISTINCT record_id) FROM attachments'
-  )[0]?.values[0][0] || 0;
-  const ordersActive = countActiveOrders();
+  const totalCuts = totalCutQty();
+  const todayCuts = todayCutQty();
   const totalMeters = totalFilmMeters();
 
   $('statsRow').innerHTML = `
     <div class="stat">
-      <div class="stat-label">Всего позиций</div>
+      <div class="stat-label">Лекал в каталоге</div>
       <div class="stat-value">${total || 0}</div>
     </div>
     <div class="stat">
       <div class="stat-label">Остаток плёнки</div>
-      <div class="stat-value">${totalMeters.toFixed(0)} м</div>
+      <div class="stat-value">${totalMeters.toFixed(0)} <small>м</small></div>
     </div>
     <div class="stat">
-      <div class="stat-label">Позиций с лекалами</div>
-      <div class="stat-value">${withFiles}</div>
+      <div class="stat-label">Нарезано сегодня</div>
+      <div class="stat-value">${todayCuts}</div>
     </div>
     <div class="stat">
-      <div class="stat-label">Активных заказов</div>
-      <div class="stat-value">${ordersActive}</div>
+      <div class="stat-label">Нарезано всего</div>
+      <div class="stat-value">${totalCuts}</div>
     </div>
   `;
-  const tb = $('trashTabBadge');
-  if (deleted) { tb.textContent = deleted > 99 ? '99+' : deleted; tb.style.display = ''; }
-  else tb.style.display = 'none';
-
-  renderActiveOrdersBanner();
+  renderTodayCutsBanner();
   renderRolls();
 }
 function updateSortIndicators() {
@@ -2828,8 +2682,7 @@ function renderFilters() {
   const counts = { tip_plenki:{}, marka:{}, model:{}, raspolozhenie:{} };
   try {
     const stmt = db.prepare(
-      `SELECT tip_plenki, marka, model, raspolozhenie
-       FROM plenki WHERE deleted_at IS NULL`
+      `SELECT tip_plenki, marka, model, raspolozhenie FROM plenki`
     );
     while (stmt.step()) {
       const r = stmt.getAsObject();
@@ -2866,8 +2719,7 @@ function renderFilters() {
   const modelCounts = {};
   try {
     let sql = `SELECT model, COUNT(*) AS c FROM plenki
-               WHERE deleted_at IS NULL
-                 AND model IS NOT NULL AND TRIM(model) <> ''`;
+               WHERE model IS NOT NULL AND TRIM(model) <> ''`;
     const params = [];
     if (filterState.marka) {
       sql += ' AND marka = ?';
@@ -2895,47 +2747,102 @@ function renderFilters() {
     badge.style.display = 'none';
   }
 }
+
+/* ============ Строки таблицы и карточки ============ */
+function buildDesktopRow(r, c, cut, defect) {
+  const rash = r.rashod === '' || r.rashod == null ? '—' : r.rashod;
+  const cutCell = cut
+    ? `<span class="cut-count">${cut} шт${
+        defect ? ` <small>(брак ${defect})</small>` : ''
+      }</span>`
+    : `<span class="cut-count zero">—</span>`;
+  return `
+    <tr>
+      <td>${esc(r.pp)}</td>
+      <td>${esc(r.tip_plenki)}</td>
+      <td>${esc(r.raspolozhenie)}</td>
+      <td>${esc(r.marka)}</td>
+      <td>${esc(r.model)}</td>
+      <td style="font-weight:600;color:var(--primary);">${esc(rash)}</td>
+      <td>${esc(r.artikul)}</td>
+      <td>${cutCell}</td>
+      <td class="actions no-print">
+        <button class="icon-btn" data-cut="${r.id}"
+                title="Отметить нарезку">✂️</button>
+        <button class="icon-btn" data-detail="${r.id}" title="Карточка записи">
+          📎${c ? `<span class="badge">${c}</span>` : ''}
+        </button>
+        <button class="icon-btn" data-label="${r.id}" title="Печать этикетки">🏷️</button>
+        <button class="icon-btn" data-edit="${r.id}" title="Редактировать">✏️</button>
+        <button class="icon-btn" data-del="${r.id}" title="Удалить">🗑️</button>
+      </td>
+    </tr>`;
+}
+
+function buildMobileCard(r, c, cut, defect) {
+  const rash = r.rashod === '' || r.rashod == null ? null : r.rashod;
+  const car = [(r.marka||''), (r.model||'')].filter(Boolean).join(' ').trim();
+  const sub = [(r.tip_plenki||''), (r.raspolozhenie||'')]
+    .filter(Boolean).join(' · ');
+  const art = r.artikul || '—';
+
+  return `
+    <div class="mobile-card">
+      <div class="mc-top">
+        <div class="mc-id">
+          <span class="mc-pp">№${esc(r.pp)}</span>
+          <span class="mc-art">${esc(art)}</span>
+        </div>
+        <button class="mc-cut" data-cut="${r.id}">✂️ Нарезать</button>
+      </div>
+      <div class="mc-car">${esc(car || 'Без названия')}</div>
+      ${sub ? `<div class="mc-sub">${esc(sub)}</div>` : '<div class="mc-sub"></div>'}
+      <div class="mc-metrics">
+        <span class="mc-metric">Расход: <b>${rash != null ? esc(rash) : '—'}</b>${rash != null ? ' м' : ''}</span>
+        <span class="mc-metric green">Нарезано: <b>${cut}</b> шт</span>
+        ${defect ? `<span class="mc-metric danger">Брак: <b>${defect}</b></span>` : ''}
+      </div>
+      <div class="mc-actions">
+        <button data-detail="${r.id}" title="Файлы">
+          📎${c ? `<span class="badge">${c}</span>` : ''}
+        </button>
+        <button data-label="${r.id}" title="Этикетка">🏷️</button>
+        <button data-edit="${r.id}" title="Изменить">✏️</button>
+        <button class="danger" data-del="${r.id}" title="Удалить">🗑️</button>
+      </div>
+    </div>`;
+}
+
 function render() {
   const q = $('search').value.trim();
   const rows = allRows(q);
   const counts = attachmentCounts();
+  const cutQty = cutQtyByRecord();
+  const cutDefect = cutDefectByRecord();
   const tbody = $('tbody');
+  const mobileList = $('mobileList');
+
+  const filtered = q || Object.values(filterState).some(Boolean);
+  const emptyHtml = `<div class="empty">
+    <span class="empty-icon">📦</span>
+    ${filtered ? 'Ничего не найдено' : 'Записей пока нет — добавьте первую'}
+  </div>`;
 
   if (!rows.length) {
-    const filtered = q || Object.values(filterState).some(Boolean);
-    tbody.innerHTML =
-      `<tr><td colspan="${COLUMNS.length + 1}" class="empty">
-        <span class="empty-icon">📦</span>
-        ${filtered ? 'Ничего не найдено' : 'Записей пока нет — добавьте первую'}
-      </td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="20">${emptyHtml}</td></tr>`;
+    if (mobileList) mobileList.innerHTML = emptyHtml;
   } else {
-    tbody.innerHTML = rows.map(r => {
-      const c = counts[r.id] || 0;
-      const nal = r.nalichie === '' || r.nalichie == null ? '—' : r.nalichie;
-      const rash = r.rashod === '' || r.rashod == null ? '—' : r.rashod;
-      return `
-        <tr>
-          <td>${esc(r.pp)}</td>
-          <td>${esc(r.tip_plenki)}</td>
-          <td>${esc(r.raspolozhenie)}</td>
-          <td>${esc(r.marka)}</td>
-          <td>${esc(r.model)}</td>
-          <td style="font-weight:600;color:var(--primary);">${esc(rash)}</td>
-          <td style="text-align:right;font-weight:600;">${esc(nal)}</td>
-          <td>${esc(r.cena)}</td>
-          <td>${esc(r.artikul)}</td>
-          <td class="actions no-print">
-            <button class="icon-btn" data-detail="${r.id}" title="Карточка записи">
-              📎${c ? `<span class="badge">${c}</span>` : ''}
-            </button>
-            <button class="icon-btn" data-label="${r.id}" title="Печать этикетки">🏷️</button>
-            <button class="icon-btn" data-dup="${r.id}" title="Дублировать">📋</button>
-            <button class="icon-btn" data-edit="${r.id}" title="Редактировать">✏️</button>
-            <button class="icon-btn" data-del="${r.id}" title="В корзину">🗑️</button>
-          </td>
-        </tr>`;
-    }).join('');
+    tbody.innerHTML = rows.map(r => buildDesktopRow(
+      r, counts[r.id] || 0, cutQty[r.id] || 0, cutDefect[r.id] || 0
+    )).join('');
+
+    if (mobileList) {
+      mobileList.innerHTML = rows.map(r => buildMobileCard(
+        r, counts[r.id] || 0, cutQty[r.id] || 0, cutDefect[r.id] || 0
+      )).join('');
+    }
   }
+
   const total = countRows();
   $('status').textContent =
     'Всего: ' + total + (q ? ' · найдено: ' + rows.length : '');
@@ -2943,95 +2850,71 @@ function render() {
   renderStats();
 }
 
-function renderTrash() {
-  const rows = allRows('', { onlyDeleted: true });
-  const tbody = $('trashBody');
-  if (!rows.length) {
-    tbody.innerHTML = `<tr><td colspan="7" class="empty">
-      <span class="empty-icon">🗑️</span>Корзина пуста</td></tr>`;
-    $('trashStatus').textContent = '';
-    return;
-  }
-  tbody.innerHTML = rows.map(r => `
-    <tr class="deleted">
-      <td>${esc(r.pp)}</td>
-      <td>${esc(r.tip_plenki)}</td>
-      <td>${esc(r.marka)}</td>
-      <td>${esc(r.model)}</td>
-      <td>${esc(r.artikul)}</td>
-      <td>${esc(fmtDate(r.deleted_at))}</td>
-      <td class="actions no-print">
-        <button class="btn ghost small" data-restore="${r.id}">↩️ Восстановить</button>
-        <button class="btn danger small" data-purge="${r.id}">✖ Удалить</button>
-      </td>
-    </tr>
-  `).join('');
-  $('trashStatus').textContent = 'Удалено: ' + rows.length;
-}
-
-function renderOrders() {
-  const filter = $('ordersStatusFilter').value;
-  const markaFilter = $('ordersMarkaFilter').value;
+function renderCuts() {
+  const markaFilter = $('cutsMarkaFilter').value;
 
   const markas = new Set();
   try {
     const stmt = db.prepare(
-      `SELECT DISTINCT p.marka AS v FROM orders o
-       LEFT JOIN plenki p ON p.id = o.record_id
+      `SELECT DISTINCT p.marka AS v FROM orders c
+       LEFT JOIN plenki p ON p.id = c.record_id
        WHERE p.marka IS NOT NULL AND TRIM(p.marka) <> ''
        ORDER BY p.marka`
     );
     while (stmt.step()) markas.add(stmt.getAsObject().v);
     stmt.free();
   } catch(e) {}
-  const sel = $('ordersMarkaFilter');
+  const sel = $('cutsMarkaFilter');
   sel.innerHTML = '<option value="">Все марки авто</option>' +
     Array.from(markas).sort((a,b) => a.localeCompare(b, 'ru')).map(m =>
       `<option value="${esc(m)}" ${m === markaFilter ? 'selected' : ''}>${esc(m)}</option>`
     ).join('');
 
-  const list = ordersList(filter, markaFilter);
-  const el = $('ordersList');
+  const list = cutsList(markaFilter);
+  const el = $('cutsList');
 
   if (!list.length) {
-    el.innerHTML = '<div class="empty"><span class="empty-icon">📋</span>' +
-      'Заказов пока нет</div>';
-    $('ordersStatus').textContent = '';
+    el.innerHTML = '<div class="empty"><span class="empty-icon">✂️</span>' +
+      'Пока ничего не нарезано. Нажмите «Отметить нарезку», чтобы записать.</div>';
+    $('cutsStatus').textContent = '';
     return;
   }
 
-  el.innerHTML = list.map(o => {
-    const st = STATUSES[o.status] || STATUSES.new;
-    const rec = (o.marka || '') + ' ' + (o.model || '');
-    const meters = parseNum(o.rashod) * (o.qty || 0);
+  const totalQty = list.reduce((s, c) => s + (c.qty || 0), 0);
+  const totalDefect = list.reduce((s, c) => s + (c.defect_qty || 0), 0);
+  const totalMeters = list.reduce((s, c) => s + (c.meters_consumed || 0), 0);
+
+  el.innerHTML = list.map(c => {
+    const rec = ((c.marka || '') + ' ' + (c.model || '')).trim();
+    const meters = c.meters_consumed || 0;
+    const defect = c.defect_qty || 0;
+    const dateStr = c.cut_date ? fmtDateOnly(c.cut_date) : fmtDate(c.created_at);
     return `
-      <div class="order-row flat">
-        <div class="order-main">
-          <div class="order-title">${esc(rec || ('Позиция #' + o.record_id))}
+      <div class="cut-row">
+        <div class="cut-main">
+          <div class="cut-title">${esc(rec || ('Позиция #' + c.record_id))}
             <span style="color:var(--text-3);font-weight:400;">
-              · ${esc(o.artikul || '')}
+              · ${esc(c.artikul || '')}
             </span>
           </div>
-          <div class="order-sub">
-            ${o.customer ? esc(o.customer) + ' · ' : ''}
-            ${o.notes ? esc(o.notes) + ' · ' : ''}
-            создан ${esc(fmtDate(o.created_at))}
-            ${meters ? ' · расход ' + meters.toFixed(1) + ' м' : ''}
+          <div class="cut-sub">
+            ${esc(dateStr)}
+            ${c.notes ? ' · ' + esc(c.notes) : ''}
           </div>
         </div>
-        <div class="order-qty">${o.qty || 0} шт</div>
-        <span class="pill ${st.cls}">${st.label}</span>
-        <select data-order-status="${o.id}">
-          ${Object.entries(STATUSES).map(([k,v]) =>
-            `<option value="${k}" ${k===o.status?'selected':''}>${v.label}</option>`
-          ).join('')}
-        </select>
-        <button class="btn ghost small" data-order-edit="${o.id}">✏️</button>
-        <button class="btn danger small" data-order-del="${o.id}">🗑️</button>
+        <div class="cut-qty">${c.qty || 0} шт</div>
+        ${defect ? `<div class="cut-defect">брак ${defect}</div>` : ''}
+        <div class="cut-meters">${meters.toFixed(1)} м</div>
+        <button class="btn ghost small" data-cut-edit="${c.id}">✏️</button>
+        <button class="btn danger small" data-cut-del="${c.id}">🗑️</button>
       </div>
     `;
   }).join('');
-  $('ordersStatus').textContent = 'Всего: ' + list.length;
+
+  $('cutsStatus').textContent =
+    `Записей: ${list.length} · нарезано ${totalQty} шт` +
+    (totalDefect ? ` (брак ${totalDefect})` : '') +
+    ` · плёнки ${totalMeters.toFixed(1)} м`;
 }
 
 function renderHistory() {
@@ -3070,20 +2953,19 @@ function actionMeta(a) {
     create: { icon:'＋', cls:'create', label:'Создание записи' },
     update: { icon:'✎', cls:'update', label:'Изменение' },
     delete: { icon:'🗑', cls:'delete', label:'Удаление' },
-    restore:{ icon:'↩️', cls:'create', label:'Восстановление' },
-    purge:  { icon:'✖', cls:'delete', label:'Окончательное удаление' },
     attach: { icon:'📎', cls:'attach', label:'Файл прикреплён' },
     detach: { icon:'✂', cls:'detach', label:'Файл удалён' },
-    order:  { icon:'📋', cls:'order',  label:'Заказ' },
-    stock:  { icon:'🎞️', cls:'attach', label:'Движение плёнки' }
+    cut:    { icon:'✂️', cls:'order',  label:'Нарезка' },
+    stock:  { icon:'🎞️', cls:'stock', label:'Движение плёнки' },
+    order:  { icon:'✂️', cls:'order',  label:'Нарезка' }
   })[a] || { icon:'•', cls:'update', label:a };
 }
 
-/* ============ Форма записи ============ */
+/* ============ Форма лекала ============ */
 function openForm(id = null) {
   editingId = id;
   const data = id ? getRecord(id) : {};
-  $('modalTitle').textContent = id ? 'Редактирование записи' : 'Новая запись';
+  $('modalTitle').textContent = id ? 'Редактирование лекала' : 'Новое лекало';
 
   $('modalFields').innerHTML = EDITABLE.map(col => {
     const list = DATALISTS[col];
@@ -3136,7 +3018,7 @@ function saveForm() {
     const newId = res[0]?.values[0][0];
     logHistory({
       recordId: newId, action: 'create',
-      details: 'Создана запись: ' + data.marka + ' ' + data.model
+      details: 'Создано лекало: ' + data.marka + ' ' + data.model
     });
   } else {
     const old = getRecord(editingId);
@@ -3166,76 +3048,19 @@ function saveForm() {
   closeForm();
   toast('Сохранено');
 }
-function duplicateRow(id) {
-  const r = getRecord(id);
-  if (!r) return;
-  const fields = COLUMNS.filter(c => c !== 'pp');
-  db.run(
-    `INSERT INTO plenki (pp, ${fields.join(',')})
-     VALUES (?, ${fields.map(() => '?').join(',')})`,
-    [nextPp(), ...fields.map(f => r[f] ?? '')]
-  );
-  const res = db.exec('SELECT last_insert_rowid() AS id');
-  const newId = res[0]?.values[0][0];
-  ensureStock(r.tip_plenki);
-  logHistory({
-    recordId: newId, action: 'create',
-    details: 'Дублирована запись: ' + (r.marka || '') + ' ' + (r.model || '')
-  });
-  persist().then(() => { refreshDatalists(); render(); renderFilters(); });
-  toast('Запись дублирована');
-}
 async function deleteRow(id) {
   const r = getRecord(id);
   if (!r) return;
-  const files = attachmentsFor(id).length;
-  const orders = ordersFor(id).length;
-  let extra = '';
-  if (files) extra += '\nФайлов: ' + files;
-  if (orders) extra += '\nЗаказов: ' + orders;
-  const yes = await confirmDialog({
-    title: 'Переместить в корзину?',
-    message: '«' + r.marka + ' ' + r.model + '» будет перемещена в корзину.' +
-             extra + '\n\nВосстановить можно на вкладке «Корзина».',
-    okText: 'В корзину', danger: true
-  });
-  if (!yes) return;
-  db.run('UPDATE plenki SET deleted_at=? WHERE id=?',
-         [new Date().toISOString(), id]);
-  logHistory({
-    recordId: id, action: 'delete',
-    details: 'Перемещена в корзину: ' + r.marka + ' ' + r.model
-  });
-  await persist();
-  refreshDatalists(); render(); renderFilters(); renderTrash();
-  toast('Запись в корзине');
-}
-async function restoreRow(id) {
-  const r = getRecord(id);
-  if (!r) return;
-  db.run('UPDATE plenki SET deleted_at=NULL WHERE id=?', [id]);
-  ensureStock(r.tip_plenki);
-  logHistory({
-    recordId: id, action: 'restore',
-    details: 'Восстановлена запись: ' + (r.marka || '') + ' ' + (r.model || '')
-  });
-  await persist();
-  refreshDatalists(); render(); renderFilters(); renderTrash();
-  toast('Запись восстановлена');
-}
-async function purgeRow(id) {
-  const r = getRecord(id);
-  if (!r) return;
   const files = attachmentsFor(id);
-  const orders = ordersFor(id).length;
+  const cuts = cutsFor(id);
   let extra = '';
   if (files.length) extra += '\nФайлов: ' + files.length;
-  if (orders) extra += '\nЗаказов: ' + orders;
+  if (cuts.length) extra += '\nЗаписей нарезки: ' + cuts.length;
   const yes = await confirmDialog({
-    title: 'Удалить безвозвратно?',
-    message: '«' + r.marka + ' ' + r.model + '» будет удалена навсегда.' +
+    title: 'Удалить лекало?',
+    message: '«' + r.marka + ' ' + r.model + '» будет удалено навсегда.' +
              extra + '\n\nЭто действие необратимо.',
-    okText: 'Удалить навсегда', danger: true
+    okText: 'Удалить', danger: true
   });
   if (!yes) return;
 
@@ -3247,43 +3072,13 @@ async function purgeRow(id) {
   db.run('DELETE FROM attachments WHERE record_id=?', [id]);
   db.run('DELETE FROM orders WHERE record_id=?', [id]);
   logHistory({
-    recordId: null, action: 'purge',
-    details: 'Удалена навсегда: ' + (r.marka || '') + ' ' + (r.model || '')
+    recordId: null, action: 'delete',
+    details: 'Удалено лекало: ' + (r.marka || '') + ' ' + (r.model || '')
   });
   db.run('DELETE FROM plenki WHERE id=?', [id]);
   await persist();
-  refreshDatalists(); render(); renderFilters(); renderTrash(); renderStats();
-  toast('Запись удалена');
-}
-async function emptyTrash() {
-  const rows = allRows('', { onlyDeleted: true });
-  if (!rows.length) { toastError('Корзина пуста'); return; }
-  const yes = await confirmDialog({
-    title: 'Очистить корзину?',
-    message: `Будет удалено записей: ${rows.length}.\nВсе связанные файлы и заказы тоже будут удалены.\nЭто действие необратимо.`,
-    okText: 'Очистить', danger: true
-  });
-  if (!yes) return;
-  showOverlay('Очищаю корзину…');
-  for (const r of rows) {
-    const files = attachmentsFor(r.id);
-    for (const f of files) {
-      if (f.storage_key != null) {
-        try { await idbDelFile(f.storage_key); } catch(e) {}
-      }
-    }
-    db.run('DELETE FROM attachments WHERE record_id=?', [r.id]);
-    db.run('DELETE FROM orders WHERE record_id=?', [r.id]);
-    db.run('DELETE FROM plenki WHERE id=?', [r.id]);
-  }
-  logHistory({
-    recordId: null, action: 'purge',
-    details: `Корзина очищена (${rows.length} записей)`
-  });
-  await persist();
-  hideOverlay();
-  refreshDatalists(); render(); renderFilters(); renderTrash(); renderStats();
-  toast('Корзина очищена');
+  refreshDatalists(); render(); renderFilters(); renderStats(); renderCuts();
+  toast('Лекало удалено');
 }
 
 /* ============ Рулоны: модальное окно ============ */
@@ -3361,7 +3156,7 @@ function saveRollForm() {
   toast('Сохранено');
 }
 
-/* ============ Карточка ============ */
+/* ============ Карточка лекала ============ */
 function openDetail(recordId, subtab) {
   detailRecordId = recordId;
   const r = getRecord(recordId);
@@ -3373,7 +3168,7 @@ function openDetail(recordId, subtab) {
   switchDetailSubtab(subtab || 'files');
   renderFilesList();
   renderDetailHistory();
-  renderDetailOrders();
+  renderDetailCuts();
   $('detailModal').classList.remove('hidden');
 }
 function closeDetail() {
@@ -3407,30 +3202,50 @@ function renderDetailHistory() {
       </div>`;
   }).join('');
 }
-function renderDetailOrders() {
+function renderDetailCuts() {
   if (detailRecordId === null) return;
-  const list = ordersFor(detailRecordId);
-  const el = $('detailOrders');
+  const list = cutsFor(detailRecordId);
+  const el = $('detailCuts');
   if (!list.length) {
-    el.innerHTML = '<div class="empty" style="padding:20px;">Заказов по этой позиции нет</div>';
+    el.innerHTML = '<div class="empty" style="padding:20px;">Пока не нарезалось</div>';
     return;
   }
-  el.innerHTML = list.map(o => {
-    const st = STATUSES[o.status] || STATUSES.new;
-    return `
-      <div class="order-row">
-        <div class="order-main">
-          <div class="order-title">${esc(o.customer || 'без клиента')}</div>
-          <div class="order-sub">
-            ${o.notes ? esc(o.notes) + ' · ' : ''}
-            создан ${esc(fmtDate(o.created_at))}
+  const totalQty = list.reduce((s, c) => s + (c.qty || 0), 0);
+  const totalDefect = list.reduce((s, c) => s + (c.defect_qty || 0), 0);
+  const totalMeters = list.reduce((s, c) => s + (c.meters_consumed || 0), 0);
+  el.innerHTML = `
+    <div class="cut-preview" style="margin-bottom:12px;">
+      <div class="row">
+        <span>Всего нарезано:</span>
+        <b class="accent">${totalQty} шт</b>
+      </div>
+      ${totalDefect ? `<div class="row">
+        <span>Брак:</span>
+        <b class="danger">${totalDefect} шт</b>
+      </div>` : ''}
+      <div class="row">
+        <span>Израсходовано плёнки:</span>
+        <b>${totalMeters.toFixed(1)} м</b>
+      </div>
+    </div>
+    ${list.map(c => {
+      const defect = c.defect_qty || 0;
+      const meters = c.meters_consumed || 0;
+      const dateStr = c.cut_date ? fmtDateOnly(c.cut_date) : fmtDate(c.created_at);
+      return `
+        <div class="cut-row" style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);margin-bottom:6px;">
+          <div class="cut-main">
+            <div class="cut-title">${esc(dateStr)}</div>
+            <div class="cut-sub">${esc(c.notes || '')}</div>
           </div>
+          <div class="cut-qty">${c.qty || 0} шт</div>
+          ${defect ? `<div class="cut-defect">брак ${defect}</div>` : ''}
+          <div class="cut-meters">${meters.toFixed(1)} м</div>
+          <button class="btn ghost small" data-cut-edit="${c.id}">✏️</button>
         </div>
-        <div class="order-qty">${o.qty || 0} шт</div>
-        <span class="pill ${st.cls}">${st.label}</span>
-        <button class="btn ghost small" data-order-edit="${o.id}">✏️</button>
-      </div>`;
-  }).join('');
+      `;
+    }).join('')}
+  `;
 }
 
 /* ============ Файлы ============ */
@@ -3473,7 +3288,7 @@ async function renderFilesList() {
         </div>
         <button class="btn ghost small" data-open="${f.id}">Открыть</button>
         <button class="btn primary small" data-print="${f.id}"
-                title="${printable ? 'Печать лекала' : 'Браузер не печатает .cdr — предложит скачать'}">
+                title="${printable ? 'Печать' : 'Браузер не печатает .cdr — предложит скачать'}">
           🖨️ Печать
         </button>
         <button class="btn ghost small" data-dl="${f.id}">Скачать</button>
@@ -3500,18 +3315,20 @@ function setAllChecked(val) {
   updateSelectionState();
 }
 
-/* ============ Заказ: модальное окно ============ */
-function openOrderForm(orderId, presetRecordId) {
-  editingOrderId = orderId || null;
-  const o = orderId ? getOrder(orderId) : null;
-  $('orderModalTitle').textContent = orderId ? 'Заказ #' + orderId : 'Новый заказ';
+/* ============ Модалка нарезки ============ */
+function openCutForm(cutId, presetRecordId) {
+  editingCutId = cutId || null;
+  const c = cutId ? getCut(cutId) : null;
+  $('cutModalTitle').textContent = cutId
+    ? 'Изменить запись нарезки'
+    : 'Отметить нарезку';
 
   const records = allRows('');
-  if (!records.length && !orderId) {
-    toastError('Сначала добавьте хотя бы одну позицию на склад');
+  if (!records.length && !cutId) {
+    toastError('Сначала добавьте хотя бы одно лекало в каталог');
     return;
   }
-  const selectedRecord = o ? o.record_id
+  const selectedRecord = c ? c.record_id
     : (presetRecordId ?? records[0]?.id ?? '');
 
   const recordOptions = records.map(r =>
@@ -3520,86 +3337,178 @@ function openOrderForm(orderId, presetRecordId) {
     </option>`
   ).join('');
 
-  const statusOptions = Object.entries(STATUSES).map(([k,v]) =>
-    `<option value="${k}" ${o && o.status===k ? 'selected' : ''}>${v.label}</option>`
-  ).join('');
-
-  const rec = selectedRecord ? getRecord(selectedRecord) : null;
-  const rashod = rec ? parseNum(rec.rashod) : 0;
-  const stock = rec ? getStock(rec.tip_plenki) : null;
-
-  $('orderFields').innerHTML = `
+  $('cutFields').innerHTML = `
     <div class="field">
-      <label>Позиция склада</label>
-      <select data-order-col="record_id" id="orderRecordSelect">
+      <label>Какое лекало резали</label>
+      <select data-cut-col="record_id" id="cutRecordSelect">
         ${recordOptions}
       </select>
     </div>
-    <div class="field">
-      <label>Клиент</label>
-      <input data-order-col="customer" value="${esc(o?.customer || '')}"
-             placeholder="Имя клиента">
+    <div class="field-row">
+      <div class="field">
+        <label>Нарезано, шт</label>
+        <input type="number" min="0" step="1" inputmode="numeric"
+               data-cut-col="qty" id="cutQty"
+               value="${esc(c?.qty ?? '')}" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Из них брак, шт</label>
+        <input type="number" min="0" step="1" inputmode="numeric"
+               data-cut-col="defect_qty" id="cutDefect"
+               value="${esc(c?.defect_qty ?? '')}" placeholder="0">
+      </div>
     </div>
     <div class="field">
-      <label>Количество, шт</label>
-      <input type="number" min="0" step="1" inputmode="numeric"
-             data-order-col="qty" id="orderQty" value="${esc(o?.qty ?? '')}">
+      <label>Дата нарезки</label>
+      <input type="date" data-cut-col="cut_date" id="cutDate"
+             value="${esc(c?.cut_date || todayIso())}">
     </div>
     <div class="field">
-      <label>Статус</label>
-      <select data-order-col="status">${statusOptions}</select>
+      <label>Заметка</label>
+      <input data-cut-col="notes" id="cutNotes"
+             value="${esc(c?.notes || '')}"
+             placeholder="Например: для маркетплейса">
     </div>
-    <div class="field">
-      <label>Примечания</label>
-      <textarea data-order-col="notes"
-                placeholder="Комментарий, детали заказа…">${esc(o?.notes || '')}</textarea>
-    </div>
-    <div class="file-hint" id="orderHint">
-      ${rec ? `Расход: <b>${rashod} м</b> на шт. · ` +
-        `Остаток «${esc(rec.tip_plenki)}»: <b>${(stock?.rolls || 0).toFixed(2)} рул.</b> ` +
-        `(${(stock ? stock.rolls * 10 : 0).toFixed(1)} м)` : ''}
-    </div>
+    <div class="cut-preview" id="cutPreview"></div>
   `;
-  $('orderModal').classList.remove('hidden');
+  $('cutModal').classList.remove('hidden');
 
-  const sel = $('orderRecordSelect');
-  if (sel) {
-    sel.onchange = () => {
-      const nr = getRecord(Number(sel.value));
-      const nrStock = nr ? getStock(nr.tip_plenki) : null;
-      $('orderHint').innerHTML = nr
-        ? `Расход: <b>${parseNum(nr.rashod)} м</b> на шт. · ` +
-          `Остаток «${esc(nr.tip_plenki)}»: ` +
-          `<b>${(nrStock?.rolls || 0).toFixed(2)} рул.</b> ` +
-          `(${(nrStock ? nrStock.rolls * 10 : 0).toFixed(1)} м)`
-        : '';
-    };
+  function previewEl() { return $('cutPreview'); }
+  function updatePreview() {
+    const sel = $('cutRecordSelect');
+    const qtyEl = $('cutQty');
+    const defEl = $('cutDefect');
+    if (!sel || !qtyEl || !previewEl()) return;
+    const rec = getRecord(Number(sel.value));
+    const qty = parseInt(qtyEl.value, 10) || 0;
+    const defect = parseInt(defEl.value, 10) || 0;
+    const rashod = rec ? parseNum(rec.rashod) : 0;
+    const tip = rec ? (rec.tip_plenki || '—') : '—';
+    const stock = rec ? getStock(rec.tip_plenki) : null;
+    const rollsBefore = stock ? (stock.rolls || 0) : 0;
+    const meters = rashod * qty;
+    const rollsAfter = Math.max(0, rollsBefore - meters / 10);
+    const good = Math.max(0, qty - defect);
+
+    let html = '';
+    if (!rec) {
+      html = '<div class="row" style="color:var(--text-3);">Выберите лекало</div>';
+    } else if (!rashod) {
+      html = `<div class="row">
+        <span>Расход плёнки:</span>
+        <b class="warn">не задан</b>
+      </div>
+      <div class="row" style="color:var(--text-3);font-size:12px;margin-top:6px;">
+        У этого лекала не указан расход на 1 шт. Откройте его в каталоге и заполните поле «Расход, м», чтобы плёнка списывалась автоматически.
+      </div>`;
+    } else if (!qty) {
+      html = `<div class="row">
+        <span>Расход на 1 шт:</span>
+        <b>${rashod} м</b>
+      </div>
+      <div class="row">
+        <span>Остаток «${esc(tip)}»:</span>
+        <b>${rollsBefore.toFixed(2)} рул. (${(rollsBefore*10).toFixed(1)} м)</b>
+      </div>
+      <div class="row" style="color:var(--text-3);font-size:12px;margin-top:6px;">
+        Укажите количество — покажу, сколько плёнки уйдёт.
+      </div>`;
+    } else {
+      const willBeLow = rollsAfter < (stock ? stock.min_rolls : 0);
+      html = `
+        <div class="row"><span>Расход на 1 шт:</span><b>${rashod} м</b></div>
+        <div class="row"><span>Годных получится:</span><b class="ok">${good} шт</b>${defect ? ` <span style="color:var(--text-3);">(брак ${defect})</span>` : ''}</div>
+        <div class="row"><span>Спишется плёнки:</span><b class="accent">${meters.toFixed(1)} м (${(meters/10).toFixed(2)} рул.)</b></div>
+        <div class="row"><span>Остаток «${esc(tip)}»:</span>
+          <b>${rollsBefore.toFixed(2)} → <span class="${willBeLow ? 'danger' : 'ok'}">${rollsAfter.toFixed(2)} рул.</span></b>
+        </div>
+        ${willBeLow ? `<div class="row" style="color:var(--danger);font-size:12px;margin-top:6px;">⚠ Остаток станет ниже минимума</div>` : ''}
+      `;
+    }
+    previewEl().innerHTML = html;
   }
-}
-function closeOrderForm() {
-  $('orderModal').classList.add('hidden');
-  editingOrderId = null;
-}
-function saveOrderForm() {
-  const data = {};
-  $('orderFields').querySelectorAll('[data-order-col]').forEach(el => {
-    data[el.dataset.orderCol] = el.value.trim();
+
+  ['change','input'].forEach(ev => {
+    const sel = $('cutRecordSelect'); if (sel) sel.addEventListener(ev, updatePreview);
+    const q = $('cutQty'); if (q) q.addEventListener(ev, updatePreview);
+    const d = $('cutDefect'); if (d) d.addEventListener(ev, updatePreview);
   });
-  if (!data.record_id) { toastError('Выберите позицию'); return; }
-  if (data.qty === '' || isNaN(data.qty) || Number(data.qty) < 0) {
-    toastError('Укажите корректное количество');
+  updatePreview();
+
+  setTimeout(() => {
+    const q = $('cutQty'); if (q) q.focus();
+  }, 50);
+}
+function closeCutForm() {
+  $('cutModal').classList.add('hidden');
+  editingCutId = null;
+}
+function saveCutForm() {
+  const data = {};
+  $('cutFields').querySelectorAll('[data-cut-col]').forEach(el => {
+    data[el.dataset.cutCol] = el.value.trim();
+  });
+  if (!data.record_id) { toastError('Выберите лекало'); return; }
+  const qty = parseInt(data.qty, 10);
+  if (!qty || qty < 1) {
+    toastError('Укажите количество нарезанных штук');
     return;
   }
-  data.qty = parseInt(data.qty, 10);
+  const defect = parseInt(data.defect_qty, 10) || 0;
+  if (defect > qty) {
+    toastError('Брак не может быть больше нарезанного');
+    return;
+  }
   data.record_id = parseInt(data.record_id, 10);
-  if (!data.status) data.status = 'new';
 
-  saveOrder(data, editingOrderId);
-  closeOrderForm();
-  renderOrders();
-  renderDetailOrders();
+  const rec = getRecord(data.record_id);
+  const rashodPerUnit = rec ? parseNum(rec.rashod) : 0;
+  const meters = rashodPerUnit * qty;
+  const wasEditing = editingCutId;
+
+  const result = saveCut(data, editingCutId);
+  closeCutForm();
+
+  if (rec && meters > 0 && result.consumeInfo) {
+    const tip = rec.tip_plenki || '—';
+    const ci = result.consumeInfo;
+    const isLow = (() => {
+      const s = getStock(tip);
+      return s && (s.rolls || 0) < (s.min_rolls || 0);
+    })();
+    toastBig(`
+      <span class="check">✓</span>
+      <div>
+        <div style="font-weight:700;margin-bottom:4px;">
+          ${wasEditing ? 'Запись обновлена' : 'Нарезка записана'}: ${qty} шт${defect ? ` (брак ${defect})` : ''}
+        </div>
+        <div style="font-size:13px;opacity:.9;">
+          Списано <b>${meters.toFixed(1)} м</b> «${esc(tip)}».
+          Остаток: ${ci.before.toFixed(2)} → <b>${ci.after.toFixed(2)} рул.</b>
+          ${isLow ? ' ⚠ ниже минимума' : ''}
+        </div>
+      </div>
+    `);
+  } else if (rec && !rashodPerUnit) {
+    toastBig(`
+      <span class="check">✓</span>
+      <div>
+        <div style="font-weight:700;margin-bottom:4px;">
+          Нарезка записана: ${qty} шт
+        </div>
+        <div style="font-size:13px;opacity:.9;">
+          Но у лекала <b>не задан расход</b> — плёнка не списана.
+          Откройте лекало и укажите расход в метрах, чтобы плёнка списывалась автоматически.
+        </div>
+      </div>
+    `);
+  } else {
+    toast('Нарезка записана');
+  }
+
+  renderCuts();
+  renderDetailCuts();
   renderStats();
-  toast('Заказ сохранён');
 }
 
 /* ============ Экспорт / импорт ============ */
@@ -3611,15 +3520,15 @@ function exportDb() {
 }
 function exportCsv() {
   const rows = allRows('');
-  const head = [...COLUMNS.map(c => HEADERS[c]), 'Файлов', 'Заказов'].join(';');
+  const cutQty = cutQtyByRecord();
+  const cutDef = cutDefectByRecord();
+  const head = [...COLUMNS.map(c => HEADERS[c]), 'Нарезано, шт', 'Брак, шт'].join(';');
   const body = rows.map(r => {
-    const files = attachmentsFor(r.id).length;
-    const ords = ordersFor(r.id).length;
     const vals = COLUMNS.map(c => {
       const v = String(r[c] ?? '').replace(/"/g, '""');
       return /[;"\n]/.test(v) ? '"' + v + '"' : v;
     });
-    vals.push(files, ords);
+    vals.push(cutQty[r.id] || 0, cutDef[r.id] || 0);
     return vals.join(';');
   });
   const csv = '\uFEFF' + [head, ...body].join('\r\n');
@@ -3669,7 +3578,7 @@ async function importCsv(file) {
     if (!dataRows.length) { toastError('Нет данных для импорта'); return; }
 
     const yes = await confirmDialog({
-      title: 'Импортировать позиции?',
+      title: 'Импортировать лекала?',
       message: `Будет добавлено ${dataRows.length} строк(и) из CSV.\n\n` +
                `Существующие записи не изменятся — импорт добавляет новые.`,
       okText: 'Импортировать'
@@ -3730,9 +3639,8 @@ async function importDb(file) {
     refreshDatalists();
     render();
     renderFilters();
-    renderOrders();
+    renderCuts();
     renderHistory();
-    renderTrash();
     hideOverlay();
     toast('База загружена');
   } catch (e) {
@@ -3796,7 +3704,7 @@ async function restoreBackup(key) {
     await migrateAttachmentsToIdb();
     syncStockFromRecords();
     refreshDatalists();
-    render(); renderFilters(); renderOrders(); renderHistory(); renderTrash();
+    render(); renderFilters(); renderCuts(); renderHistory();
     hideOverlay();
     toast('База восстановлена');
     renderBackups();
@@ -3854,8 +3762,7 @@ function setupPwa() {
       name: 'Пленка для всех',
       short_name: 'Плёнка',
       description: 'Учёт лекал на стёкла фар',
-      start_url: '.',
-      scope: '.',
+      start_url: '.', scope: '.',
       display: 'standalone',
       background_color: '#f6f5ff',
       theme_color: '#6366f1',
@@ -3876,7 +3783,7 @@ function setupPwa() {
   if ('serviceWorker' in navigator) {
     try {
       const swCode = `
-        const CACHE = 'plenka-v1';
+        const CACHE = 'plenka-v4';
         const CDN = [
           'https://unpkg.com/sql.js@1.10.3/dist/sql-wasm.js',
           'https://unpkg.com/sql.js@1.10.3/dist/sql-wasm.wasm',
@@ -3938,7 +3845,9 @@ function setupPwa() {
   try { u8 = await idbGet(IDB_KEY); } catch (e) {}
   if (!u8) {
     try {
-      u8 = await idbGet('sqlite_v5');
+      u8 = await idbGet('sqlite_v7');
+      if (!u8) u8 = await idbGet('sqlite_v6');
+      if (!u8) u8 = await idbGet('sqlite_v5');
       if (!u8) u8 = await idbGet('sqlite_v4');
     } catch(e) {}
   }
@@ -3963,9 +3872,8 @@ function setupPwa() {
   refreshDatalists();
   renderFilters();
   render();
-  renderOrders();
+  renderCuts();
   renderHistory();
-  renderTrash();
   hideOverlay();
 
   setTimeout(() => gcFiles(), 3000);
@@ -3980,9 +3888,8 @@ function setupPwa() {
         x.classList.toggle('active', x === t));
       document.querySelectorAll('.tab-panel').forEach(p =>
         p.classList.toggle('active', p.id === 'panel-' + currentTab));
-      if (currentTab === 'orders') renderOrders();
+      if (currentTab === 'cuts') renderCuts();
       if (currentTab === 'history') renderHistory();
-      if (currentTab === 'trash') renderTrash();
     };
   });
 
@@ -4071,10 +3978,8 @@ function setupPwa() {
   $('btnExportCsv').onclick = exportCsv;
   $('btnAddRollType').onclick = () => openRollForm(null);
 
-  $('btnNewOrder').onclick = () => openOrderForm(null);
-  $('ordersStatusFilter').onchange = renderOrders;
-  $('ordersMarkaFilter').onchange = renderOrders;
-  $('btnOrdersPdf').onclick = exportOrdersPdf;
+  $('btnNewCut').onclick = () => openCutForm(null);
+  $('cutsMarkaFilter').onchange = renderCuts;
 
   $('historyActionFilter').onchange = renderHistory;
   $('btnClearHistory').onclick = async () => {
@@ -4090,8 +3995,6 @@ function setupPwa() {
     toast('История очищена');
   };
 
-  $('btnEmptyTrash').onclick = emptyTrash;
-
   $('btnSave').onclick = saveForm;
   $('btnCancel').onclick = closeForm;
   $('modal').onclick = e => { if (e.target.id === 'modal') closeForm(); };
@@ -4106,14 +4009,14 @@ function setupPwa() {
   $('btnCheckAll').onclick = () => setAllChecked(true);
   $('btnUncheckAll').onclick = () => setAllChecked(false);
   $('btnPrintSelected').onclick = printSelectedFiles;
-  $('btnNewOrderForRecord').onclick = () => {
-    if (detailRecordId !== null) openOrderForm(null, detailRecordId);
+  $('btnNewCutForRecord').onclick = () => {
+    if (detailRecordId !== null) openCutForm(null, detailRecordId);
   };
 
-  $('btnOrderSave').onclick = saveOrderForm;
-  $('btnOrderCancel').onclick = closeOrderForm;
-  $('orderModal').onclick = e => {
-    if (e.target.id === 'orderModal') closeOrderForm();
+  $('btnCutSave').onclick = saveCutForm;
+  $('btnCutCancel').onclick = closeCutForm;
+  $('cutModal').onclick = e => {
+    if (e.target.id === 'cutModal') closeCutForm();
   };
 
   $('btnRollSave').onclick = saveRollForm;
@@ -4131,7 +4034,7 @@ function setupPwa() {
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       if (!$('confirmModal').classList.contains('hidden')) { closeConfirm(false); return; }
-      closeForm(); closeDetail(); closeOrderForm(); closeRollForm();
+      closeForm(); closeDetail(); closeCutForm(); closeRollForm();
       $('settingsModal').classList.add('hidden');
       $('aboutModal').classList.add('hidden');
     }
@@ -4153,27 +4056,27 @@ function setupPwa() {
         e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') {
       saveForm();
     }
+    if (e.key === 'Enter' && !$('cutModal').classList.contains('hidden') &&
+        e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') {
+      saveCutForm();
+    }
   });
 
-  $('tbody').onclick = e => {
+  /* Общий обработчик кликов по каталогу (и для таблицы, и для карточек) */
+  function handleCatalogClick(e) {
+    const cut = e.target.closest('[data-cut]');
     const det = e.target.closest('[data-detail]');
     const lab = e.target.closest('[data-label]');
-    const dup = e.target.closest('[data-dup]');
     const ed  = e.target.closest('[data-edit]');
     const del = e.target.closest('[data-del]');
+    if (cut) openCutForm(null, Number(cut.dataset.cut));
     if (det) openDetail(Number(det.dataset.detail));
     if (lab) printLabel(Number(lab.dataset.label));
-    if (dup) duplicateRow(Number(dup.dataset.dup));
     if (ed)  openForm(Number(ed.dataset.edit));
     if (del) deleteRow(Number(del.dataset.del));
-  };
-
-  $('trashBody').onclick = e => {
-    const r = e.target.closest('[data-restore]');
-    const p = e.target.closest('[data-purge]');
-    if (r) restoreRow(Number(r.dataset.restore));
-    if (p) purgeRow(Number(p.dataset.purge));
-  };
+  }
+  $('tbody').onclick = handleCatalogClick;
+  $('mobileList').onclick = handleCatalogClick;
 
   $('filesList').onclick = e => {
     const op = e.target.closest('[data-open]');
@@ -4189,30 +4092,20 @@ function setupPwa() {
     if (e.target.matches('input[data-check]')) updateSelectionState();
   };
 
-  $('ordersList').onclick = e => {
-    const ed = e.target.closest('[data-order-edit]');
-    const del = e.target.closest('[data-order-del]');
-    if (ed) openOrderForm(Number(ed.dataset.orderEdit));
+  $('cutsList').onclick = e => {
+    const ed = e.target.closest('[data-cut-edit]');
+    const del = e.target.closest('[data-cut-del]');
+    if (ed) openCutForm(Number(ed.dataset.cutEdit));
     if (del) {
-      deleteOrder(Number(del.dataset.orderDel)).then(() => {
-        renderOrders(); renderStats();
-        if (detailRecordId !== null) renderDetailOrders();
+      deleteCut(Number(del.dataset.cutDel)).then(() => {
+        renderCuts(); renderStats();
+        if (detailRecordId !== null) renderDetailCuts();
       });
     }
   };
-  $('ordersList').onchange = e => {
-    const sel = e.target.closest('[data-order-status]');
-    if (sel) {
-      const msg = updateOrderStatus(Number(sel.dataset.orderStatus), sel.value);
-      renderOrders();
-      if (detailRecordId !== null) renderDetailOrders();
-      renderStats();
-      toast('Статус обновлён' + (msg ? '.' + msg : ''));
-    }
-  };
-  $('detailOrders').onclick = e => {
-    const ed = e.target.closest('[data-order-edit]');
-    if (ed) openOrderForm(Number(ed.dataset.orderEdit));
+  $('detailCuts').onclick = e => {
+    const ed = e.target.closest('[data-cut-edit]');
+    if (ed) openCutForm(Number(ed.dataset.cutEdit));
   };
 
   const drop = $('drop');
