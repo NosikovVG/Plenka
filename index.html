@@ -7,7 +7,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Пленка для всех</title>
 <style>
-  /* ============ Базовые переменные — тема "Фиолетовая" (по умолчанию) ============ */
   :root {
     --bg: #f6f5ff; --bg-2: #eef2ff;
     --surface: #ffffff; --surface-2: #fafaff;
@@ -25,8 +24,6 @@
       radial-gradient(1200px 600px at 10% -10%, #e0e7ff 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #fce7f3 0%, transparent 55%);
   }
-
-  /* ============ Тема: Мастерская (янтарь) ============ */
   [data-theme-color="workshop"] {
     --bg: #f5f3ef; --bg-2: #efebe4;
     --surface: #ffffff; --surface-2: #faf8f4;
@@ -39,8 +36,6 @@
       radial-gradient(1200px 600px at 10% -10%, #fef3c7 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #fed7aa 0%, transparent 55%);
   }
-
-  /* ============ Тема: Технический (изумруд) ============ */
   [data-theme-color="tech"] {
     --bg: #f1f5f9; --bg-2: #e2e8f0;
     --surface: #ffffff; --surface-2: #f8fafc;
@@ -53,8 +48,6 @@
       radial-gradient(1200px 600px at 10% -10%, #d1fae5 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #cffafe 0%, transparent 55%);
   }
-
-  /* ============ Тема: Северный (тёмно-синий) ============ */
   [data-theme-color="north"] {
     --bg: #f8fafc; --bg-2: #eef2ff;
     --surface: #ffffff; --surface-2: #f8fafc;
@@ -67,8 +60,6 @@
       radial-gradient(1200px 600px at 10% -10%, #dbeafe 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #e0e7ff 0%, transparent 55%);
   }
-
-  /* ============ Тема: Земля (хаки + терракота) ============ */
   [data-theme-color="earth"] {
     --bg: #faf7f2; --bg-2: #f5ede0;
     --surface: #ffffff; --surface-2: #fdfbf7;
@@ -81,8 +72,6 @@
       radial-gradient(1200px 600px at 10% -10%, #ecfccb 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #fed7aa 0%, transparent 55%);
   }
-
-  /* ============ Тема: Минимал (монохром) ============ */
   [data-theme-color="minimal"] {
     --bg: #fafafa; --bg-2: #f4f4f5;
     --surface: #ffffff; --surface-2: #fafafa;
@@ -95,8 +84,6 @@
       radial-gradient(1200px 600px at 10% -10%, #f4f4f5 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #e4e4e7 0%, transparent 55%);
   }
-
-  /* ============ Тёмная тема — Фиолетовая (по умолчанию) ============ */
   [data-theme="dark"] {
     --bg: #0f0d1f; --bg-2: #1a1733;
     --surface: #1c1938; --surface-2: #252148;
@@ -113,8 +100,6 @@
       radial-gradient(1200px 600px at 10% -10%, #251f54 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #4c1d95 0%, transparent 55%);
   }
-
-  /* ============ Тёмная — Мастерская ============ */
   [data-theme="dark"][data-theme-color="workshop"] {
     --bg: #1c1917; --bg-2: #292524;
     --surface: #292524; --surface-2: #3a3532;
@@ -131,8 +116,6 @@
       radial-gradient(1200px 600px at 10% -10%, #422006 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #451a03 0%, transparent 55%);
   }
-
-  /* ============ Тёмная — Технический ============ */
   [data-theme="dark"][data-theme-color="tech"] {
     --bg: #0b1220; --bg-2: #0f172a;
     --surface: #111c2e; --surface-2: #1a2740;
@@ -149,8 +132,6 @@
       radial-gradient(1200px 600px at 10% -10%, #022c22 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #083344 0%, transparent 55%);
   }
-
-  /* ============ Тёмная — Северный ============ */
   [data-theme="dark"][data-theme-color="north"] {
     --bg: #0a1124; --bg-2: #0f172a;
     --surface: #131c33; --surface-2: #1e293b;
@@ -167,8 +148,6 @@
       radial-gradient(1200px 600px at 10% -10%, #172554 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #0c4a6e 0%, transparent 55%);
   }
-
-  /* ============ Тёмная — Земля ============ */
   [data-theme="dark"][data-theme-color="earth"] {
     --bg: #1a1a12; --bg-2: #292415;
     --surface: #26221a; --surface-2: #332d22;
@@ -185,8 +164,6 @@
       radial-gradient(1200px 600px at 10% -10%, #1a2e05 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #431407 0%, transparent 55%);
   }
-
-  /* ============ Тёмная — Минимал ============ */
   [data-theme="dark"][data-theme-color="minimal"] {
     --bg: #09090b; --bg-2: #18181b;
     --surface: #18181b; --surface-2: #27272a;
@@ -203,7 +180,6 @@
       radial-gradient(1200px 600px at 10% -10%, #18181b 0%, transparent 60%),
       radial-gradient(1000px 500px at 100% 0%, #27272a 0%, transparent 55%);
   }
-
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
@@ -213,8 +189,6 @@
     transition: background-color .3s, color .3s;
   }
   body { background: var(--body-gradient), var(--bg); background-attachment: fixed; }
-
-  /* ============ Topbar ============ */
   .topbar {
     display: flex; align-items: center; gap: 20px;
     padding: 14px 24px; background: var(--topbar-bg);
@@ -230,8 +204,7 @@
     color: #fff; display: grid; place-items: center;
     font-weight: 800; font-size: 20px;
     box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 35%, transparent);
-    flex: none;
-    transition: background .3s;
+    flex: none; transition: background .3s;
   }
   .brand-title { font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
   .brand-sub { font-size: 12px; color: var(--text-3); margin-top: 1px; }
@@ -254,12 +227,10 @@
   }
   .tab svg { width: 15px; height: 15px; flex: none; }
   .topbar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-
   .search-wrap { position: relative; }
   .search-wrap .icon {
     position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
-    width: 15px; height: 15px;
-    opacity: .45; pointer-events: none;
+    width: 15px; height: 15px; opacity: .45; pointer-events: none;
     display: flex; align-items: center; justify-content: center;
   }
   .search-wrap .icon svg { width: 15px; height: 15px; }
@@ -273,7 +244,6 @@
     background: var(--surface); border-color: var(--primary);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
   }
-
   .btn {
     padding: 9px 16px; border: none; border-radius: 10px;
     font-size: 13px; font-weight: 500; font-family: inherit;
@@ -298,13 +268,10 @@
   #btnTheme .icon-sun { display: none; }
   [data-theme="dark"] #btnTheme .icon-moon { display: none; }
   [data-theme="dark"] #btnTheme .icon-sun { display: inline-block; }
-
   main { max-width: 1300px; margin: 0 auto; padding: 24px; }
   .tab-panel { display: none; animation: fade .2s ease; }
   .tab-panel.active { display: block; }
   @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-
-  /* ============ Banner ============ */
   .today-banner {
     background: linear-gradient(135deg, color-mix(in srgb, var(--success) 10%, transparent) 0%, color-mix(in srgb, var(--primary) 10%, transparent) 100%);
     border: 1px solid color-mix(in srgb, var(--success) 22%, transparent);
@@ -330,8 +297,6 @@
     flex: none;
   }
   .today-banner .arrow { color: var(--success); font-size: 18px; font-weight: 700; flex: none; }
-
-  /* ============ Stats ============ */
   .stats {
     display: grid; grid-template-columns: repeat(4, 1fr);
     background: var(--surface);
@@ -354,8 +319,7 @@
   .stat-cell:last-child { border-right: none; }
   .stat-cell-value {
     font-size: 24px; font-weight: 800; letter-spacing: -.03em;
-    line-height: 1.1; color: var(--primary-600);
-    transition: color .3s;
+    line-height: 1.1; color: var(--primary-600); transition: color .3s;
   }
   .stat-cell-value small {
     font-size: 13px; font-weight: 600;
@@ -367,8 +331,6 @@
     font-weight: 600; margin-top: 3px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-
-  /* ============ Cards ============ */
   .card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden;
@@ -381,14 +343,11 @@
   }
   .card-title { font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
   .card-title small { color: var(--text-3); font-weight: 500; margin-left: 8px; }
-
-  /* ============ Filters ============ */
   .filters-toggle {
     display: none; margin: 12px 16px 0;
     width: calc(100% - 32px);
     justify-content: space-between;
-    background: var(--surface-2);
-    color: var(--text-2);
+    background: var(--surface-2); color: var(--text-2);
     border: 1px solid var(--border);
     padding: 11px 16px; font-weight: 500;
   }
@@ -417,8 +376,6 @@
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
   }
   .filters-bar .spacer { flex: 1; }
-
-  /* ============ Table ============ */
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   table { width: 100%; border-collapse: collapse; }
   th {
@@ -444,7 +401,6 @@
     padding: 40px 20px; font-size: 13px;
   }
   .empty-icon { font-size: 36px; display: block; margin-bottom: 8px; opacity: .4; }
-
   .cut-count {
     display: inline-flex; align-items: center; gap: 5px;
     padding: 3px 9px; border-radius: 12px;
@@ -454,7 +410,6 @@
   }
   .cut-count.zero { background: transparent; color: var(--text-3); font-weight: 400; }
   .cut-count small { color: inherit; opacity: .7; font-weight: 500; }
-
   .actions { white-space: nowrap; text-align: right; width: 1%; }
   .icon-btn {
     border: none; background: transparent; cursor: pointer;
@@ -473,10 +428,7 @@
     font-weight: 700; line-height: 1.4;
     box-shadow: 0 2px 6px color-mix(in srgb, var(--primary) 40%, transparent);
   }
-
   .status { font-size: 12px; color: var(--text-3); margin-top: 12px; text-align: center; }
-
-  /* ============ Mobile catalog cards ============ */
   .mobile-list { display: none; }
   .mobile-card {
     background: var(--surface); border: 1px solid var(--border);
@@ -547,8 +499,6 @@
     color: #fff; font-size: 9px; padding: 1px 5px; border-radius: 6px;
     font-weight: 700; line-height: 1.3;
   }
-
-  /* ============ Modal ============ */
   .modal {
     position: fixed; inset: 0; background: rgba(20,18,46,.55);
     backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
@@ -596,7 +546,6 @@
     white-space: pre-line; margin-bottom: 8px;
   }
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
   .cut-preview {
     background: linear-gradient(135deg,
       color-mix(in srgb, var(--primary) 10%, transparent) 0%,
@@ -612,7 +561,6 @@
   .cut-preview .warn { color: var(--warning); font-weight: 700; }
   .cut-preview .ok { color: var(--success); font-weight: 700; }
   .cut-preview .danger { color: var(--danger); font-weight: 700; }
-
   .subtabs {
     display: flex; gap: 4px; background: var(--surface-2);
     padding: 4px; border-radius: 10px; border: 1px solid var(--border);
@@ -633,7 +581,6 @@
   }
   .subtab-panel { display: none; }
   .subtab-panel.active { display: block; }
-
   .file-list { margin-top: 4px; }
   .file-row {
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
@@ -677,8 +624,6 @@
     display: flex; gap: 8px; align-items: center; margin-top: 12px;
     font-size: 12px; color: var(--text-3); flex-wrap: wrap;
   }
-
-  /* ============ History ============ */
   .history-list { display: flex; flex-direction: column; gap: 6px; }
   .hist-item {
     display: flex; gap: 12px; padding: 11px 14px;
@@ -701,8 +646,6 @@
   .hist-title { font-weight: 600; margin-bottom: 2px; }
   .hist-desc { color: var(--text-2); font-size: 12.5px; word-break: break-word; }
   .hist-time { color: var(--text-3); font-size: 11px; margin-top: 3px; }
-
-  /* ============ Cuts tab ============ */
   .orders-controls {
     display: flex; gap: 8px; align-items: center;
     margin-bottom: 14px; flex-wrap: wrap;
@@ -733,8 +676,6 @@
   }
   .cut-row .cut-defect { font-weight: 600; font-size: 12px; color: var(--danger); }
   .cut-row .cut-meters { font-size: 12px; color: var(--text-3); min-width: 90px; text-align: right; }
-
-  /* ============ Overlay / Toast ============ */
   .overlay {
     position: fixed; inset: 0; background: rgba(20,18,46,.6);
     backdrop-filter: blur(4px); display: flex;
@@ -749,7 +690,6 @@
     display: inline-block; vertical-align: middle; margin-right: 12px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .toast {
     position: fixed; bottom: 22px; left: 50%;
     transform: translateX(-50%) translateY(30px);
@@ -772,8 +712,6 @@
     border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
   }
   .toast.big .check { font-size: 20px; color: var(--primary); }
-
-  /* ============ Rolls ============ */
   .rolls-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 12px; padding: 16px 20px;
@@ -835,8 +773,6 @@
   }
   .roll-meta b { color: var(--text-2); font-weight: 600; }
   .roll-actions { display: flex; gap: 6px; }
-
-  /* ============ Theme picker ============ */
   .theme-section { margin-top: 18px; }
   .theme-section-title {
     font-size: 11px; text-transform: uppercase;
@@ -868,8 +804,6 @@
     font-size: 11px; font-weight: 600; color: var(--text-2);
     text-align: center; line-height: 1.2;
   }
-
-  /* ============ Backups / About ============ */
   .backup-list {
     display: flex; flex-direction: column; gap: 8px;
     max-height: 300px; overflow-y: auto;
@@ -883,7 +817,6 @@
   .backup-meta { flex: 1; min-width: 0; }
   .backup-date { font-weight: 600; }
   .backup-size { color: var(--text-3); font-size: 11px; margin-top: 2px; }
-
   .about-box { max-width: 620px; }
   .about-header {
     display: flex; align-items: center; gap: 14px;
@@ -954,7 +887,6 @@
     .feature-grid, .hotkeys, .field-row { grid-template-columns: 1fr; }
     .theme-grid { grid-template-columns: repeat(3, 1fr); }
   }
-
   @media print {
     @page { size: landscape; margin: 10mm; }
     .no-print { display: none !important; }
@@ -974,7 +906,6 @@
     .card-head { display: none; }
     table { font-size: 11px; }
   }
-
   @media (max-width: 760px) {
     .topbar { flex-wrap: wrap; padding: 10px 12px; gap: 10px; }
     .tabs { order: 3; width: 100%; overflow-x: auto; }
@@ -1051,7 +982,6 @@
 </script>
 </head>
 <body>
-
 <header class="topbar no-print">
   <div class="brand">
     <div class="brand-mark">П</div>
@@ -1060,7 +990,6 @@
       <div class="brand-sub">учёт лекал на стёкла фар</div>
     </div>
   </div>
-
   <nav class="tabs">
     <button class="tab active" data-tab="sklad">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
@@ -1075,7 +1004,6 @@
       История
     </button>
   </nav>
-
   <div class="topbar-actions">
     <div class="search-wrap">
       <span class="icon">
@@ -1098,12 +1026,10 @@
     </button>
   </div>
 </header>
-
 <main>
   <section class="tab-panel active" id="panel-sklad">
     <div id="todayCutsBanner"></div>
     <div class="stats" id="statsRow"></div>
-
     <div class="card" style="margin-bottom:20px;">
       <div class="card-head">
         <div class="card-title">Рулоны плёнки <small>в рулоне 10 погонных метров</small></div>
@@ -1113,7 +1039,6 @@
       </div>
       <div class="rolls-grid" id="rollsGrid"></div>
     </div>
-
     <div class="card">
       <div class="card-head">
         <div class="card-title">Каталог лекал <small id="status"></small></div>
@@ -1129,7 +1054,6 @@
           </button>
         </div>
       </div>
-
       <button class="btn small filters-toggle no-print" id="btnToggleFilters">
         <span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
@@ -1137,7 +1061,6 @@
         </span>
         <span id="filterCount" class="filter-count" style="display:none;">0</span>
       </button>
-
       <div class="filters-bar no-print" id="filtersBar">
         <select id="filterTip" title="Тип плёнки">
           <option value="">Все типы плёнки</option>
@@ -1154,7 +1077,6 @@
         <span class="spacer"></span>
         <button class="btn ghost small" id="btnResetFilters">Сбросить фильтры</button>
       </div>
-
       <div class="table-wrap desktop-only">
         <table>
           <thead>
@@ -1173,11 +1095,9 @@
           <tbody id="tbody"></tbody>
         </table>
       </div>
-
       <div class="mobile-list" id="mobileList"></div>
     </div>
   </section>
-
   <section class="tab-panel" id="panel-cuts">
     <div class="orders-controls">
       <button class="btn primary" id="btnNewCut">
@@ -1193,7 +1113,6 @@
       <div id="cutsList"></div>
     </div>
   </section>
-
   <section class="tab-panel" id="panel-history">
     <div class="orders-controls">
       <select id="historyActionFilter">
@@ -1214,7 +1133,6 @@
     </div>
   </section>
 </main>
-
 <div class="modal hidden" id="modal">
   <div class="modal-box" role="dialog" aria-modal="true">
     <h2 id="modalTitle">Новая запись</h2>
@@ -1229,7 +1147,6 @@
 <div class="modal hidden" id="detailModal">
   <div class="modal-box" style="max-width:720px;" role="dialog" aria-modal="true">
     <h2 id="detailTitle">Карточка записи</h2>
-
     <div class="subtabs">
       <button class="subtab active" data-subtab="files">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
@@ -1244,7 +1161,6 @@
         Нарезка
       </button>
     </div>
-
     <div class="subtab-panel active" id="subtab-files">
       <div id="filesList" class="file-list"></div>
       <div class="files-toolbar">
@@ -1266,11 +1182,9 @@
         лекала, чтобы печатать одним кликом.
       </div>
     </div>
-
     <div class="subtab-panel" id="subtab-history">
       <div class="history-list" id="detailHistory"></div>
     </div>
-
     <div class="subtab-panel" id="subtab-cuts">
       <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
         <button class="btn primary small" id="btnNewCutForRecord">
@@ -1280,7 +1194,6 @@
       </div>
       <div id="detailCuts"></div>
     </div>
-
     <div class="modal-actions" style="justify-content:space-between;">
       <button class="btn primary" id="btnPrintSelected" disabled>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
@@ -1305,7 +1218,6 @@
 <div class="modal hidden" id="settingsModal">
   <div class="modal-box" role="dialog" aria-modal="true">
     <h2>Настройки</h2>
-
     <div style="display:flex;flex-direction:column;gap:10px;">
       <button class="btn primary" id="btnExportDb">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
@@ -1332,7 +1244,6 @@
         О программе
       </button>
     </div>
-
     <div class="theme-section">
       <div class="theme-section-title">Цветовая схема</div>
       <div class="theme-grid" id="themeGrid">
@@ -1374,12 +1285,10 @@
         </button>
       </div>
     </div>
-
     <div style="margin-top:16px;">
       <div class="card-title" style="margin-bottom:8px;">Доступные резервные копии</div>
       <div class="backup-list" id="backupList"></div>
     </div>
-
     <div class="modal-actions">
       <button class="btn ghost" id="btnSettingsClose">Закрыть</button>
     </div>
@@ -1405,10 +1314,9 @@
       <div class="about-logo">П</div>
       <div>
         <h2>Пленка для всех</h2>
-        <div class="about-sub">Учёт лекал на стёкла фар · v2.4</div>
+        <div class="about-sub">Учёт лекал на стёкла фар · v2.5</div>
       </div>
     </div>
-
     <div class="about-section">
       <h3>Возможности</h3>
       <div class="feature-grid">
@@ -1470,26 +1378,14 @@
         </div>
       </div>
     </div>
-
     <div class="about-section">
-      <h3>Как всё связано</h3>
+      <h3>Синхронизация</h3>
       <div class="about-note">
-        В <b>каталоге</b> у каждой позиции указан <b>расход плёнки</b> на одну штуку.
-        Когда вы отмечаете нарезку (сколько штук сделали), программа
-        умножает количество на расход и <b>списывает плёнку с рулонов</b>.
-        Остаток плёнки всегда виден в карточках сверху.
+        Все изменения автоматически отправляются на сервер, и подтягиваются
+        с него в течение пары секунд. Работайте с нескольких устройств
+        одновременно — данные одинаковые везде.
       </div>
     </div>
-
-    <div class="about-section">
-      <h3>На телефоне</h3>
-      <div class="about-note">
-        Каталог автоматически превращается в <b>карточки</b> — ничего
-        двигать в стороны не нужно. Кнопка <b>Нарезать</b> всегда
-        в правом верхнем углу карточки. Остальные действия — внизу.
-      </div>
-    </div>
-
     <div class="about-section">
       <h3>Горячие клавиши</h3>
       <div class="hotkeys">
@@ -1501,18 +1397,6 @@
         <div class="hk-row"><kbd>Shift</kbd>+<kbd>Tab</kbd><span>Навигация назад</span></div>
       </div>
     </div>
-
-    <div class="about-section">
-      <h3>Данные и хранение</h3>
-      <div class="about-note">
-        Всё хранится <b>локально в браузере</b> — база в IndexedDB,
-        вложения отдельным хранилищем. Интернет нужен только для
-        подгрузки библиотек sql.js и pdf-lib.<br><br>
-        Экспорт базы — через <b>⚙️ в шапке</b> (файл <code>.db</code>,
-        без вложений). Резервную копию создаёт кнопка <b>💾</b>.
-      </div>
-    </div>
-
     <div class="modal-actions">
       <button class="btn ghost" id="btnAboutClose">Закрыть</button>
     </div>
@@ -1539,10 +1423,11 @@
 <datalist id="dl-tip_plenki"></datalist>
 <datalist id="dl-marka"></datalist>
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/sql.js@1.10.3/dist/sql-wasm.js"></script>
 <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script>
-/* ============ SVG-иконки (Lucide/Feather) ============ */
+/* ============ SVG-иконки ============ */
 const _svgWrap = (path, size) =>
   `<svg width="${size||16}" height="${size||16}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
 const ICON_PATHS = {
@@ -1560,15 +1445,13 @@ const ICON_PATHS = {
 const icon = (name, size) => _svgWrap(ICON_PATHS[name], size);
 
 /* ============ Константы ============ */
-const COLUMNS = ['pp','tip_plenki','raspolozhenie','marka',
-                 'model','rashod','nalichie','cena','artikul'];
+const COLUMNS = ['pp','tip_plenki','raspolozhenie','marka','model','rashod','nalichie','cena','artikul'];
 const HEADERS = {
   pp:'ПП', tip_plenki:'Тип плёнки', raspolozhenie:'Расположение',
   marka:'Марка', model:'Модель', rashod:'Расход, м',
   nalichie:'Наличие', cena:'Цена', artikul:'Артикул'
 };
-const EDITABLE = ['tip_plenki','raspolozhenie','marka','model',
-                  'rashod','nalichie','cena','artikul'];
+const EDITABLE = ['tip_plenki','raspolozhenie','marka','model','rashod','nalichie','cena','artikul'];
 const NUMERIC_FIELDS = ['rashod','nalichie'];
 const DATALISTS = { tip_plenki:'dl-tip_plenki', marka:'dl-marka' };
 const HINTS = {
@@ -1600,7 +1483,6 @@ const A4_W = 595.28, A4_H = 841.89;
 const SHYMKA_URL = 'https://www.shymka.ru/';
 const THEMES = ['original','workshop','tech','north','earth','minimal'];
 
-/* ============ Глобальные ============ */
 let SQL, db;
 let editingId = null;
 let detailRecordId = null;
@@ -1611,7 +1493,6 @@ let searchDebounce = null;
 let sortState = { column: 'pp', direction: 'asc' };
 let filterState = { tip_plenki:'', marka:'', model:'', raspolozhenie:'' };
 let installPrompt = null;
-
 /* ============ Утилиты ============ */
 const $ = id => document.getElementById(id);
 function esc(s) {
@@ -1640,8 +1521,7 @@ function humanSize(n) {
 function fmtDate(iso) {
   if (!iso) return '';
   return new Date(iso).toLocaleString('ru-RU',
-    { day:'2-digit', month:'2-digit', year:'2-digit',
-      hour:'2-digit', minute:'2-digit' });
+    { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' });
 }
 function fmtDateOnly(iso) {
   if (!iso) return '';
@@ -1906,15 +1786,13 @@ function ensureSchema(target) {
 function createSchema() { ensureSchema(db); }
 function seedDb() {
   const stmt = db.prepare(`
-    INSERT INTO plenki
-      (pp, tip_plenki, raspolozhenie, marka,
+    INSERT INTO plenki (pp, tip_plenki, raspolozhenie, marka,
        model, rashod, nalichie, cena, artikul)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   SEED.forEach(r => stmt.run(r));
   stmt.free();
-  db.run(`INSERT OR IGNORE INTO film_stock (tip_plenki, rolls, min_rolls)
-          VALUES ('ПВХ', 5, 2)`);
+  db.run(`INSERT OR IGNORE INTO film_stock (tip_plenki, rolls, min_rolls) VALUES ('ПВХ', 5, 2)`);
 }
 async function persist() {
   try { await idbSet(IDB_KEY, db.export()); }
@@ -1924,6 +1802,7 @@ async function persist() {
       toastError('Хранилище переполнено. Удалите резервные копии.');
     }
   }
+  if (window.__schedulePush) window.__schedulePush();
 }
 async function autoBackup() {
   const today = new Date().toISOString().slice(0,10);
@@ -2092,8 +1971,7 @@ function totalFilmMeters() {
 /* ============ Логи ============ */
 function logHistory({ recordId, action, field, oldValue, newValue, details }) {
   db.run(
-    `INSERT INTO history
-      (record_id, action, field, old_value, new_value, details, created_at)
+    `INSERT INTO history (record_id, action, field, old_value, new_value, details, created_at)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [recordId ?? null, action, field || '', oldValue || '',
      newValue || '', details || '', new Date().toISOString()]
@@ -2167,8 +2045,7 @@ async function addAttachments(recordId, files) {
     const dup = check.step(); check.free();
     if (dup) { skipped++; continue; }
     db.run(
-      `INSERT INTO attachments
-        (record_id, filename, mime, size, storage_key, uploaded_at)
+      `INSERT INTO attachments (record_id, filename, mime, size, storage_key, uploaded_at)
        VALUES (?, ?, ?, ?, NULL, ?)`,
       [recordId, f.name, f.type || '', f.size, new Date().toISOString()]
     );
@@ -2670,8 +2547,7 @@ function saveCut(data, id) {
     let consumeInfo = null;
     if (rec && totalMeters) consumeInfo = consumeFilm(rec.tip_plenki, totalMeters);
     db.run(
-      `INSERT INTO orders
-        (record_id, qty, defect_qty, meters_consumed, cut_date, notes,
+      `INSERT INTO orders (record_id, qty, defect_qty, meters_consumed, cut_date, notes,
          created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [data.record_id, qty, defect, totalMeters,
@@ -3805,11 +3681,12 @@ function setupPwa() {
   if ('serviceWorker' in navigator) {
     try {
       const swCode = `
-        const CACHE = 'plenka-v5';
+        const CACHE = 'plenka-v6';
         const CDN = [
           'https://unpkg.com/sql.js@1.10.3/dist/sql-wasm.js',
           'https://unpkg.com/sql.js@1.10.3/dist/sql-wasm.wasm',
-          'https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js'
+          'https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js',
+          'https://unpkg.com/@supabase/supabase-js@2'
         ];
         self.addEventListener('install', e => {
           e.waitUntil(caches.open(CACHE).then(c => c.addAll(CDN).catch(() => null)));
@@ -3820,7 +3697,7 @@ function setupPwa() {
           const req = e.request;
           if (req.method !== 'GET') return;
           const url = new URL(req.url);
-          if (CDN.some(u => url.href === u)) {
+          if (CDN.some(u => url.href.startsWith(u.split('?')[0])) || url.hostname === 'unpkg.com') {
             e.respondWith(caches.match(req).then(r => r || fetch(req).then(res => {
               const copy = res.clone();
               caches.open(CACHE).then(c => c.put(req, copy));
@@ -3847,8 +3724,158 @@ function setupPwa() {
   };
 }
 
-/* ============ Инициализация ============ */
-(async function init() {
+/* ============ СИНХРОНИЗАЦИЯ С SUPABASE ============ */
+const SUPABASE_URL = 'https://wrkpuonpxisktszvwois.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indya3B1b25weGlza3RzenZ3b2lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyNTI2MzcsImV4cCI6MjEwNTgyODYzN30.RYiuhi7IXz02YxG5sTN6u6SFhs8C03vJtbycFcRsmiw';
+const SUPABASE_EMAIL = 'nosikovvg@mail.ru';
+const SUPABASE_PASSWORD = 'plenka123456';
+
+let _lastPushAt = 0;
+let _pushTimer = null;
+let _realtimeChannel = null;
+let _supaReady = false;
+
+function _getDeviceId() {
+  let id = localStorage.getItem('device_id');
+  if (!id) {
+    id = 'dev_' + Math.random().toString(36).slice(2, 10) + '_' + Date.now().toString(36);
+    localStorage.setItem('device_id', id);
+  }
+  return id;
+}
+const DEVICE_ID = _getDeviceId();
+
+function _u8ToBase64(u8) {
+  let binary = '';
+  const chunk = 0x8000;
+  for (let i = 0; i < u8.length; i += chunk) {
+    binary += String.fromCharCode.apply(null, u8.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
+function _base64ToU8(b64) {
+  const bin = atob(b64);
+  const u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  return u8;
+}
+
+async function _push() {
+  if (!window.__supaClient || !_supaReady) return;
+  try {
+    const b64 = _u8ToBase64(db.export());
+    const { error } = await window.__supaClient
+      .from('plenka_db')
+      .update({
+        data: b64,
+        updated_at: new Date().toISOString(),
+        updated_by: DEVICE_ID
+      })
+      .eq('id', 1);
+    if (error) console.warn('push error', error);
+    else _lastPushAt = Date.now();
+  } catch (e) { console.warn('push', e); }
+}
+window.__schedulePush = function() {
+  if (!_supaReady) return;
+  if (_pushTimer) clearTimeout(_pushTimer);
+  _pushTimer = setTimeout(_push, 1200);
+};
+
+async function _pull() {
+  if (!window.__supaClient || !_supaReady) return false;
+  try {
+    const { data, error } = await window.__supaClient
+      .from('plenka_db')
+      .select('data, updated_at, updated_by')
+      .eq('id', 1)
+      .single();
+    if (error || !data) return false;
+    if (!data.data || data.data.length < 10) return false;
+    if (data.updated_by === DEVICE_ID) return false;
+    const bytes = _base64ToU8(data.data);
+    try { db.close(); } catch(e) {}
+    db = new SQL.Database(bytes);
+    createSchema();
+    await idbSet(IDB_KEY, db.export());
+    return true;
+  } catch (e) { console.warn('pull', e); return false; }
+}
+
+async function _pushInitial() {
+  if (!window.__supaClient || !_supaReady) return;
+  try {
+    const b64 = _u8ToBase64(db.export());
+    await window.__supaClient
+      .from('plenka_db')
+      .update({
+        data: b64,
+        updated_at: new Date().toISOString(),
+        updated_by: DEVICE_ID
+      })
+      .eq('id', 1);
+    _lastPushAt = Date.now();
+  } catch (e) { console.warn('pushInitial', e); }
+}
+
+function _subscribeRealtime() {
+  if (_realtimeChannel || !window.__supaClient) return;
+  _realtimeChannel = window.__supaClient
+    .channel('plenka_db_changes')
+    .on('postgres_changes',
+      { event: 'UPDATE', schema: 'public', table: 'plenka_db' },
+      async (payload) => {
+        if (payload.new.updated_by === DEVICE_ID) return;
+        const ok = await _pull();
+        if (ok) {
+          refreshDatalists();
+          render(); renderCuts(); renderHistory(); renderStats();
+          toast('Обновлено с сервера');
+        }
+      })
+    .subscribe();
+}
+
+async function _initAuth() {
+  const authEl = document.getElementById('authScreen');
+  if (authEl) authEl.style.display = 'none';
+
+  window.__supaClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let { error } = await window.__supaClient.auth.signInWithPassword({
+    email: SUPABASE_EMAIL,
+    password: SUPABASE_PASSWORD
+  });
+
+  if (error) {
+    const signup = await window.__supaClient.auth.signUp({
+      email: SUPABASE_EMAIL,
+      password: SUPABASE_PASSWORD
+    });
+    if (signup.error) {
+      toastError('Не удалось войти: ' + signup.error.message);
+      return;
+    }
+    if (!signup.data.session) {
+      toastError('Аккаунт создан, но требует подтверждения. Выключите "Confirm email" в Supabase.');
+      return;
+    }
+  }
+
+  _supaReady = true;
+
+  showOverlay('Синхронизирую с сервером…');
+  const pulled = await _pull();
+  if (!pulled) await _pushInitial();
+  hideOverlay();
+  refreshDatalists();
+  render(); renderCuts(); renderHistory(); renderStats();
+  _subscribeRealtime();
+  toast('Синхронизация включена');
+}
+
+/* ============ ИНИЦИАЛИЗАЦИЯ ============ */
+async function initApp() {
   const initTheme = document.documentElement.getAttribute('data-theme') || 'light';
   const initColor = document.documentElement.getAttribute('data-theme-color') || 'original';
   applyTheme(initTheme);
@@ -3857,11 +3884,9 @@ function setupPwa() {
 
   document.querySelectorAll('.modal').forEach(installFocusTrap);
 
-  // Обработчики переключения цветовых схем
   document.querySelectorAll('.theme-option').forEach(el => {
     el.onclick = () => applyThemeColor(el.dataset.themeColor);
   });
-  // Проставим активный класс при первой отрисовке
   document.querySelectorAll('.theme-option').forEach(el => {
     el.classList.toggle('active', el.dataset.themeColor === initColor);
   });
@@ -4110,7 +4135,16 @@ function setupPwa() {
     const files = Array.from(e.dataTransfer.files || []);
     if (files.length) addAttachments(detailRecordId, files);
   });
-})();
+
+  // Инициализация синхронизации — в конце, когда всё объявлено
+  await _initAuth();
+}
+
+initApp().catch(e => {
+  console.error('Init error:', e);
+  hideOverlay();
+  alert('Ошибка запуска: ' + e.message);
+});
 </script>
 </body>
 </html>
