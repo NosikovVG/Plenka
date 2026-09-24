@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#6366f1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Пленка для всех</title>
+<link rel="manifest" href="manifest.json">
 <style>
   :root {
     --bg: #f6f5ff; --bg-2: #eef2ff;
@@ -3660,55 +3661,10 @@ function installFocusTrap(modal) {
 
 /* ============ PWA ============ */
 function setupPwa() {
-  try {
-    const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><rect width="192" height="192" rx="36" fill="url(#g)"/><text x="96" y="130" font-family="Arial" font-size="110" font-weight="700" fill="#fff" text-anchor="middle">П</text></svg>`;
-    const iconUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgIcon)));
-    const manifest = {
-      name: 'Пленка для всех', short_name: 'Плёнка',
-      description: 'Учёт лекал на стёкла фар',
-      start_url: '.', scope: '.', display: 'standalone',
-      background_color: '#f6f5ff', theme_color: '#6366f1',
-      icons: [
-        { src: iconUrl, sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
-        { src: iconUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
-      ]
-    };
-    const mfUrl = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' }));
-    const link = document.createElement('link');
-    link.rel = 'manifest'; link.href = mfUrl;
-    document.head.appendChild(link);
-  } catch (e) { console.warn('manifest', e); }
   if ('serviceWorker' in navigator) {
-    try {
-      const swCode = `
-        const CACHE = 'plenka-v6';
-        const CDN = [
-          'https://unpkg.com/sql.js@1.10.3/dist/sql-wasm.js',
-          'https://unpkg.com/sql.js@1.10.3/dist/sql-wasm.wasm',
-          'https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js',
-          'https://unpkg.com/@supabase/supabase-js@2'
-        ];
-        self.addEventListener('install', e => {
-          e.waitUntil(caches.open(CACHE).then(c => c.addAll(CDN).catch(() => null)));
-          self.skipWaiting();
-        });
-        self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
-        self.addEventListener('fetch', e => {
-          const req = e.request;
-          if (req.method !== 'GET') return;
-          const url = new URL(req.url);
-          if (CDN.some(u => url.href.startsWith(u.split('?')[0])) || url.hostname === 'unpkg.com') {
-            e.respondWith(caches.match(req).then(r => r || fetch(req).then(res => {
-              const copy = res.clone();
-              caches.open(CACHE).then(c => c.put(req, copy));
-              return res;
-            }).catch(() => r)));
-          }
-        });
-      `;
-      const swUrl = URL.createObjectURL(new Blob([swCode], { type: 'text/javascript' }));
-      navigator.serviceWorker.register(swUrl, { scope: './' }).catch(() => {});
-    } catch (e) { /* ignore */ }
+    navigator.serviceWorker.register('sw.js', { scope: './' })
+      .then(() => console.log('SW registered'))
+      .catch(e => console.warn('SW reg failed', e));
   }
   window.addEventListener('beforeinstallprompt', e => {
     e.preventDefault();
@@ -3723,7 +3679,6 @@ function setupPwa() {
     $('btnInstall').style.display = 'none';
   };
 }
-
 /* ============ СИНХРОНИЗАЦИЯ С SUPABASE ============ */
 const SUPABASE_URL = 'https://wrkpuonpxisktszvwois.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indya3B1b25weGlza3RzenZ3b2lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyNTI2MzcsImV4cCI6MjEwNTgyODYzN30.RYiuhi7IXz02YxG5sTN6u6SFhs8C03vJtbycFcRsmiw';
