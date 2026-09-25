@@ -2260,6 +2260,8 @@ function ensureSchema(target) {
       customer TEXT,
       status TEXT,
       film_consumed INTEGER DEFAULT 0
+      stock_id INTEGER DEFAULT 0,
+      stock_id INTEGER DEFAULT 0,
     )
   `);
   try {
@@ -2279,6 +2281,15 @@ function ensureSchema(target) {
     }
     if (!ocols.includes('tip_plenki')) {
       target.run('ALTER TABLE orders ADD COLUMN tip_plenki TEXT DEFAULT ""');
+    }
+    if (!ocols.includes('film_color')) {
+      target.run('ALTER TABLE orders ADD COLUMN film_color TEXT DEFAULT ""');
+    }
+    if (!ocols.includes('film_thickness')) {
+      target.run('ALTER TABLE orders ADD COLUMN film_thickness REAL DEFAULT 0');
+    }
+    if (!ocols.includes('stock_id')) {
+      target.run('ALTER TABLE orders ADD COLUMN stock_id INTEGER DEFAULT 0');
     }
     target.run(`
       UPDATE orders SET tip_plenki = COALESCE(
