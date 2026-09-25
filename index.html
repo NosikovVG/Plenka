@@ -4956,28 +4956,24 @@ async function loadAIModule() {
   AI_STATE.loading = true;
   try {
     showOverlayProgress('Загружаю модель ИИ… 0%', 0);
-    // Динамический импорт модуля из ./lib/ai-search.js
-const mod = await import('./lib/ai-search.js');
-await mod.init({
-  onProgress: (p) => {
-    const pct = Math.round((p || 0) * 100);
-    showOverlayProgress(`Загружаю модель ИИ… ${pct}%`, pct);
-  },
-  onIndexProgress: (p) => {
-    const pct = Math.round((p || 0) * 100);
-    showOverlayProgress(`Строю индекс по каталогу… ${pct}%`, pct);
-  },
-  libPath: './lib/transformers.min.js',
-  getRecords: () => {
-    const stmt = db.prepare('SELECT id, marka, model, artikul, raspolozhenie, tip_plenki FROM plenki');
-    const out = [];
-    while (stmt.step()) out.push(stmt.getAsObject());
-    stmt.free();
-    return out;
-  }
-});
-      modelPath: './models/paraphrase-multilingual-minilm/',
-      libPath: './lib/transformers.min.js'
+    const mod = await import('./lib/ai-search.js');
+    await mod.init({
+      onProgress: (p) => {
+        const pct = Math.round((p || 0) * 100);
+        showOverlayProgress(`Загружаю модель ИИ… ${pct}%`, pct);
+      },
+      onIndexProgress: (p) => {
+        const pct = Math.round((p || 0) * 100);
+        showOverlayProgress(`Строю индекс по каталогу… ${pct}%`, pct);
+      },
+      libPath: './lib/transformers.min.js',
+      getRecords: () => {
+        const stmt = db.prepare('SELECT id, marka, model, artikul, raspolozhenie, tip_plenki FROM plenki');
+        const out = [];
+        while (stmt.step()) out.push(stmt.getAsObject());
+        stmt.free();
+        return out;
+      }
     });
     AI_STATE.module = mod;
     AI_STATE.loaded = true;
