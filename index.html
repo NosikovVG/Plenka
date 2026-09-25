@@ -884,6 +884,13 @@
     font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
     color: var(--text-2);
   }
+  /* Заголовок для печати — виден только на бумаге */
+  .print-header {
+    display: none;
+    padding: 0 0 8px;
+    border-bottom: 1px solid #000;
+    margin-bottom: 8px;
+  }
   @media (max-width: 560px) {
     .feature-grid, .hotkeys, .field-row { grid-template-columns: 1fr; }
     .theme-grid { grid-template-columns: repeat(3, 1fr); }
@@ -899,6 +906,7 @@
     .filters-toggle { display: none !important; }
     .rolls-grid { display: none; }
     .mobile-list { display: none !important; }
+    .print-header { display: block !important; }
     th { background: #fff !important; color: #000; border-bottom: 2px solid #000; }
     td { border-bottom: 1px solid #ccc; }
     .modal { display: none !important; }
@@ -1078,6 +1086,7 @@
         <span class="spacer"></span>
         <button class="btn ghost small" id="btnResetFilters">Сбросить фильтры</button>
       </div>
+      <div class="print-header" id="printHeader"></div>
       <div class="table-wrap desktop-only">
         <table>
           <thead>
@@ -1744,6 +1753,7 @@ function ensureSchema(target) {
     CREATE TABLE IF NOT EXISTS orders (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       record_id INTEGER NOT NULL,
+      tip_plenki TEXT DEFAULT "",
       qty INTEGER DEFAULT 0,
       defect_qty INTEGER DEFAULT 0,
       meters_consumed REAL DEFAULT 0,
@@ -1763,6 +1773,15 @@ function ensureSchema(target) {
       target.run('ALTER TABLE orders ADD COLUMN cut_date TEXT');
       target.run("UPDATE orders SET cut_date = substr(created_at,1,10) WHERE cut_date IS NULL");
     }
+    if (!ocols.includes('tip_plenki')) {
+      target.run('ALTER TABLE orders ADD COLUMN tip_plenki TEXT DEFAULT ""');
+    }
+    // Бэкфилл tip_plenki — снимок типа плёнки для старых записей
+    target.run(`
+      UPDATE orders SET tip_plenki = COALESCE(
+        (SELECT tip_plenki FROM plenki WHERE plenki.id = orders.record_id), ''
+      ) WHERE (tip_plenki IS NULL OR tip_plenki = '')
+    `);
   } catch(e) {}
   target.run(`
     CREATE TABLE IF NOT EXISTS film_stock (
@@ -1807,8 +1826,12 @@ async function autoBackup() {
     const keys = (await idbKeys()).filter(k => String(k).startsWith('backup_'));
     keys.sort();
     while (keys.length > 7) await idbDelete(keys.shift());
-    localStorage.setItem('last_backup_date', today);
-  } catch (e) { console.warn('autoBackup', e); }
+  } catch (e) {
+    console.warn('autoBackup', e);
+  } finally {
+    // Ставим дату в любом случае, чтобы не пытаться каждый раз
+    try { localStorage.setItem('last_backup_date', today); } catch(e) {}
+  }
 }
 
 /* ============ Запросы ============ */
@@ -1992,6 +2015,7 @@ function allHistory(filterAction, limit = 300) {
   return out;
 }
 function clearHistory() { db.run('DELETE FROM history'); }
+
 /* ============ Вложения ============ */
 function attachmentCounts() {
   const stmt = db.prepare('SELECT record_id, COUNT(*) AS c FROM attachments GROUP BY record_id');
@@ -2479,7 +2503,7 @@ async function printLabel(recordId) {
 /* ============ Нарезка ============ */
 function cutsList(filterMarka) {
   let sql = `
-    SELECT c.*, p.marka, p.model, p.artikul, p.pp, p.tip_plenki, p.rashod
+    SELECT c.*, p.marka, p.model, p.artikul, p.pp, p.tip_plenki AS cur_tip, p.rashod
     FROM orders c
     LEFT JOIN plenki p ON p.id = c.record_id
   `;
@@ -2515,18 +2539,24 @@ function saveCut(data, id) {
   const qty = parseInt(data.qty, 10) || 0;
   const defect = parseInt(data.defect_qty, 10) || 0;
   const totalMeters = rashodPerUnit * qty;
+  // Снимок типа плёнки — используется даже если лекало потом удалят
+  const tipSnapshot = rec ? (rec.tip_plenki || '') : '';
   if (id) {
     const old = getCut(id);
+    // Возврат плёнки по снимку, а не по текущему лекалу
     if (old && old.meters_consumed) {
-      const oldRec = getRecord(old.record_id);
-      if (oldRec) returnFilm(oldRec.tip_plenki, old.meters_consumed);
+      const oldTip = old.tip_plenki || (() => {
+        const r = getRecord(old.record_id);
+        return r ? r.tip_plenki : '';
+      })();
+      if (oldTip) returnFilm(oldTip, old.meters_consumed);
     }
     let consumeInfo = null;
     if (rec && totalMeters) consumeInfo = consumeFilm(rec.tip_plenki, totalMeters);
     db.run(
-      `UPDATE orders SET record_id=?, qty=?, defect_qty=?, meters_consumed=?,
+      `UPDATE orders SET record_id=?, tip_plenki=?, qty=?, defect_qty=?, meters_consumed=?,
        cut_date=?, notes=?, updated_at=? WHERE id=?`,
-      [data.record_id, qty, defect, totalMeters,
+      [data.record_id, tipSnapshot, qty, defect, totalMeters,
        data.cut_date || todayIso(), data.notes || '', now, id]
     );
     logHistory({
@@ -2540,10 +2570,10 @@ function saveCut(data, id) {
     let consumeInfo = null;
     if (rec && totalMeters) consumeInfo = consumeFilm(rec.tip_plenki, totalMeters);
     db.run(
-      `INSERT INTO orders (record_id, qty, defect_qty, meters_consumed, cut_date, notes,
+      `INSERT INTO orders (record_id, tip_plenki, qty, defect_qty, meters_consumed, cut_date, notes,
          created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [data.record_id, qty, defect, totalMeters,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [data.record_id, tipSnapshot, qty, defect, totalMeters,
        data.cut_date || todayIso(), data.notes || '', now, now]
     );
     const newId = db.exec('SELECT last_insert_rowid() AS id')[0].values[0][0];
@@ -2566,8 +2596,11 @@ async function deleteCut(id) {
   });
   if (!yes) return;
   if (c.meters_consumed) {
-    const rec = getRecord(c.record_id);
-    if (rec) returnFilm(rec.tip_plenki, c.meters_consumed);
+    const tip = c.tip_plenki || (() => {
+      const r = getRecord(c.record_id);
+      return r ? r.tip_plenki : '';
+    })();
+    if (tip) returnFilm(tip, c.meters_consumed);
   }
   db.run('DELETE FROM orders WHERE id=?', [id]);
   logHistory({
@@ -2868,7 +2901,8 @@ function render() {
     ${filtered ? 'Ничего не найдено' : 'Записей пока нет — добавьте первую'}
   </div>`;
   if (!rows.length) {
-    tbody.innerHTML = `<tr><td colspan="20">${emptyHtml}</td></tr>`;
+    // Исправлено: колонок в таблице 9, а не 20
+    tbody.innerHTML = `<tr><td colspan="9">${emptyHtml}</td></tr>`;
     if (mobileList) mobileList.innerHTML = emptyHtml;
   } else {
     tbody.innerHTML = rows.map(r => buildDesktopRow(
@@ -2982,6 +3016,7 @@ function actionMeta(a) {
     order:  { icon: icon('scissors',15), cls:'order',  label:'Нарезка' }
   })[a] || { icon:'•', cls:'update', label:a };
 }
+
 /* ============ Форма лекала ============ */
 function openForm(id = null) {
   editingId = id;
@@ -3160,6 +3195,7 @@ function openDetail(recordId, subtab) {
 function closeDetail() {
   $('detailModal').classList.add('hidden');
   detailRecordId = null;
+  revokeThumbUrls();
 }
 function switchDetailSubtab(name) {
   document.querySelectorAll('.subtab').forEach(t =>
@@ -3226,8 +3262,15 @@ function renderDetailCuts() {
 }
 
 /* ============ Файлы ============ */
+// Отслеживание object-URL превью — чтобы не копить мусор
+let _thumbUrls = new Set();
+function revokeThumbUrls() {
+  _thumbUrls.forEach(u => { try { URL.revokeObjectURL(u); } catch(e) {} });
+  _thumbUrls.clear();
+}
 async function renderFilesList() {
   if (detailRecordId === null) return;
+  revokeThumbUrls();
   const list = attachmentsFor(detailRecordId);
   if (!list.length) {
     $('filesList').innerHTML = '<div class="empty" style="padding:20px;">Файлов пока нет</div>';
@@ -3239,11 +3282,15 @@ async function renderFilesList() {
     if (isImageFile(f.filename, f.mime)) {
       try {
         const blob = await getAttachmentBlob(f.id);
-        if (blob) thumbs[f.id] = URL.createObjectURL(blob);
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          thumbs[f.id] = url;
+          _thumbUrls.add(url);
+        }
       } catch(e) {}
     }
   }
-  if (detailRecordId === null) return;
+  if (detailRecordId === null) { revokeThumbUrls(); return; }
   $('filesList').innerHTML = list.map(f => {
     const name = (f.filename || '').toLowerCase();
     const printable = /\.(png|jpe?g|gif|webp|svg|bmp|pdf)$/.test(name);
@@ -3632,6 +3679,22 @@ async function deleteBackup(key) {
 function printTable() {
   const skladTab = document.querySelector('.tab[data-tab="sklad"]');
   if (skladTab && !skladTab.classList.contains('active')) skladTab.click();
+  // Заполняем печатную шапку текущими фильтрами
+  const parts = [];
+  if (filterState.tip_plenki)    parts.push('Тип плёнки: ' + filterState.tip_plenki);
+  if (filterState.marka)         parts.push('Марка: ' + filterState.marka);
+  if (filterState.model)         parts.push('Модель: ' + filterState.model);
+  if (filterState.raspolozhenie) parts.push('Расположение: ' + filterState.raspolozhenie);
+  const q = $('search').value.trim();
+  if (q) parts.push('Поиск: ' + q);
+  const rowsCount = allRows(q).length;
+  const info = parts.length ? 'Фильтры — ' + parts.join(' · ') : 'Все записи';
+  $('printHeader').innerHTML = `
+    <div style="font-size:15px;font-weight:700;">Плёнка для всех — каталог лекал</div>
+    <div style="font-size:11px;margin-top:4px;">
+      ${esc(info)} · Записей: ${rowsCount} · ${esc(fmtDate(new Date().toISOString()))}
+    </div>
+  `;
   requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
 }
 
@@ -3713,12 +3776,12 @@ async function _push() {
     const b64 = _u8ToBase64(db.export());
     const { error } = await window.__supaClient
       .from('plenka_db')
-      .update({
+      .upsert({
+        id: 1,
         data: b64,
         updated_at: new Date().toISOString(),
         updated_by: DEVICE_ID
-      })
-      .eq('id', 1);
+      }, { onConflict: 'id' });
     if (error) console.warn('push error', error);
     else _lastPushAt = Date.now();
   } catch (e) { console.warn('push', e); }
@@ -3726,7 +3789,7 @@ async function _push() {
 window.__schedulePush = function() {
   if (!_supaReady) return;
   if (_pushTimer) clearTimeout(_pushTimer);
-  _pushTimer = setTimeout(_push, 1200);
+  _pushTimer = setTimeout(() => { _pushTimer = null; _push(); }, 1200);
 };
 
 async function _pull() {
@@ -3755,32 +3818,43 @@ async function _pushInitial() {
     const b64 = _u8ToBase64(db.export());
     await window.__supaClient
       .from('plenka_db')
-      .update({
+      .upsert({
+        id: 1,
         data: b64,
         updated_at: new Date().toISOString(),
         updated_by: DEVICE_ID
-      })
-      .eq('id', 1);
+      }, { onConflict: 'id' });
     _lastPushAt = Date.now();
   } catch (e) { console.warn('pushInitial', e); }
 }
 
 function _subscribeRealtime() {
   if (_realtimeChannel || !window.__supaClient) return;
-  _realtimeChannel = window.__supaClient
-    .channel('plenka_db_changes')
-    .on('postgres_changes',
-      { event: 'UPDATE', schema: 'public', table: 'plenka_db' },
-      async (payload) => {
-        if (payload.new.updated_by === DEVICE_ID) return;
-        const ok = await _pull();
-        if (ok) {
-          refreshDatalists();
-          render(); renderCuts(); renderHistory(); renderStats();
-          toast('Обновлено с сервера');
-        }
-      })
-    .subscribe();
+  try {
+    _realtimeChannel = window.__supaClient
+      .channel('plenka_db_changes')
+      .on('postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'plenka_db' },
+        async (payload) => {
+          if (!payload || !payload.new) return;
+          if (payload.new.updated_by === DEVICE_ID) return;
+          // Если есть отложенный локальный push — сначала отправляем свои изменения,
+          // чтобы они не потерялись при перезагрузке данных с сервера.
+          if (_pushTimer) {
+            clearTimeout(_pushTimer);
+            _pushTimer = null;
+            await _push();
+            return;
+          }
+          const ok = await _pull();
+          if (ok) {
+            refreshDatalists();
+            render(); renderCuts(); renderHistory(); renderStats();
+            toast('Обновлено с сервера');
+          }
+        })
+      .subscribe();
+  } catch (e) { console.warn('realtime subscribe', e); }
 }
 
 async function _initAuth() {
@@ -3789,31 +3863,45 @@ async function _initAuth() {
 
   window.__supaClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  let { error } = await window.__supaClient.auth.signInWithPassword({
-    email: SUPABASE_EMAIL,
-    password: SUPABASE_PASSWORD
-  });
-
-  if (error) {
-    const signup = await window.__supaClient.auth.signUp({
+  // Авторизация обёрнута в try/catch: при отсутствии сети или неверных
+  // данных приложение продолжает работать локально, а не падает целиком.
+  try {
+    let { error } = await window.__supaClient.auth.signInWithPassword({
       email: SUPABASE_EMAIL,
       password: SUPABASE_PASSWORD
     });
-    if (signup.error) {
-      toastError('Не удалось войти: ' + signup.error.message);
-      return;
+
+    if (error) {
+      const signup = await window.__supaClient.auth.signUp({
+        email: SUPABASE_EMAIL,
+        password: SUPABASE_PASSWORD
+      });
+      if (signup.error) {
+        console.warn('signup error', signup.error);
+        toastError('Синхронизация недоступна — работаю локально');
+        return;
+      }
+      if (!signup.data.session) {
+        console.warn('Signup requires email confirmation');
+        toastError('Синхронизация требует подтверждения почты — работаю локально');
+        return;
+      }
     }
-    if (!signup.data.session) {
-      toastError('Аккаунт создан, но требует подтверждения. Выключите "Confirm email" в Supabase.');
-      return;
-    }
+  } catch (e) {
+    console.warn('auth/network', e);
+    toastError('Синхронизация недоступна — работаю локально');
+    return;
   }
 
   _supaReady = true;
 
-  showOverlay('Синхронизирую с сервером…');
-  const pulled = await _pull();
-  if (!pulled) await _pushInitial();
+  try {
+    showOverlay('Синхронизирую с сервером…');
+    const pulled = await _pull();
+    if (!pulled) await _pushInitial();
+  } catch (e) {
+    console.warn('sync init', e);
+  }
   hideOverlay();
   refreshDatalists();
   render(); renderCuts(); renderHistory(); renderStats();
@@ -4013,10 +4101,15 @@ async function initApp() {
       if (e.key === '/') { e.preventDefault(); $('search').focus(); }
       if (e.key === 'n' || e.key === 'N') { e.preventDefault(); openForm(null); }
     }
+    // Enter в форме каталога — сохранить (но не в select и не на кнопке)
     if (e.key === 'Enter' && !$('modal').classList.contains('hidden') &&
-        e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') saveForm();
+        e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT' &&
+        e.target.tagName !== 'BUTTON') saveForm();
+    // Enter в модалке нарезки — сохранить (игнорируем кнопки и выпадающие списки,
+    // чтобы не сработал submit дважды или открытие выпадашки)
     if (e.key === 'Enter' && !$('cutModal').classList.contains('hidden') &&
-        e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') saveCutForm();
+        e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT' &&
+        e.target.tagName !== 'BUTTON') saveCutForm();
   });
 
   function handleCatalogClick(e) {
@@ -4083,7 +4176,8 @@ async function initApp() {
     if (files.length) addAttachments(detailRecordId, files);
   });
 
-  // Инициализация синхронизации — в конце, когда всё объявлено
+  // Инициализация синхронизации — в самом конце. Внутри всё обёрнуто в try/catch,
+  // так что проблемы с сетью не роняют приложение.
   await _initAuth();
 }
 
