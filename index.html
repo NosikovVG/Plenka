@@ -369,6 +369,9 @@
   }
 
   main { padding: 16px 20px 24px; min-width: 0; }
+    .tab-panel { display: none; animation: fade .2s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
   /* ============ Дашборд "Требует внимания" ============ */
   .dashboard {
