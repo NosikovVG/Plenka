@@ -2298,14 +2298,50 @@ function ensureSchema(target) {
       ) WHERE (tip_plenki IS NULL OR tip_plenki = '')
     `);
   } catch(e) {}
-  target.run(`
-    CREATE TABLE IF NOT EXISTS film_stock (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      tip_plenki TEXT UNIQUE,
-      rolls REAL DEFAULT 0,
-      min_rolls REAL DEFAULT 1
-    )
-  `);
+    // --- Склад плёнки: тип + цвет + толщина
+  let stockExists = false;
+  try {
+    const r = target.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='film_stock'");
+    stockExists = r.length > 0 && r[0].values.length > 0;
+  } catch(e) {}
+
+  if (!stockExists) {
+    target.run(`
+      CREATE TABLE film_stock (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        tip_plenki TEXT NOT NULL,
+        color TEXT DEFAULT '',
+        thickness REAL DEFAULT 0,
+        rolls REAL DEFAULT 0,
+        min_rolls REAL DEFAULT 1
+      )
+    `);
+    target.run('CREATE UNIQUE INDEX IF NOT EXISTS uq_stock ON film_stock(tip_plenki, color, thickness)');
+  } else {
+    // Проверяем колонки; если нет color/thickness — пересоздаём таблицу
+    try {
+      const fcols = target.exec("PRAGMA table_info(film_stock)")[0].values.map(v => v[1]);
+      if (!fcols.includes('color') || !fcols.includes('thickness')) {
+        target.run('ALTER TABLE film_stock RENAME TO _film_stock_old');
+        target.run(`
+          CREATE TABLE film_stock (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            tip_plenki TEXT NOT NULL,
+            color TEXT DEFAULT '',
+            thickness REAL DEFAULT 0,
+            rolls REAL DEFAULT 0,
+            min_rolls REAL DEFAULT 1
+          )
+        `);
+        target.run(`
+          INSERT INTO film_stock (tip_plenki, color, thickness, rolls, min_rolls)
+          SELECT tip_plenki, '', 0, rolls, min_rolls FROM _film_stock_old
+        `);
+        target.run('DROP TABLE _film_stock_old');
+        target.run('CREATE UNIQUE INDEX IF NOT EXISTS uq_stock ON film_stock(tip_plenki, color, thickness)');
+      }
+    } catch(e) { console.warn('film_stock migration', e); }
+  }
   target.run(`CREATE INDEX IF NOT EXISTS idx_att_record ON attachments(record_id)`);
   target.run(`CREATE INDEX IF NOT EXISTS idx_hist_record ON history(record_id)`);
   target.run(`CREATE INDEX IF NOT EXISTS idx_hist_created ON history(created_at)`);
