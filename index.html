@@ -2404,20 +2404,12 @@ function allRows(q) {
   const where = [];
   const params = [];
 
-  // Полнотекстовый поиск (простой)
-  if (q) {
-    const like = COLUMNS.map(c => `${c} LIKE ?`).join(' OR ');
-    where.push('(' + like + ')');
-    COLUMNS.forEach(() => params.push('%' + q + '%'));
-  }
-
-  // Обычные фильтры
+  // Обычные фильтры (без текстового поиска — он теперь в JS)
   if (filterState.tip_plenki)    { where.push('tip_plenki = ?');    params.push(filterState.tip_plenki); }
   if (filterState.marka)         { where.push('marka = ?');         params.push(filterState.marka); }
   if (filterState.model)         { where.push('model = ?');         params.push(filterState.model); }
   if (filterState.raspolozhenie) { where.push('raspolozhenie = ?'); params.push(filterState.raspolozhenie); }
 
-  // Быстрые срезы из sidebar
   if (quickFilter === 'no-rashod') {
     where.push("(rashod IS NULL OR rashod = '' OR CAST(rashod AS REAL) <= 0)");
   } else if (quickFilter === 'no-files') {
@@ -2442,7 +2434,70 @@ function allRows(q) {
   const out = [];
   while (stmt.step()) out.push(stmt.getAsObject());
   stmt.free();
-  return out;
+
+  // Текстовый поиск в JS — с транслитом и нечётким сравнением
+  if (!q) return out;
+  return smartFilter(out, q);
+}
+
+// Умный поиск: прямое вхождение → транслит → опечатки
+function smartFilter(rows, query) {
+  const q = query.toLowerCase().trim();
+  if (!q) return rows;
+
+  const qTrans = translit(q);
+  const qWords = q.split(/\s+/).filter(w => w.length >= 2);
+  const qWordsTrans = qWords.map(w => translit(w));
+
+  const scored = [];
+
+  for (const r of rows) {
+    const haystack = [
+      r.pp, r.tip_plenki, r.raspolozhenie, r.marka, r.model, r.artikul
+    ].map(x => String(x || '').toLowerCase()).join(' ');
+    const haystackTrans = translit(haystack);
+
+    let score = 0;
+
+    // 1. Прямое вхождение всей строки
+    if (haystack.includes(q)) score += 200;
+
+    // 2. Транслит всей строки
+    if (qTrans && qTrans !== q && haystackTrans.includes(qTrans)) score += 150;
+
+    // 3. Каждое слово запроса
+    for (let i = 0; i < qWords.length; i++) {
+      const w = qWords[i];
+      const wt = qWordsTrans[i];
+
+      // Прямое вхождение слова
+      if (haystack.includes(w)) score += 40;
+
+      // Транслит слова
+      if (wt && wt !== w && haystackTrans.includes(wt)) score += 30;
+
+      // Нечёткое сравнение по токенам (Левенштейн)
+      if (score < 100) {
+        const tokens = haystack.split(/\s+/).filter(t => t.length >= 3);
+        for (const tok of tokens) {
+          // Прямое сходство
+          const d1 = levenshtein(tok, w);
+          const s1 = 1 - d1 / Math.max(tok.length, w.length);
+          if (s1 >= 0.7) { score += Math.round(s1 * 60); break; }
+          // Транслитерированный токен
+          const tokTr = translit(tok);
+          const d2 = levenshtein(tokTr, wt || w);
+          const s2 = 1 - d2 / Math.max(tokTr.length, (wt || w).length);
+          if (s2 >= 0.7) { score += Math.round(s2 * 55); break; }
+        }
+      }
+    }
+
+    if (score > 0) scored.push({ row: r, score });
+  }
+
+  scored.sort((a, b) => b.score - a.score);
+  return scored.map(s => s.row);
 }
 
 function countRows() {
