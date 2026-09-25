@@ -1835,6 +1835,565 @@
 <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script>
 /* ==========================================================================
+   БАЗОВЫЕ УТИЛИТЫ, ИКОНКИ, КОНСТАНТЫ
+   ========================================================================== */
+
+const _svgWrap = (path, size) =>
+  `<svg width="${size||16}" height="${size||16}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+
+const ICON_PATHS = {
+  scissors: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>',
+  printer: '<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>',
+  paperclip: '<path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>',
+  pencil: '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>',
+  trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  tag: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+  cart: '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>',
+  fileText: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+  external: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',
+  download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
+  warn: '<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  package: '<line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+  chart: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  refresh: '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+  cloud: '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>',
+  sparkle: '<path d="M12 2v3"/><path d="M12 19v3"/><path d="m4.22 4.22 2.12 2.12"/><path d="m17.66 17.66 2.12 2.12"/><path d="M2 12h3"/><path d="M19 12h3"/><path d="m4.22 19.78 2.12-2.12"/><path d="m17.66 6.34 2.12-2.12"/><circle cx="12" cy="12" r="4"/>',
+  filter: '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>'
+};
+const icon = (name, size) => _svgWrap(ICON_PATHS[name] || '', size);
+
+const COLUMNS = ['pp','tip_plenki','raspolozhenie','marka','model','rashod','nalichie','cena','artikul'];
+const HEADERS = {
+  pp:'ПП', tip_plenki:'Тип плёнки', raspolozhenie:'Расположение',
+  marka:'Марка', model:'Модель', rashod:'Расход, м',
+  nalichie:'Наличие', cena:'Цена', artikul:'Артикул'
+};
+const INLINE_EDITABLE = ['tip_plenki','raspolozhenie','marka','model','rashod','artikul'];
+const EDITABLE = ['tip_plenki','raspolozhenie','marka','model','rashod','nalichie','cena','artikul'];
+const NUMERIC_FIELDS = ['rashod','nalichie'];
+const DATALISTS = { tip_plenki:'dl-tip_plenki', marka:'dl-marka' };
+const HINTS = {
+  tip_plenki:'Выберите из списка или введите новый',
+  marka:'Выберите из списка или введите новую',
+  rashod:'Сколько метров уходит на одну машину. Используется для списания плёнки при нарезке.',
+  cena:'Цена может меняться'
+};
+const DEBOUNCE_SEARCH = 180;
+const MAX_FILE_SIZE = 50 * 1024 * 1024;
+const A4_W = 595.28, A4_H = 841.89;
+const SHYMKA_URL = 'https://www.shymka.ru/';
+const THEMES = ['original','workshop','tech','north','earth','minimal'];
+const DENSITIES = ['compact','normal','roomy'];
+
+const DEFECT_REASONS = [
+  'Плоттер сбился',
+  'Плёнка порвалась',
+  'Плёнка не легла',
+  'Ошибка раскроя',
+  'Скрытый дефект плёнки',
+  'Другое'
+];
+
+const SEED = [
+  [1,'ПВХ','фары','Toyota','Avensis 2010','','','','N1'],
+  [2,'ПВХ','фары','Toyota','Camry 2012','','','','N2'],
+  [3,'ПВХ','фары','Toyota','CH-R 2019','','','','N3'],
+  [4,'ПВХ','фары','Toyota','CH-R 2021','','','','N4'],
+  [5,'ПВХ','фары','Toyota','Fortuner (2017)','','','','N5'],
+  [6,'ПВХ','фары','Toyota','Highlander (Base,SE,LE) 2011','','','','N6'],
+  [7,'ПВХ','фары','Toyota','Land Cruiser 200 (2010)','','','','N7'],
+  [8,'ПВХ','фары','Toyota','Land Cruiser 200 (2014-15)','','','','N8'],
+  [9,'ПВХ','фары','Toyota','Land Cruiser 200 (2015)','','','','N9'],
+  [10,'ПВХ','фары','Toyota','Land Cruiser 2008','','','','N10'],
+  [11,'ПВХ','фары','Toyota','Land Cruiser Prado 120 2008','','','','N11'],
+  [12,'ПВХ','фары','Toyota','Land Cruiser Prado 150 2018 Lounge','','','','N12'],
+  [13,'ПВХ','фары','Toyota','Land Cruiser Prado 150 2010','','','','N13'],
+  [14,'ПВХ','фары','Toyota','Raize 2023','','','','N14'],
+  [15,'ПВХ','фары','Toyota','RAV4 (XA3_rest) LW 2009','','','','N15'],
+  [16,'ПВХ','фары','Toyota','RAV4 2008','','','','N16'],
+];
+
+let SQL = null;
+let db = null;
+let editingId = null;
+let detailRecordId = null;
+let editingCutId = null;
+let editingRollType = null;
+let currentTab = 'sklad';
+let searchDebounce = null;
+let sortState = { column: 'pp', direction: 'asc' };
+let filterState = { tip_plenki:'', marka:'', model:'', raspolozhenie:'' };
+let quickFilter = 'all';
+let selectedIds = new Set();
+let currentCutDraft = null;
+let installPrompt = null;
+
+const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g,
+    c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function base64ToU8(b64) {
+  const bin = atob(b64);
+  const u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  return u8;
+}
+
+function downloadBlob(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+function humanSize(n) {
+  if (n == null) return '';
+  if (n < 1024) return n + ' Б';
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' КБ';
+  return (n / 1024 / 1024).toFixed(2) + ' МБ';
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleString('ru-RU',
+    { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' });
+}
+
+function fmtDateOnly(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('ru-RU',
+    { day:'2-digit', month:'2-digit', year:'2-digit' });
+}
+
+function fmtDateHuman(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const now = new Date();
+  const diff = (now - d) / 1000;
+  if (diff < 60) return 'только что';
+  if (diff < 3600) return Math.floor(diff / 60) + ' мин назад';
+  if (diff < 86400 && d.toDateString() === now.toDateString())
+    return 'сегодня в ' + d.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
+  return fmtDate(iso);
+}
+
+function todayIso() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+}
+
+function daysAgoIso(days) {
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  const pad = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+}
+
+function parseNum(v) {
+  if (v === '' || v == null) return 0;
+  const n = Number(String(v).replace(',', '.'));
+  return isNaN(n) ? 0 : n;
+}
+
+function normalizeText(s) {
+  if (s == null) return '';
+  let t = String(s).trim().replace(/\s+/g, ' ');
+  t = t.replace(/[.,;:]+\s*$/, '');
+  return t;
+}
+
+function normalizeTitle(s) {
+  const t = normalizeText(s);
+  if (!t) return t;
+  if (t === t.toUpperCase() && t.length > 2) return t;
+  return t[0].toUpperCase() + t.slice(1);
+}
+
+function levenshtein(a, b) {
+  a = (a || '').toLowerCase(); b = (b || '').toLowerCase();
+  if (a === b) return 0;
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  const m = [];
+  for (let i = 0; i <= b.length; i++) m[i] = [i];
+  for (let j = 0; j <= a.length; j++) m[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      m[i][j] = b[i - 1] === a[j - 1]
+        ? m[i - 1][j - 1]
+        : Math.min(m[i - 1][j - 1] + 1, m[i][j - 1] + 1, m[i - 1][j] + 1);
+    }
+  }
+  return m[b.length][a.length];
+}
+
+function showOverlay(text) {
+  $('overlayText').textContent = text || 'Обработка…';
+  $('overlayProg').style.display = 'none';
+  $('overlay').classList.remove('hidden');
+}
+function showOverlayProgress(text, percent) {
+  $('overlayText').textContent = text || 'Обработка…';
+  $('overlayProg').style.display = 'block';
+  $('overlayProgFill').style.width = Math.max(0, Math.min(100, percent)) + '%';
+  $('overlay').classList.remove('hidden');
+}
+function hideOverlay() { $('overlay').classList.add('hidden'); }
+
+let toastTimer;
+function toast(msg) {
+  const t = $('toast');
+  t.classList.remove('error', 'big');
+  t.innerHTML = '<span class="check">✓</span> ' + esc(msg);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+function toastBig(html) {
+  const t = $('toast');
+  t.classList.remove('error');
+  t.innerHTML = html;
+  t.classList.add('show', 'big');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show', 'big'), 5000);
+}
+function toastError(msg) {
+  const t = $('toast');
+  t.classList.remove('big');
+  t.innerHTML = '<span class="check">⚠</span> ' + esc(msg);
+  t.classList.add('show', 'error');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show', 'error'), 3400);
+}
+
+function vibrate(ms) {
+  try { if (navigator.vibrate) navigator.vibrate(ms || 12); } catch(e) {}
+}
+
+let confirmResolver = null;
+function confirmDialog(opts) {
+  opts = opts || {};
+  return new Promise(resolve => {
+    confirmResolver = resolve;
+    $('confirmTitle').textContent = opts.title || 'Подтверждение';
+    $('confirmMessage').textContent = opts.message || '';
+    const okBtn = $('confirmOk');
+    okBtn.textContent = opts.okText || 'OK';
+    okBtn.className = 'btn ' + (opts.danger ? 'danger' : 'primary');
+    $('confirmCancel').textContent = opts.cancelText || 'Отмена';
+    $('confirmModal').classList.remove('hidden');
+    setTimeout(() => okBtn.focus(), 50);
+  });
+}
+function closeConfirm(result) {
+  $('confirmModal').classList.add('hidden');
+  if (confirmResolver) { confirmResolver(result); confirmResolver = null; }
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  try { localStorage.setItem('theme', theme); } catch(e) {}
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'light';
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+}
+function applyThemeColor(color) {
+  if (!THEMES.includes(color)) color = 'original';
+  document.documentElement.setAttribute('data-theme-color', color);
+  try { localStorage.setItem('theme_color', color); } catch(e) {}
+  $$('.theme-option').forEach(el => {
+    el.classList.toggle('active', el.dataset.themeColor === color);
+  });
+}
+function applyDensity(d) {
+  if (!DENSITIES.includes(d)) d = 'normal';
+  document.documentElement.setAttribute('data-density', d);
+  try { localStorage.setItem('density', d); } catch(e) {}
+  ['densityRow','densityRow2'].forEach(rowId => {
+    const row = $(rowId);
+    if (!row) return;
+    row.querySelectorAll('button').forEach(b =>
+      b.classList.toggle('active', b.dataset.density === d));
+  });
+}
+
+const IDB_NAME = 'uchet_idb';
+const IDB_KV = 'kv';
+const IDB_FILES = 'files';
+const IDB_KEY = 'sqlite_v9';
+
+function idbOpen() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open(IDB_NAME, 2);
+    req.onupgradeneeded = () => {
+      const idb = req.result;
+      if (!idb.objectStoreNames.contains(IDB_KV)) idb.createObjectStore(IDB_KV);
+      if (!idb.objectStoreNames.contains(IDB_FILES)) idb.createObjectStore(IDB_FILES);
+    };
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+async function idbGet(key) {
+  const idb = await idbOpen();
+  return new Promise((res, rej) => {
+    const tx = idb.transaction(IDB_KV, 'readonly');
+    const req = tx.objectStore(IDB_KV).get(key);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+async function idbSet(key, val) {
+  const idb = await idbOpen();
+  return new Promise((res, rej) => {
+    const tx = idb.transaction(IDB_KV, 'readwrite');
+    tx.objectStore(IDB_KV).put(val, key);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+async function idbKeys() {
+  const idb = await idbOpen();
+  return new Promise((res, rej) => {
+    const tx = idb.transaction(IDB_KV, 'readonly');
+    const req = tx.objectStore(IDB_KV).getAllKeys();
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+async function idbDelete(key) {
+  const idb = await idbOpen();
+  return new Promise((res, rej) => {
+    const tx = idb.transaction(IDB_KV, 'readwrite');
+    tx.objectStore(IDB_KV).delete(key);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+async function idbPutFile(key, blob) {
+  const idb = await idbOpen();
+  return new Promise((res, rej) => {
+    const tx = idb.transaction(IDB_FILES, 'readwrite');
+    tx.objectStore(IDB_FILES).put(blob, String(key));
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+async function idbGetFile(key) {
+  const idb = await idbOpen();
+  return new Promise((res, rej) => {
+    const tx = idb.transaction(IDB_FILES, 'readonly');
+    const req = tx.objectStore(IDB_FILES).get(String(key));
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+async function idbDelFile(key) {
+  const idb = await idbOpen();
+  return new Promise((res, rej) => {
+    const tx = idb.transaction(IDB_FILES, 'readwrite');
+    tx.objectStore(IDB_FILES).delete(String(key));
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+async function idbFileKeys() {
+  const idb = await idbOpen();
+  return new Promise((res, rej) => {
+    const tx = idb.transaction(IDB_FILES, 'readonly');
+    const r = tx.objectStore(IDB_FILES).getAllKeys();
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+
+function ensureSchema(target) {
+  target = target || db;
+  target.run(`PRAGMA foreign_keys = ON;`);
+  target.run(`
+    CREATE TABLE IF NOT EXISTS plenki (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      pp INTEGER, tip_plenki TEXT, raspolozhenie TEXT,
+      marka TEXT, model TEXT, rashod TEXT,
+      nalichie TEXT, cena TEXT, artikul TEXT
+    )
+  `);
+  try {
+    const cols = target.exec("PRAGMA table_info(plenki)")[0].values.map(v => v[1]);
+    if (!cols.includes('rashod')) {
+      target.run('ALTER TABLE plenki ADD COLUMN rashod TEXT DEFAULT ""');
+    }
+  } catch(e) {}
+  target.run(`
+    CREATE TABLE IF NOT EXISTS attachments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      record_id INTEGER NOT NULL,
+      filename TEXT, mime TEXT, size INTEGER,
+      storage_key TEXT, data BLOB, uploaded_at TEXT
+    )
+  `);
+  try {
+    const acols = target.exec("PRAGMA table_info(attachments)")[0].values.map(v => v[1]);
+    if (!acols.includes('storage_key')) {
+      target.run('ALTER TABLE attachments ADD COLUMN storage_key TEXT');
+    }
+  } catch(e) {}
+  target.run(`
+    CREATE TABLE IF NOT EXISTS history (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      record_id INTEGER, action TEXT, field TEXT,
+      old_value TEXT, new_value TEXT, details TEXT, created_at TEXT
+    )
+  `);
+  target.run(`
+    CREATE TABLE IF NOT EXISTS orders (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      record_id INTEGER NOT NULL,
+      tip_plenki TEXT DEFAULT "",
+      qty INTEGER DEFAULT 0,
+      defect_qty INTEGER DEFAULT 0,
+      defect_reason TEXT DEFAULT "",
+      meters_consumed REAL DEFAULT 0,
+      cut_date TEXT,
+      notes TEXT,
+      created_at TEXT,
+      updated_at TEXT,
+      customer TEXT,
+      status TEXT,
+      film_consumed INTEGER DEFAULT 0
+    )
+  `);
+  try {
+    const ocols = target.exec("PRAGMA table_info(orders)")[0].values.map(v => v[1]);
+    if (!ocols.includes('defect_qty')) {
+      target.run('ALTER TABLE orders ADD COLUMN defect_qty INTEGER DEFAULT 0');
+    }
+    if (!ocols.includes('defect_reason')) {
+      target.run('ALTER TABLE orders ADD COLUMN defect_reason TEXT DEFAULT ""');
+    }
+    if (!ocols.includes('meters_consumed')) {
+      target.run('ALTER TABLE orders ADD COLUMN meters_consumed REAL DEFAULT 0');
+    }
+    if (!ocols.includes('cut_date')) {
+      target.run('ALTER TABLE orders ADD COLUMN cut_date TEXT');
+      target.run("UPDATE orders SET cut_date = substr(created_at,1,10) WHERE cut_date IS NULL");
+    }
+    if (!ocols.includes('tip_plenki')) {
+      target.run('ALTER TABLE orders ADD COLUMN tip_plenki TEXT DEFAULT ""');
+    }
+    target.run(`
+      UPDATE orders SET tip_plenki = COALESCE(
+        (SELECT tip_plenki FROM plenki WHERE plenki.id = orders.record_id), ''
+      ) WHERE (tip_plenki IS NULL OR tip_plenki = '')
+    `);
+  } catch(e) {}
+  target.run(`
+    CREATE TABLE IF NOT EXISTS film_stock (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      tip_plenki TEXT UNIQUE,
+      rolls REAL DEFAULT 0,
+      min_rolls REAL DEFAULT 1
+    )
+  `);
+  target.run(`CREATE INDEX IF NOT EXISTS idx_att_record ON attachments(record_id)`);
+  target.run(`CREATE INDEX IF NOT EXISTS idx_hist_record ON history(record_id)`);
+  target.run(`CREATE INDEX IF NOT EXISTS idx_hist_created ON history(created_at)`);
+  target.run(`CREATE INDEX IF NOT EXISTS idx_cut_record ON orders(record_id)`);
+  target.run(`CREATE INDEX IF NOT EXISTS idx_cut_date ON orders(cut_date)`);
+}
+
+function createSchema() { ensureSchema(db); }
+
+function seedDb() {
+  const stmt = db.prepare(`
+    INSERT INTO plenki (pp, tip_plenki, raspolozhenie, marka,
+       model, rashod, nalichie, cena, artikul)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+  SEED.forEach(r => stmt.run(r));
+  stmt.free();
+  db.run(`INSERT OR IGNORE INTO film_stock (tip_plenki, rolls, min_rolls) VALUES ('ПВХ', 5, 2)`);
+}
+
+async function persist() {
+  try {
+    await idbSet(IDB_KEY, db.export());
+  } catch (e) {
+    console.warn('persist', e);
+    if (e && e.name === 'QuotaExceededError') {
+      toastError('Хранилище переполнено. Удалите старые резервные копии.');
+    }
+  }
+  if (window.__schedulePush) window.__schedulePush();
+}
+
+async function autoBackup() {
+  const today = new Date().toISOString().slice(0, 10);
+  const last = localStorage.getItem('last_backup_date');
+  if (last === today) return;
+  try {
+    await idbSet('backup_' + Date.now(), db.export());
+    const keys = (await idbKeys()).filter(k => String(k).startsWith('backup_'));
+    keys.sort();
+    while (keys.length > 7) await idbDelete(keys.shift());
+  } catch (e) {
+    console.warn('autoBackup', e);
+  } finally {
+    try { localStorage.setItem('last_backup_date', today); } catch(e) {}
+  }
+}
+
+const syncState = {
+  value: 'ready',
+  lastSavedAt: null
+};
+
+function updateSyncIndicator() {
+  const el = $('syncIndicator');
+  const text = $('syncText');
+  if (!el) return;
+  el.dataset.state = syncState.value;
+  let label = 'Готово';
+  if (syncState.value === 'saving') label = 'Сохраняю…';
+  else if (syncState.value === 'offline') label = 'Оффлайн';
+  else if (syncState.value === 'error') label = 'Ошибка';
+  else if (syncState.lastSavedAt) {
+    const diff = (Date.now() - syncState.lastSavedAt) / 1000;
+    if (diff < 30) label = 'Сохранено';
+    else if (diff < 3600) label = Math.floor(diff / 60) + ' мин назад';
+    else label = 'Сохранено';
+  }
+  if (text) text.textContent = label;
+  el.title = 'Синхронизация: ' + label;
+}
+
+function setSyncState(state, savedAt) {
+  syncState.value = state;
+  if (savedAt) syncState.lastSavedAt = savedAt;
+  updateSyncIndicator();
+}
+
+setInterval(() => {
+  if (syncState.value === 'ready') updateSyncIndicator();
+}, 30000);
+
+window.addEventListener('online', () => {
+  if (syncState.value === 'offline') setSyncState('ready');
+});
+window.addEventListener('offline', () => setSyncState('offline'));
+
+/* ==========================================================================
    ЗАПРОСЫ К БД
    ========================================================================== */
 
@@ -4956,24 +5515,28 @@ async function loadAIModule() {
   AI_STATE.loading = true;
   try {
     showOverlayProgress('Загружаю модель ИИ… 0%', 0);
-    const mod = await import('./lib/ai-search.js');
-    await mod.init({
-      onProgress: (p) => {
-        const pct = Math.round((p || 0) * 100);
-        showOverlayProgress(`Загружаю модель ИИ… ${pct}%`, pct);
-      },
-      onIndexProgress: (p) => {
-        const pct = Math.round((p || 0) * 100);
-        showOverlayProgress(`Строю индекс по каталогу… ${pct}%`, pct);
-      },
-      libPath: './lib/transformers.min.js',
-      getRecords: () => {
-        const stmt = db.prepare('SELECT id, marka, model, artikul, raspolozhenie, tip_plenki FROM plenki');
-        const out = [];
-        while (stmt.step()) out.push(stmt.getAsObject());
-        stmt.free();
-        return out;
-      }
+    // Динамический импорт модуля из ./lib/ai-search.js
+const mod = await import('./lib/ai-search.js');
+await mod.init({
+  onProgress: (p) => {
+    const pct = Math.round((p || 0) * 100);
+    showOverlayProgress(`Загружаю модель ИИ… ${pct}%`, pct);
+  },
+  onIndexProgress: (p) => {
+    const pct = Math.round((p || 0) * 100);
+    showOverlayProgress(`Строю индекс по каталогу… ${pct}%`, pct);
+  },
+  libPath: './lib/transformers.min.js',
+  getRecords: () => {
+    const stmt = db.prepare('SELECT id, marka, model, artikul, raspolozhenie, tip_plenki FROM plenki');
+    const out = [];
+    while (stmt.step()) out.push(stmt.getAsObject());
+    stmt.free();
+    return out;
+  }
+});
+      modelPath: './models/paraphrase-multilingual-minilm/',
+      libPath: './lib/transformers.min.js'
     });
     AI_STATE.module = mod;
     AI_STATE.loaded = true;
