@@ -3436,7 +3436,9 @@ function renderCuts() {
    ========================================================================== */
 
 function renderHistory() {
-  const filter = $('historyActionFilter').value;
+    const filterEl = $('historyActionFilter');
+  if (!filterEl) return;
+  const filter = filterEl.value;
   const list = allHistory(filter);
   const el = $('historyList');
   if (!list.length) {
@@ -6280,8 +6282,13 @@ function setupCutsHandlers() {
 }
 
 function setupHistoryHandlers() {
-  $('historyActionFilter').onchange = renderHistory;
-  $('btnClearHistory').onclick = async () => {
+  const filterEl = $('historyActionFilter');
+  const clearBtn = $('btnClearHistory');
+  if (!filterEl && !clearBtn) return;
+
+  if (filterEl) filterEl.onchange = renderHistory;
+
+  if (clearBtn) clearBtn.onclick = async () => {
     const yes = await confirmDialog({
       title: 'Очистить историю?',
       message: 'Все записи журнала будут удалены. Это действие необратимо.',
