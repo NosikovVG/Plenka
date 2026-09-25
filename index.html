@@ -3092,10 +3092,18 @@ function buildMobileCard(r, c, cut, defect) {
       </div>
     </div>`;
 }
-
 function render() {
   const q = $('search').value.trim();
-  const rows = allRows(q);
+  const useAi = aiSearchResults !== null;
+  // Если активен AI-поиск — не фильтруем по тексту, отбираем по id
+  let rows = allRows(useAi ? '' : q);
+
+  if (useAi) {
+    const order = new Map(aiSearchResults.map((id, i) => [id, i]));
+    rows = rows.filter(r => order.has(r.id));
+    rows.sort((a, b) => order.get(a.id) - order.get(b.id));
+  }
+
   const counts = attachmentCounts();
   const cutQty = cutQtyByRecord();
   const cutDefect = cutDefectByRecord();
@@ -3103,11 +3111,12 @@ function render() {
   const tbody = $('tbody');
   const mobileList = $('mobileList');
 
-  const hasFilter = q || Object.values(filterState).some(Boolean) || quickFilter !== 'all';
+  const hasFilter = q || Object.values(filterState).some(Boolean)
+    || quickFilter !== 'all' || useAi;
   const emptyHtml = `
     <div class="empty">
       <span class="empty-icon">📦</span>
-      ${hasFilter ? 'Ничего не найдено' : 'Записей пока нет'}
+      ${useAi ? 'AI ничего не нашёл по смыслу' : (hasFilter ? 'Ничего не найдено' : 'Записей пока нет')}
       ${hasFilter ? `
         <div class="empty-hint">
           <button id="emptyResetFilters">Сбросить фильтры</button>
@@ -3138,9 +3147,13 @@ function render() {
   // Статус
   const total = countRows();
   const filtered = rows.length;
-  $('status').textContent = hasFilter
-    ? `Показано: ${filtered} из ${total}`
-    : `Всего: ${total}`;
+  if (useAi) {
+    $('status').textContent = `AI-поиск: найдено ${filtered} из ${total}`;
+  } else {
+    $('status').textContent = hasFilter
+      ? `Показано: ${filtered} из ${total}`
+      : `Всего: ${total}`;
+  }
   $('toolbarStatus').textContent = selectedIds.size
     ? `Выбрано: ${selectedIds.size}`
     : '';
@@ -3170,7 +3183,6 @@ function render() {
   renderDashboard();
   renderSidebar();
 }
-
 function resetAllFilters() {
   filterState = { tip_plenki:'', marka:'', model:'', raspolozhenie:'' };
   quickFilter = 'all';
