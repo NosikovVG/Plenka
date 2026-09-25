@@ -888,6 +888,63 @@
     .feature-grid, .hotkeys, .field-row { grid-template-columns: 1fr; }
     .theme-grid { grid-template-columns: repeat(3, 1fr); }
   }
+
+.lock-screen {
+  position: fixed; inset: 0;
+  background: var(--body-gradient), var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 90; padding: 20px;
+}
+.lock-screen.hidden { display: none; }
+.lock-box {
+  width: 100%; max-width: 340px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 32px 24px 24px;
+  text-align: center;
+}
+.lock-logo {
+  width: 64px; height: 64px; border-radius: 18px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-600));
+  color: #fff; display: grid; place-items: center;
+  font-weight: 800; font-size: 30px;
+  margin: 0 auto 16px;
+}
+.lock-title { font-size: 18px; margin: 0 0 6px; font-weight: 700; }
+.lock-sub { font-size: 13px; color: var(--text-3); margin-bottom: 22px; }
+.pin-dots {
+  display: flex; justify-content: center; gap: 14px;
+  margin-bottom: 24px;
+}
+.pin-dots span {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--border); transition: all .15s;
+}
+.pin-dots span.filled {
+  background: var(--primary); transform: scale(1.18);
+}
+.pin-dots.shake { animation: pinShake .4s; }
+@keyframes pinShake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.pin-pad {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.pin-pad button {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  border-radius: 14px; padding: 16px 0;
+  font-size: 22px; font-weight: 600;
+  color: var(--text); cursor: pointer;
+  user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.pin-pad button:active { background: var(--bg-2); transform: scale(.95); }
+.pin-pad button.pin-face { font-size: 12.5px; color: var(--primary-600); }
+.pin-pad button.pin-face svg { width: 22px; height: 22px; display: block; margin: 0 auto 2px; }
+.lock-error { color: var(--danger); font-size: 12.5px; margin-top: 16px; min-height: 18px; }
   @media print {
     @page { size: landscape; margin: 10mm; }
     .no-print { display: none !important; }
@@ -1217,6 +1274,18 @@
 </div>
 
 <div class="modal hidden" id="settingsModal">
+<button class="btn ghost" id="btnChangePin">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  Сменить PIN-код
+</button>
+<button class="btn ghost" id="btnFaceIdSetting">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/><path d="M9.5 15a4 4 0 0 0 5 0"/></svg>
+  <span id="faceIdSettingLabel">Face ID</span>
+</button>
+<button class="btn ghost" id="btnLockNow">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  Заблокировать сейчас
+</button>
   <div class="modal-box" role="dialog" aria-modal="true">
     <h2>Настройки</h2>
     <div style="display:flex;flex-direction:column;gap:10px;">
@@ -1412,6 +1481,34 @@
       <button class="btn ghost" id="confirmCancel">Отмена</button>
       <button class="btn primary" id="confirmOk">OK</button>
     </div>
+  </div>
+</div>
+
+<div class="lock-screen hidden" id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-logo">П</div>
+    <h1 class="lock-title">Пленка для всех</h1>
+    <div class="lock-sub" id="lockSub">Введите PIN-код</div>
+    <div class="pin-dots" id="pinDots"></div>
+    <div class="pin-pad" id="pinPad">
+      <button type="button" data-pin="1">1</button>
+      <button type="button" data-pin="2">2</button>
+      <button type="button" data-pin="3">3</button>
+      <button type="button" data-pin="4">4</button>
+      <button type="button" data-pin="5">5</button>
+      <button type="button" data-pin="6">6</button>
+      <button type="button" data-pin="7">7</button>
+      <button type="button" data-pin="8">8</button>
+      <button type="button" data-pin="9">9</button>
+      <button type="button" data-pin="face" class="pin-face" id="btnFaceId" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/><path d="M9.5 15a4 4 0 0 0 5 0"/></svg>
+        Face ID
+      </button>
+      <button type="button" data-pin="0">0</button>
+      <button type="button" data-pin="del">⌫</button>
+    </div>
+    <div class="lock-error" id="lockError"></div>
+    <div class="lock-hint" id="lockHint"></div>
   </div>
 </div>
 
@@ -3830,6 +3927,301 @@ async function _initAuth() {
 }
 
 /* ============ ИНИЦИАЛИЗАЦИЯ ============ */
+/* ============ АУТЕНТИФИКАЦИЯ: PIN + FACE ID ============ */
+const AUTH_KEY         = 'auth_pin_v1';
+const AUTH_FACE_KEY    = 'auth_face_v1';
+const AUTH_SESSION_KEY = 'auth_session_v1';
+const SESSION_TTL_MS   = 12 * 60 * 60 * 1000;
+const PIN_LENGTH       = 4;
+const PBKDF2_ITER      = 120000;
+
+function bufToB64(buf) {
+  const bytes = buf instanceof Uint8Array ? buf : new Uint8Array(buf);
+  let s = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(s);
+}
+function b64ToU8(b64) {
+  const bin = atob(b64);
+  const u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  return u8;
+}
+
+// PBKDF2-SHA256, 120k итераций — как в проверенных решениях[reference:9]
+async function hashPin(pin, salt) {
+  if (crypto.subtle) {
+    const enc = new TextEncoder();
+    const key = await crypto.subtle.importKey('raw', enc.encode(String(pin)),
+      { name: 'PBKDF2' }, false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', salt, iterations: PBKDF2_ITER, hash: 'SHA-256' },
+      key, 256
+    );
+    return new Uint8Array(bits);
+  }
+  console.warn('crypto.subtle недоступен — используется fallback');
+  const s = String(pin) + ':' + bufToB64(salt);
+  let h1 = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) h1 = ((h1 ^ s.charCodeAt(i)) * 16777619) >>> 0;
+  const out = new Uint8Array(32);
+  for (let i = 0; i < 32; i++) out[i] = (h1 >>> ((i % 4) * 8)) & 0xff;
+  return out;
+}
+
+async function setPin(pin) {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const hash = await hashPin(pin, salt);
+  localStorage.setItem(AUTH_KEY, JSON.stringify({
+    v: 1, iter: PBKDF2_ITER, salt: bufToB64(salt), hash: bufToB64(hash)
+  }));
+}
+async function verifyPin(pin) {
+  const raw = localStorage.getItem(AUTH_KEY);
+  if (!raw) return false;
+  try {
+    const { salt, hash } = JSON.parse(raw);
+    const expected = b64ToU8(hash);
+    const actual = await hashPin(pin, b64ToU8(salt));
+    if (actual.length !== expected.length) return false;
+    let diff = 0;
+    for (let i = 0; i < actual.length; i++) diff |= actual[i] ^ expected[i];
+    return diff === 0; // constant-time comparison
+  } catch (e) { return false; }
+}
+function hasPinSet() { return !!localStorage.getItem(AUTH_KEY); }
+
+function setSession() {
+  localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ exp: Date.now() + SESSION_TTL_MS }));
+}
+function hasValidSession() {
+  try {
+    const s = JSON.parse(localStorage.getItem(AUTH_SESSION_KEY) || '{}');
+    return !!(s.exp && s.exp > Date.now());
+  } catch (e) { return false; }
+}
+function clearSession() { localStorage.removeItem(AUTH_SESSION_KEY); }
+
+/* --- Face ID / WebAuthn --- */
+function isWebAuthnAvailable() {
+  return !!(window.PublicKeyCredential && navigator.credentials && location.protocol !== 'file:');
+}
+async function isPlatformAuthAvailable() {
+  if (!isWebAuthnAvailable()) return false;
+  try {
+    return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+  } catch (e) { return false; }
+}
+function getFaceIdCred() {
+  try { return JSON.parse(localStorage.getItem(AUTH_FACE_KEY) || 'null'); }
+  catch (e) { return null; }
+}
+async function registerFaceId() {
+  if (!await isPlatformAuthAvailable()) throw new Error('Face ID недоступен');
+  const challenge = crypto.getRandomValues(new Uint8Array(32));
+  const userId    = crypto.getRandomValues(new Uint8Array(16));
+  const cred = await navigator.credentials.create({
+    publicKey: {
+      challenge,
+      rp: { name: 'Пленка для всех' },
+      user: { id: userId, name: 'user@plenka', displayName: 'Пользователь' },
+      pubKeyCredParams: [
+        { type: 'public-key', alg: -7 },
+        { type: 'public-key', alg: -257 }
+      ],
+      authenticatorSelection: {
+        authenticatorAttachment: 'platform',
+        userVerification: 'required',
+        residentKey: 'preferred'
+      },
+      timeout: 60000,
+      attestation: 'none'
+    }
+  });
+  if (!cred) throw new Error('Не удалось создать ключ');
+  localStorage.setItem(AUTH_FACE_KEY, JSON.stringify({ id: bufToB64(cred.rawId), at: Date.now() }));
+}
+async function verifyFaceId() {
+  const stored = getFaceIdCred();
+  if (!stored) return false;
+  const challenge = crypto.getRandomValues(new Uint8Array(32));
+  try {
+    const assertion = await navigator.credentials.get({
+      publicKey: {
+        challenge,
+        allowCredentials: [{ type: 'public-key', id: b64ToU8(stored.id) }],
+        userVerification: 'required',
+        timeout: 60000
+      }
+    });
+    return !!assertion;
+  } catch (e) { return false; }
+}
+function clearFaceId() { localStorage.removeItem(AUTH_FACE_KEY); }
+
+/* --- UI лок-скрина --- */
+const Auth = {
+  state: 'idle', setupPin: '', inputPin: '', onUnlock: null, els: {},
+
+  init() {
+    this.els = {
+      screen: $('lockScreen'), sub: $('lockSub'), dots: $('pinDots'),
+      pad: $('pinPad'), error: $('lockError'), hint: $('lockHint'),
+      faceBtn: $('btnFaceId')
+    };
+    this.els.pad.addEventListener('click', e => {
+      const btn = e.target.closest('button[data-pin]');
+      if (!btn) return;
+      const v = btn.dataset.pin;
+      if (v === 'del') this.deleteDigit();
+      else if (v === 'face') this.tryFaceId();
+      else this.addDigit(v);
+    });
+    document.addEventListener('keydown', e => {
+      if (this.els.screen.classList.contains('hidden')) return;
+      if (/^[0-9]$/.test(e.key)) { e.preventDefault(); this.addDigit(e.key); }
+      else if (e.key === 'Backspace') { e.preventDefault(); this.deleteDigit(); }
+    });
+  },
+
+  async show(mode) {
+    document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
+    this.els.screen.classList.remove('hidden');
+
+    if (mode === 'change') {
+      this.state = 'unlock'; this._afterUnlock = 'change';
+      this.inputPin = ''; this.els.sub.textContent = 'Введите текущий PIN';
+      this.els.faceBtn.style.display = 'none';
+    } else if (!hasPinSet()) {
+      this.state = 'setup'; this.setupPin = ''; this.inputPin = '';
+      this.els.sub.textContent = 'Придумайте PIN-код';
+      this.els.hint.textContent = 'PIN из ' + PIN_LENGTH + ' цифр защитит доступ.';
+      this.els.faceBtn.style.display = 'none';
+    } else {
+      this.state = 'unlock'; this._afterUnlock = null; this.inputPin = '';
+      this.els.sub.textContent = 'Введите PIN-код';
+      this.els.hint.textContent = '';
+      const avail = await isPlatformAuthAvailable();
+      this.els.faceBtn.style.display = (avail && getFaceIdCred()) ? '' : 'none';
+    }
+    this.renderDots();
+    this.els.error.textContent = '';
+  },
+
+  hide() { this.els.screen.classList.add('hidden'); },
+
+  renderDots() {
+    let html = '';
+    for (let i = 0; i < PIN_LENGTH; i++) {
+      html += `<span${i < this.inputPin.length ? ' class="filled"' : ''}></span>`;
+    }
+    this.els.dots.innerHTML = html;
+  },
+
+  addDigit(d) {
+    if (this.inputPin.length >= PIN_LENGTH) return;
+    this.inputPin += d; this.renderDots(); this.els.error.textContent = '';
+    if (this.inputPin.length === PIN_LENGTH) setTimeout(() => this.submit(), 120);
+  },
+  deleteDigit() {
+    if (!this.inputPin.length) return;
+    this.inputPin = this.inputPin.slice(0, -1); this.renderDots();
+  },
+
+  async submit() {
+    const pin = this.inputPin; this.inputPin = ''; this.renderDots();
+
+    if (this.state === 'setup') {
+      this.setupPin = pin; this.state = 'confirm';
+      this.els.sub.textContent = 'Повторите PIN-код'; return;
+    }
+    if (this.state === 'confirm') {
+      if (pin !== this.setupPin) {
+        this.state = 'setup'; this.setupPin = '';
+        this.els.sub.textContent = 'Придумайте PIN-код';
+        this.els.error.textContent = 'PIN-коды не совпадают';
+        this.els.dots.classList.add('shake');
+        setTimeout(() => this.els.dots.classList.remove('shake'), 400);
+        return;
+      }
+      await setPin(pin); setSession();
+      const avail = await isPlatformAuthAvailable();
+      if (avail && !getFaceIdCred()) {
+        const yes = await confirmDialog({
+          title: 'Включить Face ID?',
+          message: 'Использовать Face ID для быстрого входа?',
+          okText: 'Включить', cancelText: 'Позже'
+        });
+        if (yes) { try { await registerFaceId(); toast('Face ID включён'); } catch(e) { toastError('Face ID: ' + e.message); } }
+      }
+      toast('PIN установлен'); this.unlock(); return;
+    }
+    if (this.state === 'unlock') {
+      const ok = await verifyPin(pin);
+      if (!ok) {
+        this.els.error.textContent = 'Неверный PIN-код';
+        this.els.dots.classList.add('shake');
+        setTimeout(() => this.els.dots.classList.remove('shake'), 400);
+        if (navigator.vibrate) navigator.vibrate(60);
+        return;
+      }
+      if (this._afterUnlock === 'change') {
+        this._afterUnlock = null; this.state = 'setup'; this.setupPin = ''; this.inputPin = '';
+        this.els.sub.textContent = 'Придумайте новый PIN'; this.els.error.textContent = '';
+        this.renderDots(); return;
+      }
+      setSession(); this.unlock();
+    }
+  },
+
+  async tryFaceId() {
+    this.els.error.textContent = '';
+    try {
+      if (await verifyFaceId()) { setSession(); this.unlock(); }
+      else { this.els.error.textContent = 'Face ID не распознан'; }
+    } catch (e) { this.els.error.textContent = 'Face ID недоступен'; }
+  },
+
+  unlock() { this.hide(); if (typeof this.onUnlock === 'function') this.onUnlock(); },
+  lock() { clearSession(); this.show(); }
+};
+
+async function updateFaceIdSettingLabel() {
+  const btn = $('btnFaceIdSetting'), label = $('faceIdSettingLabel');
+  if (!btn || !label) return;
+  const avail = await isPlatformAuthAvailable();
+  if (!avail) { btn.disabled = true; label.textContent = 'Face ID недоступен'; return; }
+  btn.disabled = false;
+  label.textContent = getFaceIdCred() ? 'Отключить Face ID' : 'Включить Face ID';
+}
+async function toggleFaceIdSetting() {
+  if (getFaceIdCred()) {
+    const yes = await confirmDialog({ title: 'Отключить Face ID?', message: 'Вход по лицу будет отключён.', okText: 'Отключить', danger: true });
+    if (!yes) return;
+    clearFaceId(); toast('Face ID отключён');
+  } else {
+    try { await registerFaceId(); toast('Face ID включён'); }
+    catch (e) { toastError('Face ID: ' + e.message); }
+  }
+  updateFaceIdSettingLabel();
+}
+
+async function boot() {
+  Auth.init();
+  Auth.onUnlock = () => initApp().catch(e => { console.error(e); hideOverlay(); alert('Ошибка: ' + e.message); });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && !hasValidSession()) {
+      if (Auth.els.screen.classList.contains('hidden')) Auth.show();
+    }
+  });
+
+  if (hasValidSession()) await initApp();
+  else await Auth.show();
+}
+
 async function initApp() {
   const initTheme = document.documentElement.getAttribute('data-theme') || 'light';
   const initColor = document.documentElement.getAttribute('data-theme-color') || 'original';
@@ -3942,6 +4334,24 @@ async function initApp() {
     renderBackups();
   };
   $('btnSettingsClose').onclick = () => $('settingsModal').classList.add('hidden');
+  // === PIN / Face ID ===
+  $('btnChangePin').onclick = async () => {
+    $('settingsModal').classList.add('hidden');
+    await Auth.show(hasPinSet() ? 'change' : undefined);
+  };
+  $('btnLockNow').onclick = () => {
+    $('settingsModal').classList.add('hidden');
+    Auth.lock();
+  };
+  $('btnFaceIdSetting').onclick = () => toggleFaceIdSetting();
+  // Обновляем надпись на кнопке Face ID при каждом открытии настроек
+  const _origSettingsOpen = $('btnSettings').onclick;
+  $('btnSettings').onclick = async (e) => {
+    if (typeof _origSettingsOpen === 'function') _origSettingsOpen(e);
+    await updateFaceIdSettingLabel();
+  };
+  // === /PIN / Face ID ===
+
   $('btnExportDb').onclick = exportDb;
   $('btnExportCsv2').onclick = exportCsv;
   $('btnImportDb').onclick = () => $('fileDb').click();
@@ -4095,8 +4505,8 @@ async function initApp() {
   await _initAuth();
 }
 
-initApp().catch(e => {
-  console.error('Init error:', e);
+boot().catch(e => {
+  console.error('Boot error:', e);
   hideOverlay();
   alert('Ошибка запуска: ' + e.message);
 });
