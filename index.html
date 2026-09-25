@@ -5528,8 +5528,7 @@ await mod.init({
     const pct = Math.round((p || 0) * 100);
     showOverlayProgress(`Строю индекс по каталогу… ${pct}%`, pct);
   },
-  libPath: './lib/transformers.min.js',
-  getRecords: () => {
+    getRecords: () => {
     const stmt = db.prepare('SELECT id, marka, model, artikul, raspolozhenie, tip_plenki FROM plenki');
     const out = [];
     while (stmt.step()) out.push(stmt.getAsObject());
