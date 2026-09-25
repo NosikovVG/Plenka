@@ -1127,6 +1127,7 @@
     .tab-panel.active { display: block; }
     .card-head { display: none; }
     .mobile-list { display: none !important; }
+   .table-wrap.desktop-only { display: block !important; }
     .actions-cell { display: none; }
     .cell-check { display: none; }
     table { font-size: 11px; }
@@ -1251,11 +1252,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
       Нарезка
     </button>
-    <button class="tab" data-tab="history">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      История
-    </button>
-  </nav>
+    </nav>
   <div class="topbar-actions">
     <div class="search-wrap">
       <span class="icon">
@@ -1473,27 +1470,7 @@
     </section>
 
     <!-- ===== История ===== -->
-    <section class="tab-panel" id="panel-history">
-      <div class="orders-controls">
-        <select id="historyActionFilter">
-          <option value="">Все действия</option>
-          <option value="create">Создание</option>
-          <option value="update">Изменение</option>
-          <option value="delete">Удаление</option>
-          <option value="attach">Прикрепление файла</option>
-          <option value="detach">Удаление файла</option>
-          <option value="cut">Нарезка</option>
-          <option value="stock">Склад плёнки</option>
-        </select>
-        <button class="btn ghost small" id="btnClearHistory">Очистить историю</button>
-        <span class="status" id="historyStatus" style="margin:0 0 0 auto;"></span>
-      </div>
-      <div class="card">
-        <div class="history-list" id="historyList" style="padding:12px;"></div>
-      </div>
-    </section>
-
-  </main>
+    </main>
 </div>
 
 <!-- ============ MODAL: форма лекала ============ -->
@@ -3095,8 +3072,7 @@ function buildDesktopRow(r, c, cut, defect) {
       <td class="editable" data-col="artikul" data-id="${r.id}">${esc(r.artikul)}</td>
       <td>${cutCell}</td>
       <td class="actions-cell no-print">
-        <button class="quick-cut" data-cut-quick="${r.id}" title="Нарезать +1">+1</button>
-        <button class="icon-btn" data-cut="${r.id}" title="Отметить нарезку">${icon('scissors', 15)}</button>
+       <button class="icon-btn" data-cut="${r.id}" title="Отметить нарезку">${icon('scissors', 15)}</button>
         <button class="icon-btn" data-detail="${r.id}" title="Карточка записи">
           ${icon('paperclip', 15)}${c ? `<span class="badge">${c}</span>` : ''}
         </button>
