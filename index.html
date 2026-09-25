@@ -2245,10 +2245,13 @@ function ensureSchema(target) {
     )
   `);
   target.run(`
-    CREATE TABLE IF NOT EXISTS orders (
+  CREATE TABLE IF NOT EXISTS orders (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       record_id INTEGER NOT NULL,
       tip_plenki TEXT DEFAULT "",
+      film_color TEXT DEFAULT "",
+      film_thickness REAL DEFAULT 0,
+      stock_id INTEGER DEFAULT 0,
       qty INTEGER DEFAULT 0,
       defect_qty INTEGER DEFAULT 0,
       defect_reason TEXT DEFAULT "",
@@ -2260,8 +2263,6 @@ function ensureSchema(target) {
       customer TEXT,
       status TEXT,
       film_consumed INTEGER DEFAULT 0
-      stock_id INTEGER DEFAULT 0,
-      stock_id INTEGER DEFAULT 0,
     )
   `);
   try {
