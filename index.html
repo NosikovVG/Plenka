@@ -2,9 +2,11 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="data:,"> 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#6366f1">
 <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
 <title>Пленка для всех</title>
 <link rel="manifest" href="manifest.json">
 <style>
@@ -2744,15 +2746,15 @@ function isPdfFile(name, mime) {
    ========================================================================== */
 
 function renderSidebar() {
-  const countAll = countRows();
-  const countNoRashod = countNoRashod();
-  const countNoFiles = countNoFiles();
-  const countWithFiles = countWithFiles();
+  const nAll = countRows();
+  const nNoRashod = countNoRashod();
+  const nNoFiles = countNoFiles();
+  const nWithFiles = countWithFiles();
 
-  $('sbCountAll').textContent = countAll;
-  $('sbCountNoRashod').textContent = countNoRashod;
-  $('sbCountNoFiles').textContent = countNoFiles;
-  $('sbCountWithFiles').textContent = countWithFiles;
+  $('sbCountAll').textContent = nAll;
+  $('sbCountNoRashod').textContent = nNoRashod;
+  $('sbCountNoFiles').textContent = nNoFiles;
+  $('sbCountWithFiles').textContent = nWithFiles;
 
   // Подсветка активного среза
   $$('.sidebar-item[data-quick]').forEach(el => {
