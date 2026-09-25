@@ -2614,57 +2614,90 @@ function syncStockFromRecords() {
    ========================================================================== */
 
 function allStock() {
-  const stmt = db.prepare('SELECT * FROM film_stock ORDER BY tip_plenki');
+  const stmt = db.prepare('SELECT * FROM film_stock ORDER BY tip_plenki, color, thickness');
   const out = [];
   while (stmt.step()) out.push(stmt.getAsObject());
   stmt.free();
   return out;
 }
-function getStock(tip) {
+
+// Поиск рулона по точному совпадению трёх параметров
+function getStock(tip, color, thickness) {
   if (!tip) return null;
-  const stmt = db.prepare('SELECT * FROM film_stock WHERE tip_plenki = ?');
-  stmt.bind([tip]);
+  color = color || '';
+  thickness = parseNum(thickness);
+  const stmt = db.prepare(
+    "SELECT * FROM film_stock WHERE tip_plenki = ? AND COALESCE(color,'') = ? AND COALESCE(thickness,0) = ? LIMIT 1"
+  );
+  stmt.bind([tip, color, thickness]);
   const row = stmt.step() ? stmt.getAsObject() : null;
   stmt.free();
   return row;
 }
-function setStock(tip, rolls, minRolls) {
-  db.run(
-    `INSERT INTO film_stock (tip_plenki, rolls, min_rolls)
-     VALUES (?, ?, ?)
-     ON CONFLICT(tip_plenki) DO UPDATE SET
-       rolls = excluded.rolls,
-       min_rolls = excluded.min_rolls`,
-    [tip, rolls, minRolls]
-  );
+
+function getStockById(id) {
+  if (!id) return null;
+  const stmt = db.prepare('SELECT * FROM film_stock WHERE id = ?');
+  stmt.bind([id]);
+  const row = stmt.step() ? stmt.getAsObject() : null;
+  stmt.free();
+  return row;
 }
-function consumeFilm(tip, meters) {
+
+// id — для обновления; если 0, вставляем новую строку
+function setStock(id, tip, color, thickness, rolls, minRolls) {
+  if (id) {
+    db.run(
+      `UPDATE film_stock SET tip_plenki=?, color=?, thickness=?, rolls=?, min_rolls=? WHERE id=?`,
+      [tip, color || '', parseNum(thickness), rolls, minRolls, id]
+    );
+  } else {
+    db.run(
+      `INSERT INTO film_stock (tip_plenki, color, thickness, rolls, min_rolls)
+       VALUES (?, ?, ?, ?, ?)`,
+      [tip, color || '', parseNum(thickness), rolls, minRolls]
+    );
+  }
+}
+
+function updateStockRolls(id, rolls) {
+  db.run('UPDATE film_stock SET rolls=? WHERE id=?', [rolls, id]);
+}
+
+// Списание с рулона, найденного по трём параметрам
+function consumeFilm(tip, color, thickness, meters) {
   if (!tip || !meters) return null;
-  const s = getStock(tip);
+  const s = getStock(tip, color, thickness);
   if (!s) return null;
   const before = s.rolls || 0;
   const after = Math.max(0, before - meters / 10);
-  setStock(tip, after, s.min_rolls);
+  updateStockRolls(s.id, after);
+  const label = `${tip}${color ? ' ' + color : ''}${thickness ? ' ' + thickness + ' мкм' : ''}`;
   logHistory({
     recordId: null, action: 'stock',
-    details: `Расход «${tip}»: ${meters.toFixed(1)} м (${(meters/10).toFixed(2)} рул). Остаток: ${before.toFixed(2)} → ${after.toFixed(2)} рул.`
+    details: `Расход «${label}»: ${meters.toFixed(1)} м (${(meters/10).toFixed(2)} рул). ` +
+             `Остаток: ${before.toFixed(2)} → ${after.toFixed(2)} рул.`
   });
-  return { before, after };
+  return { before, after, stockId: s.id };
 }
-function returnFilm(tip, meters) {
-  if (!tip || !meters) return null;
-  const s = getStock(tip);
+
+// Возврат на рулон по его id
+function returnFilm(stockId, meters) {
+  if (!meters) return null;
+  const s = stockId ? getStockById(stockId) : null;
   if (!s) return null;
   const before = s.rolls || 0;
   const after = before + meters / 10;
-  setStock(tip, after, s.min_rolls);
-  return { before, after };
+  updateStockRolls(s.id, after);
+  return { before, after, stockId: s.id };
 }
+
 function totalFilmMeters() {
   const stmt = db.prepare('SELECT SUM(rolls) AS r FROM film_stock');
   stmt.step(); const r = stmt.getAsObject().r || 0; stmt.free();
   return r * 10;
 }
+
 function lowStockTypes() {
   const out = [];
   const stock = allStock();
@@ -3818,25 +3851,46 @@ function saveCut(data, id) {
   const qty = parseInt(data.qty, 10) || 0;
   const defect = parseInt(data.defect_qty, 10) || 0;
   const totalMeters = rashodPerUnit * qty;
+
+  // Снимок параметров плёнки
   const tipSnapshot = rec ? (rec.tip_plenki || '') : '';
+  const colorSnapshot = rec ? (rec.film_color || '') : '';
+  const thicknessSnapshot = rec ? parseNum(rec.film_thickness) : 0;
 
   if (id) {
+    // Редактирование: сначала вернуть плёнку по старой записи
     const old = getCut(id);
     if (old && old.meters_consumed) {
-      // Возвращаем по снимку, а не по текущему лекалу
-      const oldTip = old.tip_plenki || (() => {
-        const r = getRecord(old.record_id);
-        return r ? r.tip_plenki : '';
-      })();
-      if (oldTip) returnFilm(oldTip, old.meters_consumed);
+      let oldStockId = Number(old.stock_id) || 0;
+      if (!oldStockId) {
+        // Старые записи не имеют stock_id — ищем по параметрам
+        const oldRec = getRecord(old.record_id);
+        const oldTip = old.tip_plenki || (oldRec ? oldRec.tip_plenki : '');
+        const oldColor = old.film_color || (oldRec ? oldRec.film_color : '') || '';
+        const oldThick = parseNum(old.film_thickness || (oldRec ? oldRec.film_thickness : 0));
+        if (oldTip) {
+          const found = getStock(oldTip, oldColor, oldThick);
+          if (found) oldStockId = found.id;
+        }
+      }
+      if (oldStockId) returnFilm(oldStockId, old.meters_consumed);
     }
+
+    // Списать заново
     let consumeInfo = null;
-    if (rec && totalMeters) consumeInfo = consumeFilm(rec.tip_plenki, totalMeters);
+    let newStockId = 0;
+    if (rec && totalMeters) {
+      consumeInfo = consumeFilm(rec.tip_plenki, rec.film_color, rec.film_thickness, totalMeters);
+      if (consumeInfo) newStockId = consumeInfo.stockId;
+    }
+
     db.run(
-      `UPDATE orders SET record_id=?, tip_plenki=?, qty=?, defect_qty=?, defect_reason=?,
-       meters_consumed=?, cut_date=?, notes=?, updated_at=? WHERE id=?`,
-      [data.record_id, tipSnapshot, qty, defect, data.defect_reason || '',
-       totalMeters, data.cut_date || todayIso(), data.notes || '', now, id]
+      `UPDATE orders SET record_id=?, tip_plenki=?, film_color=?, film_thickness=?, stock_id=?,
+       qty=?, defect_qty=?, defect_reason=?, meters_consumed=?,
+       cut_date=?, notes=?, updated_at=? WHERE id=?`,
+      [data.record_id, tipSnapshot, colorSnapshot, thicknessSnapshot, newStockId,
+       qty, defect, data.defect_reason || '', totalMeters,
+       data.cut_date || todayIso(), data.notes || '', now, id]
     );
     logHistory({
       recordId: data.record_id, action: 'cut',
@@ -3847,13 +3901,20 @@ function saveCut(data, id) {
     return { updated: true, qty, defect, totalMeters, consumeInfo };
   } else {
     let consumeInfo = null;
-    if (rec && totalMeters) consumeInfo = consumeFilm(rec.tip_plenki, totalMeters);
+    let newStockId = 0;
+    if (rec && totalMeters) {
+      consumeInfo = consumeFilm(rec.tip_plenki, rec.film_color, rec.film_thickness, totalMeters);
+      if (consumeInfo) newStockId = consumeInfo.stockId;
+    }
+
     db.run(
-      `INSERT INTO orders (record_id, tip_plenki, qty, defect_qty, defect_reason, meters_consumed,
-         cut_date, notes, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [data.record_id, tipSnapshot, qty, defect, data.defect_reason || '',
-       totalMeters, data.cut_date || todayIso(), data.notes || '', now, now]
+      `INSERT INTO orders (record_id, tip_plenki, film_color, film_thickness, stock_id,
+         qty, defect_qty, defect_reason, meters_consumed, cut_date, notes,
+         created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [data.record_id, tipSnapshot, colorSnapshot, thicknessSnapshot, newStockId,
+       qty, defect, data.defect_reason || '', totalMeters,
+       data.cut_date || todayIso(), data.notes || '', now, now]
     );
     const newId = db.exec('SELECT last_insert_rowid() AS id')[0].values[0][0];
     logHistory({
@@ -3866,6 +3927,10 @@ function saveCut(data, id) {
   }
 }
 
+/* ==========================================================================
+   БЫСТРАЯ НАРЕЗКА +1 (одним кликом)
+   ========================================================================== */
+
 async function deleteCut(id) {
   const c = getCut(id);
   if (!c) return;
@@ -3875,13 +3940,22 @@ async function deleteCut(id) {
     okText: 'Удалить', danger: true
   });
   if (!yes) return;
+
   if (c.meters_consumed) {
-    const tip = c.tip_plenki || (() => {
-      const r = getRecord(c.record_id);
-      return r ? r.tip_plenki : '';
-    })();
-    if (tip) returnFilm(tip, c.meters_consumed);
+    let stockId = Number(c.stock_id) || 0;
+    if (!stockId) {
+      const rec = getRecord(c.record_id);
+      const tip = c.tip_plenki || (rec ? rec.tip_plenki : '');
+      const color = c.film_color || (rec ? rec.film_color : '') || '';
+      const thick = parseNum(c.film_thickness || (rec ? rec.film_thickness : 0));
+      if (tip) {
+        const found = getStock(tip, color, thick);
+        if (found) stockId = found.id;
+      }
+    }
+    if (stockId) returnFilm(stockId, c.meters_consumed);
   }
+
   db.run('DELETE FROM orders WHERE id=?', [id]);
   logHistory({
     recordId: c.record_id, action: 'cut',
@@ -3890,101 +3964,55 @@ async function deleteCut(id) {
   await persist();
 }
 
-/* ==========================================================================
-   БЫСТРАЯ НАРЕЗКА +1 (одним кликом)
-   ========================================================================== */
-
-async function quickCutPlus1(recordId) {
+  async function quickCutPlus1(recordId) {
   const rec = getRecord(recordId);
   if (!rec) return;
   const rashod = parseNum(rec.rashod);
   const now = new Date().toISOString();
 
-  // Списываем плёнку, если указан расход
   let consumeInfo = null;
+  let newStockId = 0;
   if (rashod > 0 && rec.tip_plenki) {
-    consumeInfo = consumeFilm(rec.tip_plenki, rashod);
+    consumeInfo = consumeFilm(rec.tip_plenki, rec.film_color, rec.film_thickness, rashod);
+    if (consumeInfo) newStockId = consumeInfo.stockId;
   }
 
   db.run(
-    `INSERT INTO orders (record_id, tip_plenki, qty, defect_qty, defect_reason, meters_consumed,
-       cut_date, notes, created_at, updated_at)
-     VALUES (?, ?, 1, 0, '', ?, ?, '', ?, ?)`,
-    [recordId, rec.tip_plenki || '', rashod, todayIso(), now, now]
+    `INSERT INTO orders (record_id, tip_plenki, film_color, film_thickness, stock_id,
+       qty, defect_qty, defect_reason, meters_consumed, cut_date, notes,
+       created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, 1, 0, '', ?, ?, '', ?, ?)`,
+    [recordId, rec.tip_plenki || '', rec.film_color || '', parseNum(rec.film_thickness),
+     newStockId, rashod, todayIso(), now, now]
   );
   const newId = db.exec('SELECT last_insert_rowid() AS id')[0].values[0][0];
-
   logHistory({
     recordId, action: 'cut',
     details: `Нарезка +1: ${rec.marka} ${rec.model}` +
              (rashod ? `, списано ${rashod.toFixed(1)} м` : '')
   });
-
   await persist();
-
-  // Запоминаем для undo
   currentCutDraft = { cutId: newId, recordId };
-
   vibrate(15);
-
-  // Показываем уведомление с кнопкой отмены
-  if (consumeInfo) {
-    toastBig(`
-      <span class="check">✓</span>
-      <div style="flex:1;">
-        <div style="font-weight:700;margin-bottom:3px;">
-          ${esc(rec.marka)} ${esc(rec.model)} · +1 шт
-        </div>
-        <div style="font-size:12.5px;opacity:.9;">
-          Списано ${rashod.toFixed(1)} м «${esc(rec.tip_plenki)}».
-          Остаток: ${consumeInfo.before.toFixed(2)} → <b>${consumeInfo.after.toFixed(2)} рул.</b>
-        </div>
-        <button id="undoQuickCut" style="margin-top:8px;background:rgba(255,255,255,.18);border:none;color:#fff;padding:5px 12px;border-radius:7px;font-family:inherit;font-size:12px;cursor:pointer;font-weight:600;">
-          Отменить (Ctrl+Z)
-        </button>
-      </div>
-    `);
-  } else {
-    toastBig(`
-      <span class="check">✓</span>
-      <div style="flex:1;">
-        <div style="font-weight:700;margin-bottom:3px;">
-          ${esc(rec.marka)} ${esc(rec.model)} · +1 шт
-        </div>
-        <div style="font-size:12px;opacity:.85;margin-top:2px;">
-          У лекала не указан расход — плёнка не списана
-        </div>
-        <button id="undoQuickCut" style="margin-top:8px;background:rgba(255,255,255,.18);border:none;color:#fff;padding:5px 12px;border-radius:7px;font-family:inherit;font-size:12px;cursor:pointer;font-weight:600;">
-          Отменить (Ctrl+Z)
-        </button>
-      </div>
-    `);
-  }
-
-  setTimeout(() => {
-    const btn = $('undoQuickCut');
-    if (btn) btn.onclick = undoQuickCut;
-  }, 30);
-
+  toast('Нарезано +1');
   render();
   renderCuts();
   renderStats();
   renderSidebar();
   renderDashboard();
 }
-
 async function undoQuickCut() {
   if (!currentCutDraft) { toastError('Нечего отменять'); return; }
-  const { cutId, recordId } = currentCutDraft;
+  const { cutId } = currentCutDraft;
   const c = getCut(cutId);
   if (!c) { currentCutDraft = null; return; }
-  // Возвращаем плёнку
-  if (c.meters_consumed && c.tip_plenki) {
-    returnFilm(c.tip_plenki, c.meters_consumed);
+
+  if (c.meters_consumed && c.stock_id) {
+    returnFilm(Number(c.stock_id), c.meters_consumed);
   }
   db.run('DELETE FROM orders WHERE id=?', [cutId]);
   logHistory({
-    recordId, action: 'cut',
+    recordId: c.record_id, action: 'cut',
     details: `Отменена быстрая нарезка #${cutId}. Возвращено ${(c.meters_consumed || 0).toFixed(1)} м плёнки.`
   });
   await persist();
@@ -3996,6 +4024,7 @@ async function undoQuickCut() {
   renderSidebar();
   renderDashboard();
 }
+
 
 /* ==========================================================================
    МОДАЛКА НАРЕЗКИ (полная форма)
