@@ -2,7 +2,7 @@
    Позволяет работать оффлайн после первого запуска.
    Для обновления версии приложения — поднять CACHE_VERSION. */
 
-const CACHE_VERSION = 'plenka-v3.0.2';
+const CACHE_VERSION = 'plenka-v3.0.3';
 const CACHE_SHELL = 'plenka-shell';
 const CACHE_MODELS = 'plenka-models';
 
