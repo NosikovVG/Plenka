@@ -4126,6 +4126,7 @@ function renderUsage() {
    ========================================================================== */
 
 function openUsageForm(readyId) {
+  _currentUsageReadyId = readyId;
   editingUsageId = null;
   const r = readyId ? getReady(readyId) : null;
   if (!r) { toastError('Нет строки готовой продукции'); return; }
@@ -4180,7 +4181,7 @@ function closeUsageForm() {
 }
 
 async function saveUsageForm() {
-  const readyId = Number(window.__currentUsageReadyId || 0);
+  const readyId = _currentUsageReadyId;
   if (!readyId) { toastError('Нет строки готовой продукции'); return; }
   const r = getReady(readyId);
   if (!r) { toastError('Строка не найдена'); return; }
@@ -4198,10 +4199,8 @@ async function saveUsageForm() {
   const usageDate = $('usageDate').value || todayIso();
   const notes = $('usageNotes').value.trim();
 
-  // Списываем со склада готовой продукции
   subReady(readyId, qty);
 
-  // Пишем в журнал
   addUsage({
     ready_id: readyId,
     record_id: r.record_id,
@@ -4218,7 +4217,8 @@ async function saveUsageForm() {
   await persist();
   closeUsageForm();
 
-  const typeLabel = usageType === 'other' && custom ? custom : (USAGE_TYPES.find(t => t.id === usageType)?.label || usageType);
+  const typeLabel = usageType === 'other' && custom
+    ? custom : (USAGE_TYPES.find(t => t.id === usageType)?.label || usageType);
   toastBig(`
     <span class="check">✓</span>
     <div>
@@ -6632,11 +6632,7 @@ async function initApp() {
 }
 
 // Исправление: привязка readyId к форме
-function openUsageFormPatched(readyId) {
-  _currentUsageReadyId = readyId;
-  window.__currentUsageReadyId = readyId;
-  return openUsageForm(readyId);
-}
+
 
 initApp().catch(e => {
   console.error('Init error:', e);
