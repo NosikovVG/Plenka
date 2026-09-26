@@ -1332,7 +1332,7 @@
       <div class="quick-actions no-print">
         <button class="btn primary" id="btnQuickNewCut">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
-          + Нарезка
+          Записать нарезку
         </button>
         <button class="btn ghost" id="btnQuickSearch">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1422,7 +1422,7 @@
       <div class="orders-controls">
         <button class="btn primary" id="btnNewCut">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
-          Отметить нарезку
+          Записать нарезку
         </button>
         <select id="cutsMarkaFilter" title="Марка автомобиля">
           <option value="">Все марки авто</option>
@@ -1554,7 +1554,7 @@
 <!-- ============ MODAL: нарезка ============ -->
 <div class="modal hidden" id="cutModal">
   <div class="modal-box" role="dialog" aria-modal="true">
-    <h2 id="cutModalTitle">Отметить нарезку</h2>
+        <h2 id="cutModalTitle">Записать нарезку</h2>
     <div id="cutFields"></div>
     <div class="modal-actions">
       <button class="btn ghost" id="btnCutCancel">Отмена</button>
@@ -3368,7 +3368,7 @@ function buildDesktopRow(r, c, cut, readyQty) {
       <td>${cutCell}</td>
       <td>${readyCell}</td>
       <td class="actions-cell no-print">
-        <button class="icon-btn" data-cut="${r.id}" title="Отметить нарезку">${icon('scissors', 15)}</button>
+        <button class="icon-btn" data-cut="${r.id}" title="Записать нарезку">${icon('scissors', 15)}</button>
         <button class="icon-btn" data-detail="${r.id}" title="Карточка лекала">
           ${icon('paperclip', 15)}${c ? `<span class="badge">${c}</span>` : ''}
         </button>
@@ -4353,7 +4353,7 @@ function renderDetailCuts() {
 function openCutForm(cutId, presetRecordId) {
   editingCutId = cutId || null;
   const c = cutId ? getCut(cutId) : null;
-  $('cutModalTitle').textContent = cutId ? 'Изменить запись нарезки' : 'Отметить нарезку';
+    $('cutModalTitle').textContent = cutId ? 'Изменить запись нарезки' : 'Записать нарезку';
 
   const records = allRows('');
   if (!records.length && !cutId) {
