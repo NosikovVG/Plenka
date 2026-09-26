@@ -1846,7 +1846,7 @@ const ICON_PATHS = {
 };
 const icon = (name, size) => _svgWrap(ICON_PATHS[name] || '', size);
 
-const COLUMNS = ['pp','tip_plenki','raspolozhenie','marka','model','rashod','nalichie','cena','artikul'];
+const COLUMNS = ['pp','tip_plenki','film_color','film_thickness','raspolozhenie','marka','model','rashod','nalichie','cena','artikul'];
 const HEADERS = {
   pp:'ПП', tip_plenki:'Тип плёнки',
   film_color:'Цвет плёнки', film_thickness:'Толщина, мкм',
@@ -1865,7 +1865,6 @@ const HINTS = {
   marka:'Выберите из списка или введите новую',
   rashod:'Сколько метров уходит на одну машину. Используется для списания плёнки при нарезке.',
   cena:'Цена может меняться'
-};
 };
 const DEBOUNCE_SEARCH = 180;
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
@@ -2217,18 +2216,27 @@ async function idbFileKeys() {
 function ensureSchema(target) {
   target = target || db;
   target.run(`PRAGMA foreign_keys = ON;`);
-  target.run(`
+   target.run(`
     CREATE TABLE IF NOT EXISTS plenki (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      pp INTEGER, tip_plenki TEXT, raspolozhenie TEXT,
+      pp INTEGER, tip_plenki TEXT,
+      film_color TEXT DEFAULT "",
+      film_thickness REAL DEFAULT 0,
+      raspolozhenie TEXT,
       marka TEXT, model TEXT, rashod TEXT,
       nalichie TEXT, cena TEXT, artikul TEXT
     )
   `);
-  try {
+    try {
     const cols = target.exec("PRAGMA table_info(plenki)")[0].values.map(v => v[1]);
     if (!cols.includes('rashod')) {
       target.run('ALTER TABLE plenki ADD COLUMN rashod TEXT DEFAULT ""');
+    }
+    if (!cols.includes('film_color')) {
+      target.run('ALTER TABLE plenki ADD COLUMN film_color TEXT DEFAULT ""');
+    }
+    if (!cols.includes('film_thickness')) {
+      target.run('ALTER TABLE plenki ADD COLUMN film_thickness REAL DEFAULT 0');
     }
   } catch(e) {}
   target.run(`
