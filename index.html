@@ -4710,6 +4710,7 @@ async function deleteCut(id) {
 
 function drawLabel(ctx, x, y, w, h, rec, opts) {
   opts = opts || {};
+  const film = opts.film || null;   // {tip_plenki, color, thickness}
   const pad = Math.round(h * 0.06);
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(x, y, w, h);
@@ -4717,12 +4718,30 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
   ctx.lineWidth = Math.max(1, Math.round(h * 0.008));
   ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
 
+  // Цветная плашка сверху
   const barH = Math.round(h * 0.08);
-  ctx.fillStyle = '#6366f1';
+  ctx.fillStyle = colorForFilm(film);
   ctx.fillRect(x, y, w, barH);
 
   const centerX = x + w / 2;
   let curY = y + barH + pad;
+
+  // Строка с плёнкой (мелкая, сверху)
+  if (film && film.tip_plenki) {
+    const filmText = [film.tip_plenki, film.color, film.thickness ? film.thickness + ' мкм' : '']
+      .filter(Boolean).join(' · ');
+    ctx.fillStyle = '#6b7280';
+    ctx.font = `bold ${Math.round(h * 0.06)}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    let filmLines = wrapCanvasText(ctx, filmText, w - pad * 2);
+    // Обрезаем до 2 строк
+    filmLines = filmLines.slice(0, 2);
+    filmLines.forEach((line, i) => {
+      ctx.fillText(line, centerX, curY + i * Math.round(h * 0.065));
+    });
+    curY += filmLines.length * Math.round(h * 0.065) + Math.round(h * 0.02);
+  }
 
   // Марка + модель
   const car = [(rec.marka || ''), (rec.model || '')].filter(Boolean).join(' ');
@@ -4742,6 +4761,7 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
   });
   curY += carLines.slice(0, 2).length * (carSize + 2) + Math.round(h * 0.03);
 
+  // Расположение
   if (rec.raspolozhenie) {
     ctx.fillStyle = '#6b7280';
     ctx.font = `${Math.round(h * 0.075)}px Arial`;
@@ -4750,6 +4770,7 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
     curY += Math.round(h * 0.10);
   }
 
+  // Разделитель
   ctx.strokeStyle = '#e0deef';
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -4757,6 +4778,7 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
   ctx.lineTo(x + w - pad * 1.5, curY);
   ctx.stroke();
 
+  // Артикул снизу
   const art = (rec.artikul || '—').toUpperCase();
   ctx.fillStyle = '#4f46e5';
   let artSize = Math.round(h * 0.18);
@@ -4772,6 +4794,23 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
 
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
+}
+
+// Цвет плашки по плёнке — если выбрана
+function colorForFilm(film) {
+  if (!film || !film.tip_plenki) return '#6366f1';
+  const t = String(film.color || '').toLowerCase();
+  if (t.includes('прозрач')) return '#3b82f6';
+  if (t.includes('красн'))   return '#ef4444';
+  if (t.includes('тонир'))   return '#1f2937';
+  if (t.includes('черн'))    return '#111827';
+  if (t.includes('зелен'))   return '#10b981';
+  if (t.includes('син'))     return '#2563eb';
+  if (t.includes('желт'))    return '#f59e0b';
+  const t2 = String(film.tip_plenki || '').toLowerCase();
+  if (t2.includes('пвх'))     return '#6366f1';
+  if (t2.includes('полиур'))  return '#10b981';
+  return '#8b5cf6';
 }
 
 function wrapCanvasText(ctx, text, maxWidth) {
@@ -4825,14 +4864,15 @@ async function buildLabelsPdf(records, layoutKey) {
   }
 
   newPage();
-  for (const rec of records) {
+  // records — массив объектов {rec, film}
+  for (const item of records) {
     if (idx > 0 && idx % perPage === 0) { await flush(); newPage(); }
     const slot = idx % perPage;
     const col = slot % layout.cols;
     const row = Math.floor(slot / layout.cols);
     const x = margin + col * (labelW + gap);
     const y = margin + row * (labelH + gap);
-    drawLabel(ctx, x, y, labelW, labelH, rec);
+    drawLabel(ctx, x, y, labelW, labelH, item.rec, { film: item.film });
     idx++;
   }
   if (idx > 0) await flush();
@@ -4865,11 +4905,55 @@ function openLabelForm(recordIds) {
   const layoutSaved = localStorage.getItem('label_layout') || '8';
   const lastCopies = Number(localStorage.getItem('label_copies_' + recordIds.length)) || 1;
 
+  // Собираем доступные плёнки для выбранных лекал из склада готовой продукции
+  const filmsByRecord = {};
+  for (const r of records) {
+    filmsByRecord[r.id] = readyForRecord(r.id);
+  }
+
+  // Для одиночной печати — общий селект плёнки
+  let filmSelectorHtml = '';
+  let autoSelectFilmId = null;
+
+  if (records.length === 1) {
+    const readyList = filmsByRecord[records[0].id] || [];
+    if (readyList.length === 1) {
+      autoSelectFilmId = readyList[0].id;
+    }
+    const options = readyList.map(rw => {
+      const label = [rw.tip_plenki, rw.color, rw.thickness ? rw.thickness + ' мкм' : '']
+        .filter(Boolean).join(' · ');
+      const selected = (readyList.length === 1) ? ' selected' : '';
+      return `<option value="${rw.id}"${selected}>${esc(label || '—')} · ${rw.qty} шт</option>`;
+    }).join('');
+    filmSelectorHtml = `
+      <div class="field">
+        <label>Из какой плёнки</label>
+        <select id="labelFilm">
+          ${readyList.length
+            ? `<option value="">— без плёнки —</option>${options}`
+            : '<option value="">нет остатков на складе готовой продукции</option>'}
+        </select>
+        ${readyList.length > 1 ? '<div class="hint">На складе несколько плёнок — выберите нужную</div>' : ''}
+        ${readyList.length === 0 ? '<div class="hint warn">Ничего ещё не нарезано. Печать будет без указания плёнки.</div>' : ''}
+      </div>
+    `;
+  } else {
+    // Пакетная печать — автоподстановка плёнки по каждому лекалу
+    filmSelectorHtml = `
+      <div class="hint" style="background:var(--surface-2);padding:8px 11px;border-radius:8px;margin-bottom:10px;">
+        Плёнка будет выбрана автоматически по каждой позиции (первая доступная на складе).
+        Если у лекала несколько плёнок — берётся та, у которой больше остаток.
+      </div>
+    `;
+  }
+
   $('labelModalTitle').textContent = records.length === 1
     ? 'Печать этикетки'
     : `Печать этикеток (${records.length})`;
 
   $('labelFields').innerHTML = `
+    ${filmSelectorHtml}
     <div class="field">
       <label>Размер этикеток</label>
       <select id="labelLayout">
@@ -4947,32 +5031,64 @@ async function buildAndDownloadLabels() {
 
   const copiesInput = $('labelCopies');
   const copiesList = $('labelCopiesList');
+  const filmSelect = $('labelFilm');
 
-  const flatRecords = [];
+  const flatItems = [];   // [{rec, film}]
+
   if (copiesInput) {
+    // Одиночная печать
     const rec = currentLabelSingleRecord;
     if (!rec) { toastError('Нет этикетки для печати'); return; }
+
+    // Плёнка, если выбрана
+    let film = null;
+    if (filmSelect && filmSelect.value) {
+      const rw = getReady(Number(filmSelect.value));
+      if (rw) {
+        film = {
+          tip_plenki: rw.tip_plenki,
+          color: rw.color,
+          thickness: rw.thickness
+        };
+      }
+    }
+
     const n = Math.max(1, parseInt(copiesInput.value, 10) || 1);
     localStorage.setItem('label_copies_1', String(n));
-    for (let i = 0; i < n; i++) flatRecords.push(rec);
+    for (let i = 0; i < n; i++) flatItems.push({ rec, film });
   } else if (copiesList) {
+    // Пакетная печать
     const inputs = $('labelFields').querySelectorAll('[data-copy-rec]');
     inputs.forEach(inp => {
       const id = Number(inp.dataset.copyRec);
       const n = Math.max(0, parseInt(inp.value, 10) || 0);
+      if (!n) return;
       const rec = getRecord(id);
-      if (rec) for (let i = 0; i < n; i++) flatRecords.push(rec);
+      if (!rec) return;
+
+      // Автоматически подбираем плёнку: та, у которой больше остаток
+      const readyList = readyForRecord(id);
+      let film = null;
+      if (readyList.length) {
+        const best = readyList.slice().sort((a, b) => (b.qty || 0) - (a.qty || 0))[0];
+        film = {
+          tip_plenki: best.tip_plenki,
+          color: best.color,
+          thickness: best.thickness
+        };
+      }
+      for (let i = 0; i < n; i++) flatItems.push({ rec, film });
     });
-    if (!flatRecords.length) { toastError('Укажите количество копий'); return; }
+    if (!flatItems.length) { toastError('Укажите количество копий'); return; }
   }
 
   try {
-    showOverlay(`Готовлю этикетки (${flatRecords.length} шт)…`);
-    const bytes = await buildLabelsPdf(flatRecords, layoutKey);
+    showOverlay(`Готовлю этикетки (${flatItems.length} шт)…`);
+    const bytes = await buildLabelsPdf(flatItems, layoutKey);
     hideOverlay();
     const stamp = new Date().toISOString().slice(0,10);
     openGeneratedPdf(bytes, `этикетки_${stamp}.pdf`, true);
-    toast(`PDF сохранён: ${flatRecords.length} этикеток`);
+    toast(`PDF сохранён: ${flatItems.length} этикеток`);
     closeLabelForm();
   } catch (e) {
     hideOverlay();
