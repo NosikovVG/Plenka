@@ -1848,19 +1848,24 @@ const icon = (name, size) => _svgWrap(ICON_PATHS[name] || '', size);
 
 const COLUMNS = ['pp','tip_plenki','raspolozhenie','marka','model','rashod','nalichie','cena','artikul'];
 const HEADERS = {
-  pp:'ПП', tip_plenki:'Тип плёнки', raspolozhenie:'Расположение',
+  pp:'ПП', tip_plenki:'Тип плёнки',
+  film_color:'Цвет плёнки', film_thickness:'Толщина, мкм',
+  raspolozhenie:'Расположение',
   marka:'Марка', model:'Модель', rashod:'Расход, м',
   nalichie:'Наличие', cena:'Цена', artikul:'Артикул'
 };
-const INLINE_EDITABLE = ['tip_plenki','raspolozhenie','marka','model','rashod','artikul'];
-const EDITABLE = ['tip_plenki','raspolozhenie','marka','model','rashod','nalichie','cena','artikul'];
-const NUMERIC_FIELDS = ['rashod','nalichie'];
-const DATALISTS = { tip_plenki:'dl-tip_plenki', marka:'dl-marka' };
+  const INLINE_EDITABLE = ['tip_plenki','film_color','film_thickness','raspolozhenie','marka','model','rashod','artikul'];
+const EDITABLE = ['tip_plenki','film_color','film_thickness','raspolozhenie','marka','model','rashod','nalichie','cena','artikul'];
+const NUMERIC_FIELDS = ['rashod','nalichie','film_thickness'];
+const DATALISTS = { tip_plenki:'dl-tip_plenki', marka:'dl-marka', film_color:'dl-film_color' };
 const HINTS = {
-  tip_plenki:'Выберите из списка или введите новый',
+  tip_plenki:'Материал: ПВХ, полиуретан и т. д.',
+  film_color:'Например: Прозрачная, Красная, Тонированная',
+  film_thickness:'Число в микронах, например 100',
   marka:'Выберите из списка или введите новую',
   rashod:'Сколько метров уходит на одну машину. Используется для списания плёнки при нарезке.',
   cena:'Цена может меняться'
+};
 };
 const DEBOUNCE_SEARCH = 180;
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
