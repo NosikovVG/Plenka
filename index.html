@@ -355,6 +355,12 @@
   }
 
   main { padding: 16px 20px 24px; min-width: 0; }
+    /* Свёрнутый режим — скрываем верхние панели, растягиваем таблицу */
+  main.panels-collapsed .dashboard,
+  main.panels-collapsed .quick-actions,
+  main.panels-collapsed .stats,
+  main.panels-collapsed #panel-sklad > .card:first-of-type { display: none !important; }
+  main.panels-collapsed .table-wrap { max-height: calc(100vh - 130px); }
   .tab-panel { display: none; animation: fade .2s ease; }
   .tab-panel.active { display: block; }
   @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
@@ -494,7 +500,7 @@
   .sort-ind { font-size: 10px; opacity: .4; margin-left: 4px; }
   th[data-sort].sorted .sort-ind { opacity: 1; color: var(--primary); }
 
-  .table-wrap { overflow: auto; -webkit-overflow-scrolling: touch; max-height: calc(100vh - 320px); }
+    .table-wrap { overflow: auto; -webkit-overflow-scrolling: touch; max-height: calc(100vh - 320px); position: relative; }
   table { width: 100%; border-collapse: collapse; }
   th {
     text-align: left; padding: 7px 12px;
@@ -1384,7 +1390,11 @@
           </div>
         </div>
 
-        <div class="toolbar no-print" id="toolbar">
+               <div class="toolbar no-print" id="toolbar">
+          <button class="btn ghost small" id="btnTogglePanels" title="Свернуть верхние панели">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+            <span id="btnTogglePanelsText">Свернуть</span>
+          </button>
           <div id="activeFilters"></div>
           <span class="spacer"></span>
           <span class="status" id="toolbarStatus"></span>
@@ -1473,6 +1483,14 @@
   <div class="modal-box" role="dialog" aria-modal="true">
     <h2 id="modalTitle">Карточка лекала</h2>
     <div id="modalFields"></div>
+    <div class="field" id="formFilesField">
+      <label>Файлы лекала (опционально)</label>
+      <div class="drop" id="formDrop" style="padding:12px;">
+        Перетащите сюда файлы или нажмите для выбора
+      </div>
+      <input type="file" id="formFileAttach" multiple accept=".cdr,.cdrx,.pdf,.ai,.svg,.zip,.png,.jpg,.jpeg" hidden>
+      <div id="formFilesList" class="file-list" style="margin-top:8px;"></div>
+    </div>
     <div class="modal-actions">
       <button class="btn ghost" id="btnCancel">Отмена</button>
       <button class="btn primary" id="btnSave">Сохранить</button>
@@ -1485,24 +1503,22 @@
   <div class="modal-box" style="max-width:760px;" role="dialog" aria-modal="true">
     <h2 id="detailTitle">Карточка</h2>
     <div class="subtabs">
-      <button class="subtab active" data-subtab="ready">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-        На складе
-      </button>
-      <button class="subtab" data-subtab="files">
+     
+    <div class="subtabs">
+      <button class="subtab active" data-subtab="files">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
         Файлы
       </button>
-      <button class="subtab" data-subtab="history">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        История
+      <button class="subtab" data-subtab="ready">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        На складе
       </button>
       <button class="subtab" data-subtab="cuts">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
         Нарезка
       </button>
     </div>
-
+      
     <div class="subtab-panel active" id="subtab-ready">
       <div id="readyStockBox" class="ready-stock"></div>
     </div>
@@ -1802,7 +1818,8 @@
 <datalist id="dl-tip_plenki"></datalist>
 <datalist id="dl-marka"></datalist>
 <datalist id="dl-color"></datalist>
-
+<datalist id="dl-raspolozhenie"></datalist>
+  
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/sql.js@1.10.3/dist/sql-wasm.js"></script>
 <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
@@ -1860,7 +1877,7 @@ const EDITABLE = ['raspolozhenie','marka','model','rashod','artikul','cena'];
 
 const NUMERIC_FIELDS = ['rashod'];
 
-const DATALISTS = { marka: 'dl-marka' };
+const DATALISTS = { marka: 'dl-marka', raspolozhenie: 'dl-raspolozhenie' };
 
 const HINTS = {
   raspolozhenie: 'Например: фары, ПТФ, поворотники',
@@ -1931,6 +1948,7 @@ let filterState = { marka: '', model: '', raspolozhenie: '' };
 let quickFilter = 'all';
 let selectedIds = new Set();
 let installPrompt = null;
+let _pendingFormFiles = [];
 
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
@@ -3610,6 +3628,7 @@ function closeCtxMenu() { $('ctxMenuModal').classList.add('hidden'); }
 
 function openForm(id = null) {
   editingId = id;
+  _pendingFormFiles = [];
   const data = id ? getRecord(id) : {};
   $('modalTitle').textContent = id ? 'Карточка лекала' : 'Новое лекало';
   $('modalFields').innerHTML = EDITABLE.map(col => {
@@ -3625,12 +3644,67 @@ function openForm(id = null) {
         ${hint}
       </div>`;
   }).join('');
+    // Если редактируем существующее — блок файлов не показываем (они в карточке)
+  const formFilesField = $('formFilesField');
+  if (formFilesField) formFilesField.style.display = id ? 'none' : '';
+
+  // Список файлов (для новых)
+  renderPendingFiles();
   refreshDatalists();
   $('modal').classList.remove('hidden');
   setTimeout(() => {
     const first = $('modalFields').querySelector('input');
     if (first) first.focus();
   }, 50);
+}
+  function renderPendingFiles() {
+  const el = $('formFilesList');
+  if (!el) return;
+  if (!_pendingFormFiles.length) { el.innerHTML = ''; return; }
+  el.innerHTML = _pendingFormFiles.map((f, i) => `
+    <div class="file-row">
+      <div class="file-thumb">${isImageFile(f.name, f.type) ? icon('fileText', 20) : icon('paperclip', 20)}</div>
+      <div class="file-name">
+        ${esc(f.name)}
+        <div class="file-meta">${humanSize(f.size)}</div>
+      </div>
+      <button class="btn danger small" data-del-pending="${i}">Удалить</button>
+    </div>
+  `).join('');
+  el.querySelectorAll('[data-del-pending]').forEach(btn => {
+    btn.onclick = () => {
+      _pendingFormFiles.splice(Number(btn.dataset.delPending), 1);
+      renderPendingFiles();
+    };
+  });
+}
+
+function setupFormFilesHandlers() {
+  const drop = $('formDrop');
+  const fileAttach = $('formFileAttach');
+  if (!drop || !fileAttach) return;
+  drop.onclick = () => fileAttach.click();
+  fileAttach.onchange = e => {
+    const files = Array.from(e.target.files || []);
+    if (files.length) {
+      _pendingFormFiles = _pendingFormFiles.concat(files);
+      renderPendingFiles();
+    }
+    e.target.value = '';
+  };
+  ['dragenter','dragover'].forEach(ev => {
+    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); });
+  });
+  ['dragleave','drop'].forEach(ev => {
+    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); });
+  });
+  drop.addEventListener('drop', e => {
+    const files = Array.from(e.dataTransfer.files || []);
+    if (files.length) {
+      _pendingFormFiles = _pendingFormFiles.concat(files);
+      renderPendingFiles();
+    }
+  });
 }
 
 function closeForm() {
@@ -3667,6 +3741,7 @@ async function saveForm() {
 
   const fields = COLUMNS.filter(c => c !== 'pp');
 
+    let newRecordId = null;
   if (editingId === null) {
     db.run(
       `INSERT INTO plenki (pp, ${fields.join(',')})
@@ -3674,8 +3749,8 @@ async function saveForm() {
       [nextPp(), ...fields.map(f => data[f] ?? '')]
     );
     const res = db.exec('SELECT last_insert_rowid() AS id');
-    const newId = res[0]?.values[0][0];
-    logHistory({ recordId: newId, action: 'create', details: 'Создано лекало: ' + data.marka + ' ' + data.model });
+    newRecordId = res[0]?.values[0][0];
+    logHistory({ recordId: newRecordId, action: 'create', details: 'Создано лекало: ' + data.marka + ' ' + data.model });
   } else {
     const old = getRecord(editingId);
     const changes = [];
@@ -3693,12 +3768,23 @@ async function saveForm() {
       logHistory({ recordId: editingId, action: 'update', details: 'Изменения: ' + desc });
     }
   }
-  await persist();
+   await persist();
   refreshDatalists();
   render();
   renderFilters();
   closeForm();
   toast('Сохранено');
+
+  // Прикрепить отложенные файлы (только при создании)
+  if (newRecordId && _pendingFormFiles.length) {
+    const filesToAttach = _pendingFormFiles.slice();
+    _pendingFormFiles = [];
+    addAttachments(newRecordId, filesToAttach).then(() => {
+      render();
+    });
+  } else {
+    _pendingFormFiles = [];
+  }
 }
 
 function findDuplicate(marka, model, artikul) {
@@ -6341,6 +6427,27 @@ function setupTabs() {
    ФИЛЬТРЫ
    ========================================================================== */
 function setupFilters() {
+    // Сворачивание верхних панелей
+  const main = document.querySelector('main');
+  if (localStorage.getItem('panels_collapsed') === '1') {
+    main.classList.add('panels-collapsed');
+  }
+  const btnToggle = $('btnTogglePanels');
+  const btnToggleText = $('btnTogglePanelsText');
+  const updateToggleBtn = () => {
+    const isCollapsed = main.classList.contains('panels-collapsed');
+    if (btnToggleText) btnToggleText.textContent = isCollapsed ? 'Развернуть' : 'Свернуть';
+    const icon = btnToggle?.querySelector('svg polyline');
+    if (icon) icon.setAttribute('points', isCollapsed ? '6 9 12 15 18 9' : '18 15 12 9 6 15');
+  };
+  if (btnToggle) {
+    btnToggle.onclick = () => {
+      main.classList.toggle('panels-collapsed');
+      localStorage.setItem('panels_collapsed', main.classList.contains('panels-collapsed') ? '1' : '0');
+      updateToggleBtn();
+    };
+    updateToggleBtn();
+  }
   $('filterMarka').onchange = e => {
     filterState.marka = e.target.value;
     filterState.model = '';
@@ -6582,6 +6689,7 @@ function setupModalHandlers() {
   $('btnSave').onclick   = saveForm;
   $('btnCancel').onclick = closeForm;
   $('modal').onclick = e => { if (e.target.id === 'modal') closeForm(); };
+    setupFormFilesHandlers();
 
   $('btnAddRollType').onclick = () => openRollForm(null);
   $('btnRollSave').onclick    = saveRollForm;
