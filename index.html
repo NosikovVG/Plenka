@@ -348,19 +348,16 @@
     background: color-mix(in srgb, var(--warning) 12%, transparent);
     border-color: color-mix(in srgb, var(--warning) 22%, transparent);
   }
-  .sidebar-item.danger { color: var(--danger); }
-  .sidebar-item.danger.active {
-    background: color-mix(in srgb, var(--danger) 12%, transparent);
-    border-color: color-mix(in srgb, var(--danger) 22%, transparent);
-  }
 
   main { padding: 16px 20px 24px; min-width: 0; }
-    /* Свёрнутый режим — скрываем верхние панели, растягиваем таблицу */
+
+  /* Свёрнутый режим — скрываем верхние панели */
   main.panels-collapsed .dashboard,
   main.panels-collapsed .quick-actions,
   main.panels-collapsed .stats,
   main.panels-collapsed #panel-sklad > .card:first-of-type { display: none !important; }
   main.panels-collapsed .table-wrap { max-height: calc(100vh - 130px); }
+
   .tab-panel { display: none; animation: fade .2s ease; }
   .tab-panel.active { display: block; }
   @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
@@ -388,17 +385,9 @@
     box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 12%, transparent);
   }
   .dash-card.warn { border-left-color: var(--warning); }
-  .dash-card.warn:hover {
-    border-color: var(--warning);
-    border-left-color: var(--warning);
-    box-shadow: 0 6px 18px color-mix(in srgb, var(--warning) 15%, transparent);
-  }
+  .dash-card.warn:hover { border-color: var(--warning); border-left-color: var(--warning); box-shadow: 0 6px 18px color-mix(in srgb, var(--warning) 15%, transparent); }
   .dash-card.danger { border-left-color: var(--danger); }
-  .dash-card.danger:hover {
-    border-color: var(--danger);
-    border-left-color: var(--danger);
-    box-shadow: 0 6px 18px color-mix(in srgb, var(--danger) 15%, transparent);
-  }
+  .dash-card.danger:hover { border-color: var(--danger); border-left-color: var(--danger); box-shadow: 0 6px 18px color-mix(in srgb, var(--danger) 15%, transparent); }
   .dash-icon {
     width: 30px; height: 30px; border-radius: 9px;
     display: grid; place-items: center;
@@ -500,7 +489,7 @@
   .sort-ind { font-size: 10px; opacity: .4; margin-left: 4px; }
   th[data-sort].sorted .sort-ind { opacity: 1; color: var(--primary); }
 
-    .table-wrap { overflow: auto; -webkit-overflow-scrolling: touch; max-height: calc(100vh - 320px); position: relative; }
+  .table-wrap { overflow: auto; -webkit-overflow-scrolling: touch; max-height: calc(100vh - 320px); position: relative; }
   table { width: 100%; border-collapse: collapse; }
   th {
     text-align: left; padding: 7px 12px;
@@ -521,12 +510,8 @@
   tbody tr:last-child td { border-bottom: none; }
   tbody tr { transition: background .1s; cursor: default; }
   tbody tr:hover { background: var(--surface-2); }
-  tbody tr.selected {
-    background: color-mix(in srgb, var(--primary) 8%, transparent);
-  }
-  tbody tr.selected:hover {
-    background: color-mix(in srgb, var(--primary) 14%, transparent);
-  }
+  tbody tr.selected { background: color-mix(in srgb, var(--primary) 8%, transparent); }
+  tbody tr.selected:hover { background: color-mix(in srgb, var(--primary) 14%, transparent); }
   .cell-check { width: 30px; padding-right: 0; }
   .cell-check input[type=checkbox] {
     width: 15px; height: 15px; accent-color: var(--primary);
@@ -549,10 +534,7 @@
     outline: none;
   }
 
-  .empty {
-    text-align: center; color: var(--text-3);
-    padding: 40px 20px; font-size: 13px;
-  }
+  .empty { text-align: center; color: var(--text-3); padding: 40px 20px; font-size: 13px; }
   .empty-icon { font-size: 34px; display: block; margin-bottom: 8px; opacity: .4; }
   .empty-hint { font-size: 12px; color: var(--text-3); margin-top: 6px; }
   .empty-hint button {
@@ -707,7 +689,6 @@
     margin-top: 18px; flex-wrap: wrap;
   }
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
   .cut-preview {
     background: linear-gradient(135deg,
@@ -746,14 +727,11 @@
   .subtab-panel { display: none; }
   .subtab-panel.active { display: block; }
 
-  /* ===== Блок «На складе» внутри карточки лекала ===== */
   .ready-stock {
     background: var(--surface-2); border: 1px solid var(--border);
     border-radius: 11px; padding: 12px 14px; margin-top: 8px;
   }
-  .ready-stock-empty {
-    font-size: 12px; color: var(--text-3); text-align: center; padding: 10px;
-  }
+  .ready-stock-empty { font-size: 12px; color: var(--text-3); text-align: center; padding: 10px; }
   .ready-row {
     display: flex; align-items: center; gap: 10px;
     padding: 8px 10px; border-radius: 8px;
@@ -771,7 +749,6 @@
   }
   .ready-row .ready-qty.zero { color: var(--text-3); font-weight: 400; }
 
-  /* ===== Вкладка Расход ===== */
   .usage-row {
     display: flex; align-items: center; gap: 10px;
     padding: 11px 14px;
@@ -878,10 +855,7 @@
   .cut-row .cut-main { flex: 1; min-width: 180px; }
   .cut-row .cut-title { font-weight: 600; }
   .cut-row .cut-sub { color: var(--text-3); font-size: 11.5px; margin-top: 2px; }
-  .cut-row .cut-qty {
-    font-weight: 700; font-size: 14px; color: var(--success);
-    min-width: 60px; text-align: right;
-  }
+  .cut-row .cut-qty { font-weight: 700; font-size: 14px; color: var(--success); min-width: 60px; text-align: right; }
   .cut-row .cut-defect { font-weight: 600; font-size: 11.5px; color: var(--danger); }
   .cut-row .cut-meters { font-size: 11.5px; color: var(--text-3); min-width: 80px; text-align: right; }
   .cut-row .cut-roll {
@@ -1076,10 +1050,7 @@
     width: 240px; height: 4px; margin-top: 10px;
     background: rgba(255,255,255,.2); border-radius: 2px; overflow: hidden;
   }
-  .overlay .prog-fill {
-    height: 100%; background: #fff; width: 0%;
-    transition: width .2s ease;
-  }
+  .overlay .prog-fill { height: 100%; background: #fff; width: 0%; transition: width .2s ease; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .toast {
@@ -1102,12 +1073,7 @@
   }
   .toast.big .check { font-size: 18px; color: var(--primary); }
 
-  .print-header {
-    display: none;
-    padding: 0 0 8px;
-    border-bottom: 1px solid #000;
-    margin-bottom: 8px;
-  }
+  .print-header { display: none; padding: 0 0 8px; border-bottom: 1px solid #000; margin-bottom: 8px; }
   @media print {
     @page { size: landscape; margin: 10mm; }
     .no-print { display: none !important; }
@@ -1194,7 +1160,7 @@
     .hist-item { padding: 9px 11px; gap: 9px; }
     .toast { font-size: 12px; padding: 9px 14px; bottom: 14px; right: 14px; left: 14px; }
     .toast.big { padding: 12px 16px; font-size: 12.5px; max-width: none; }
-    .hotkeys, .field-row, .field-row-3 { grid-template-columns: 1fr; }
+    .hotkeys, .field-row { grid-template-columns: 1fr; }
     .about-header { gap: 9px; }
     .about-logo { width: 42px; height: 42px; font-size: 20px; }
     .about-header h2 { font-size: 15px; }
@@ -1358,7 +1324,6 @@
 
       <div class="stats" id="statsRow"></div>
 
-      <!-- Рулоны (склад плёнки) -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-head">
           <div class="card-title">Склад плёнки <small>1 рулон = 10 погонных метров</small></div>
@@ -1369,7 +1334,6 @@
         <div class="rolls-grid" id="rollsGrid"></div>
       </div>
 
-      <!-- Каталог лекал -->
       <div class="card">
         <div class="card-head">
           <div class="card-title">Каталог лекал <small id="status"></small></div>
@@ -1390,8 +1354,8 @@
           </div>
         </div>
 
-               <div class="toolbar no-print" id="toolbar">
-          <button class="btn ghost small" id="btnTogglePanels" title="Свернуть верхние панели">
+        <div class="toolbar no-print" id="toolbar">
+          <button class="btn ghost small" id="btnTogglePanels" type="button" title="Свернуть верхние панели">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
             <span id="btnTogglePanelsText">Свернуть</span>
           </button>
@@ -1462,9 +1426,9 @@
         </select>
         <select id="usageTypeFilter" title="Тип расхода">
           <option value="">Все типы расхода</option>
-          <option value="marketplace_batch">Отправка на маркетплейс</option>
-          <option value="avito">Продажа на Авито</option>
-          <option value="marketplace_unit">Продажа на маркетплейсе (штучно)</option>
+          <option value="marketplace_batch">Отправка партии на маркетплейс</option>
+          <option value="avito">Штучная продажа на Авито</option>
+          <option value="marketplace_unit">Штучная продажа на маркетплейсе</option>
           <option value="defect">Брак</option>
           <option value="other">Другое</option>
         </select>
@@ -1502,8 +1466,8 @@
 <div class="modal hidden" id="detailModal">
   <div class="modal-box" style="max-width:760px;" role="dialog" aria-modal="true">
     <h2 id="detailTitle">Карточка</h2>
-    <div class="subtabs">
-     
+
+    <!-- Порядок: Файлы → На складе → Нарезка. История убрана -->
     <div class="subtabs">
       <button class="subtab active" data-subtab="files">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
@@ -1518,12 +1482,8 @@
         Нарезка
       </button>
     </div>
-      
-    <div class="subtab-panel active" id="subtab-ready">
-      <div id="readyStockBox" class="ready-stock"></div>
-    </div>
 
-    <div class="subtab-panel" id="subtab-files">
+    <div class="subtab-panel active" id="subtab-files">
       <div id="filesList" class="file-list"></div>
       <div class="files-toolbar">
         <button class="btn ghost small" id="btnCheckAll">Выделить все</button>
@@ -1543,15 +1503,15 @@
       </div>
     </div>
 
-    <div class="subtab-panel" id="subtab-history">
-      <div class="history-list" id="detailHistory"></div>
+    <div class="subtab-panel" id="subtab-ready">
+      <div id="readyStockBox" class="ready-stock"></div>
     </div>
 
     <div class="subtab-panel" id="subtab-cuts">
       <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
         <button class="btn primary small" id="btnNewCutForRecord">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
-          Отметить нарезку
+          Записать нарезку
         </button>
       </div>
       <div id="detailCuts"></div>
@@ -1570,7 +1530,7 @@
 <!-- ============ MODAL: нарезка ============ -->
 <div class="modal hidden" id="cutModal">
   <div class="modal-box" role="dialog" aria-modal="true">
-        <h2 id="cutModalTitle">Записать нарезку</h2>
+    <h2 id="cutModalTitle">Записать нарезку</h2>
     <div id="cutFields"></div>
     <div class="modal-actions">
       <button class="btn ghost" id="btnCutCancel">Отмена</button>
@@ -1761,7 +1721,7 @@
       <div class="about-logo">П</div>
       <div>
         <h2>Пленка для всех</h2>
-        <div class="about-sub">Учёт лекал на стёкла фар · v4.0</div>
+        <div class="about-sub">Учёт лекал на стёкла фар · v4.1</div>
       </div>
     </div>
     <div class="about-section">
@@ -1771,10 +1731,6 @@
         <div class="hk-row"><kbd>N</kbd><span>Новое лекало</span></div>
         <div class="hk-row"><kbd>Enter</kbd><span>Сохранить в форме</span></div>
         <div class="hk-row"><kbd>Esc</kbd><span>Закрыть модалку</span></div>
-        <div class="hk-row"><kbd>↑</kbd><kbd>↓</kbd><span>Навигация по таблице</span></div>
-        <div class="hk-row"><kbd>Space</kbd><span>Открыть карточку</span></div>
-        <div class="hk-row"><kbd>F2</kbd><span>Редактировать</span></div>
-        <div class="hk-row"><kbd>Delete</kbd><span>Удалить выделенное</span></div>
         <div class="hk-row"><kbd>Ctrl</kbd>+<kbd>P</kbd><span>Печать таблицы</span></div>
         <div class="hk-row"><kbd>Ctrl</kbd>+<kbd>E</kbd><span>Экспорт CSV</span></div>
         <div class="hk-row"><kbd>F1</kbd> или <kbd>?</kbd><span>Эта справка</span></div>
@@ -1819,7 +1775,7 @@
 <datalist id="dl-marka"></datalist>
 <datalist id="dl-color"></datalist>
 <datalist id="dl-raspolozhenie"></datalist>
-  
+
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/sql.js@1.10.3/dist/sql-wasm.js"></script>
 <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
@@ -1846,17 +1802,12 @@ const ICON_PATHS = {
   warn: '<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
   package: '<line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
   chart: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
-  clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
-  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
-  refresh: '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
-  cloud: '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>',
-  filter: '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>'
+  refresh: '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>'
 };
 const icon = (name, size) => _svgWrap(ICON_PATHS[name] || '', size);
 
 /* ============ Константы ============ */
 
-// Поля каталога лекал (без типа/цвета/толщины плёнки)
 const COLUMNS = ['pp','raspolozhenie','marka','model','rashod','artikul','cena'];
 
 const HEADERS = {
@@ -1869,15 +1820,14 @@ const HEADERS = {
   cena: 'Цена'
 };
 
-// Какие поля можно править двойным кликом прямо в таблице
 const INLINE_EDITABLE = ['raspolozhenie','marka','model','rashod','artikul','cena'];
-
-// Какие поля показываются в форме карточки лекала
 const EDITABLE = ['raspolozhenie','marka','model','rashod','artikul','cena'];
-
 const NUMERIC_FIELDS = ['rashod'];
 
-const DATALISTS = { marka: 'dl-marka', raspolozhenie: 'dl-raspolozhenie' };
+const DATALISTS = {
+  marka: 'dl-marka',
+  raspolozhenie: 'dl-raspolozhenie'
+};
 
 const HINTS = {
   raspolozhenie: 'Например: фары, ПТФ, поворотники',
@@ -1888,7 +1838,6 @@ const HINTS = {
   cena: 'Цена продажи'
 };
 
-// Типы расхода
 const USAGE_TYPES = [
   { id: 'marketplace_batch', label: 'Отправка партии на маркетплейс' },
   { id: 'avito',             label: 'Штучная продажа на Авито' },
@@ -1941,6 +1890,8 @@ let detailRecordId = null;
 let editingCutId = null;
 let editingRollType = null;
 let editingUsageId = null;
+let _currentUsageReadyId = 0;
+let _pendingFormFiles = [];
 let currentTab = 'sklad';
 let searchDebounce = null;
 let sortState = { column: 'pp', direction: 'asc' };
@@ -1948,7 +1899,6 @@ let filterState = { marka: '', model: '', raspolozhenie: '' };
 let quickFilter = 'all';
 let selectedIds = new Set();
 let installPrompt = null;
-let _pendingFormFiles = [];
 
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
@@ -2353,7 +2303,7 @@ function ensureSchema(target) {
     if (!ocols.includes('stock_id'))        target.run('ALTER TABLE orders ADD COLUMN stock_id INTEGER DEFAULT 0');
   } catch(e) {}
 
-  // --- Склад плёнки (тип + цвет + толщина)
+  // --- Склад плёнки
   let stockExists = false;
   try {
     const r = target.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='film_stock'");
@@ -2411,7 +2361,7 @@ function ensureSchema(target) {
   `);
   target.run('CREATE UNIQUE INDEX IF NOT EXISTS uq_ready ON stock_ready(record_id, tip_plenki, color, thickness)');
 
-  // --- Расход готовой продукции
+  // --- Расход
   target.run(`
     CREATE TABLE IF NOT EXISTS usage_log (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -2429,7 +2379,6 @@ function ensureSchema(target) {
     )
   `);
 
-  // --- Индексы
   target.run(`CREATE INDEX IF NOT EXISTS idx_att_record ON attachments(record_id)`);
   target.run(`CREATE INDEX IF NOT EXISTS idx_hist_record ON history(record_id)`);
   target.run(`CREATE INDEX IF NOT EXISTS idx_hist_created ON history(created_at)`);
@@ -2451,8 +2400,6 @@ function seedDb() {
   SEED.forEach(r => stmt.run(r));
   stmt.free();
 }
-
-/* ============ Persist / Auto backup ============ */
 
 async function persist() {
   try {
@@ -2521,7 +2468,7 @@ window.addEventListener('online', () => {
 window.addEventListener('offline', () => setSyncState('offline'));
 
 /* ==========================================================================
-   ЗАПРОСЫ К БД: ЛЕКАЛА
+   ЗАПРОСЫ: ЛЕКАЛА
    ========================================================================== */
 
 function allRows(q) {
@@ -2570,11 +2517,9 @@ function smartFilter(rows, query) {
   const qWordsTrans = qWords.map(w => translit(w));
 
   const scored = [];
-
   for (const r of rows) {
-    const haystack = [
-      r.pp, r.raspolozhenie, r.marka, r.model, r.artikul, r.cena
-    ].map(x => String(x || '').toLowerCase()).join(' ');
+    const haystack = [r.pp, r.raspolozhenie, r.marka, r.model, r.artikul, r.cena]
+      .map(x => String(x || '').toLowerCase()).join(' ');
     const haystackTrans = translit(haystack);
 
     let score = 0;
@@ -2584,10 +2529,8 @@ function smartFilter(rows, query) {
     for (let i = 0; i < qWords.length; i++) {
       const w = qWords[i];
       const wt = qWordsTrans[i];
-
       if (haystack.includes(w)) score += 40;
       if (wt && wt !== w && haystackTrans.includes(wt)) score += 30;
-
       if (score < 100) {
         const tokens = haystack.split(/\s+/).filter(t => t.length >= 3);
         for (const tok of tokens) {
@@ -2601,10 +2544,8 @@ function smartFilter(rows, query) {
         }
       }
     }
-
     if (score > 0) scored.push({ row: r, score });
   }
-
   scored.sort((a, b) => b.score - a.score);
   return scored.map(s => s.row);
 }
@@ -2666,7 +2607,7 @@ function refreshDatalists() {
 }
 
 /* ==========================================================================
-   СКЛАД ПЛЁНКИ (рулоны)
+   СКЛАД ПЛЁНКИ
    ========================================================================== */
 
 function allStock() {
@@ -2676,7 +2617,6 @@ function allStock() {
   stmt.free();
   return out;
 }
-
 function getStockById(id) {
   if (!id) return null;
   const stmt = db.prepare('SELECT * FROM film_stock WHERE id = ?');
@@ -2685,7 +2625,6 @@ function getStockById(id) {
   stmt.free();
   return row;
 }
-
 function getStock(tip, color, thickness) {
   if (!tip) return null;
   color = color || '';
@@ -2698,7 +2637,6 @@ function getStock(tip, color, thickness) {
   stmt.free();
   return row;
 }
-
 function setStock(id, tip, color, thickness, rolls, minRolls) {
   if (id) {
     db.run(
@@ -2713,11 +2651,9 @@ function setStock(id, tip, color, thickness, rolls, minRolls) {
     );
   }
 }
-
 function updateStockRolls(id, rolls) {
   db.run('UPDATE film_stock SET rolls=? WHERE id=?', [rolls, id]);
 }
-
 function consumeFilm(stockId, meters) {
   if (!stockId || !meters) return null;
   const s = getStockById(stockId);
@@ -2725,8 +2661,7 @@ function consumeFilm(stockId, meters) {
   const before = s.rolls || 0;
   const after = Math.max(0, before - meters / 10);
   updateStockRolls(s.id, after);
-  const label = [s.tip_plenki, s.color, s.thickness ? s.thickness + ' мкм' : '']
-    .filter(Boolean).join(' · ');
+  const label = [s.tip_plenki, s.color, s.thickness ? s.thickness + ' мкм' : ''].filter(Boolean).join(' · ');
   logHistory({
     recordId: null, action: 'stock',
     details: `Расход «${label}»: ${meters.toFixed(1)} м (${(meters/10).toFixed(2)} рул). ` +
@@ -2734,7 +2669,6 @@ function consumeFilm(stockId, meters) {
   });
   return { before, after, stockId: s.id };
 }
-
 function returnFilm(stockId, meters) {
   if (!meters) return null;
   const s = stockId ? getStockById(stockId) : null;
@@ -2744,13 +2678,11 @@ function returnFilm(stockId, meters) {
   updateStockRolls(s.id, after);
   return { before, after, stockId: s.id };
 }
-
 function totalFilmMeters() {
   const stmt = db.prepare('SELECT SUM(rolls) AS r FROM film_stock');
   stmt.step(); const r = stmt.getAsObject().r || 0; stmt.free();
   return r * 10;
 }
-
 function lowStockTypes() {
   const out = [];
   for (const s of allStock()) {
@@ -2776,7 +2708,6 @@ function allReady() {
   stmt.free();
   return out;
 }
-
 function readyForRecord(recordId) {
   const stmt = db.prepare('SELECT * FROM stock_ready WHERE record_id = ? AND qty > 0 ORDER BY id DESC');
   stmt.bind([recordId]);
@@ -2785,7 +2716,6 @@ function readyForRecord(recordId) {
   stmt.free();
   return out;
 }
-
 function getReady(id) {
   const stmt = db.prepare('SELECT * FROM stock_ready WHERE id = ?');
   stmt.bind([id]);
@@ -2793,13 +2723,12 @@ function getReady(id) {
   stmt.free();
   return row;
 }
-
 function addReady(recordId, tip, color, thickness, qty) {
   if (!recordId || !qty) return null;
   tip = tip || '';
   color = color || '';
   thickness = parseNum(thickness);
-  // Ищем существующую строку с такими параметрами
+
   const stmt = db.prepare(
     "SELECT * FROM stock_ready WHERE record_id=? AND COALESCE(tip_plenki,'')=? AND COALESCE(color,'')=? AND COALESCE(thickness,0)=?"
   );
@@ -2821,7 +2750,6 @@ function addReady(recordId, tip, color, thickness, qty) {
   const newId = db.exec('SELECT last_insert_rowid() AS id')[0].values[0][0];
   return { id: newId, qty };
 }
-
 function subReady(readyId, qty) {
   if (!readyId || !qty) return null;
   const s = getReady(readyId);
@@ -2831,9 +2759,7 @@ function subReady(readyId, qty) {
   db.run('UPDATE stock_ready SET qty=? WHERE id=?', [after, readyId]);
   return { before, after };
 }
-
 function totalReadyByRecord() {
-  // { record_id: total_qty }
   const stmt = db.prepare(
     'SELECT record_id, SUM(qty) AS s FROM stock_ready WHERE qty > 0 GROUP BY record_id'
   );
@@ -2859,8 +2785,8 @@ function allUsage(filter) {
   `;
   const where = [];
   const params = [];
-  if (filter.marka)    { where.push('p.marka = ?');       params.push(filter.marka); }
-  if (filter.usage_type) { where.push('u.usage_type = ?'); params.push(filter.usage_type); }
+  if (filter.marka)      { where.push('p.marka = ?');       params.push(filter.marka); }
+  if (filter.usage_type) { where.push('u.usage_type = ?');  params.push(filter.usage_type); }
   if (where.length) sql += ' WHERE ' + where.join(' AND ');
   sql += ' ORDER BY u.id DESC LIMIT 500';
   const stmt = db.prepare(sql);
@@ -2870,7 +2796,6 @@ function allUsage(filter) {
   stmt.free();
   return out;
 }
-
 function getUsage(id) {
   const stmt = db.prepare('SELECT * FROM usage_log WHERE id = ?');
   stmt.bind([id]);
@@ -2878,7 +2803,6 @@ function getUsage(id) {
   stmt.free();
   return row;
 }
-
 function addUsage(data) {
   db.run(
     `INSERT INTO usage_log (ready_id, record_id, tip_plenki, color, thickness, qty,
@@ -2892,8 +2816,7 @@ function addUsage(data) {
     ]
   );
   const newId = db.exec('SELECT last_insert_rowid() AS id')[0].values[0][0];
-  const label = [data.tip_plenki, data.color, data.thickness ? data.thickness + ' мкм' : '']
-    .filter(Boolean).join(' · ');
+  const label = [data.tip_plenki, data.color, data.thickness ? data.thickness + ' мкм' : ''].filter(Boolean).join(' · ');
   const usageLabel = data.usage_type === 'other' && data.usage_type_custom
     ? data.usage_type_custom
     : (USAGE_TYPES.find(t => t.id === data.usage_type)?.label || data.usage_type);
@@ -2903,7 +2826,6 @@ function addUsage(data) {
   });
   return newId;
 }
-
 async function deleteUsage(id) {
   const u = getUsage(id);
   if (!u) return;
@@ -2913,13 +2835,11 @@ async function deleteUsage(id) {
     okText: 'Удалить', danger: true
   });
   if (!yes) return;
-  // Возвращаем штуки на склад готовой продукции
   if (u.ready_id) {
     const r = getReady(u.ready_id);
     if (r) {
       db.run('UPDATE stock_ready SET qty = qty + ? WHERE id = ?', [u.qty, u.ready_id]);
     } else {
-      // если строка удалена, создадим заново через addReady
       addReady(u.record_id, u.tip_plenki, u.color, u.thickness, u.qty);
     }
   } else {
@@ -2945,7 +2865,6 @@ function logHistory({ recordId, action, field, oldValue, newValue, details }) {
      newValue || '', details || '', new Date().toISOString()]
   );
 }
-
 function historyFor(recordId) {
   const stmt = db.prepare('SELECT * FROM history WHERE record_id = ? ORDER BY id DESC LIMIT 200');
   stmt.bind([recordId]);
@@ -2954,7 +2873,6 @@ function historyFor(recordId) {
   stmt.free();
   return out;
 }
-
 function allHistory(filterAction, limit = 400) {
   let sql = 'SELECT * FROM history';
   const params = [];
@@ -2967,7 +2885,6 @@ function allHistory(filterAction, limit = 400) {
   stmt.free();
   return out;
 }
-
 function clearHistory() { db.run('DELETE FROM history'); }
 
 function actionMeta(a) {
@@ -2994,7 +2911,6 @@ function attachmentCounts() {
   stmt.free();
   return map;
 }
-
 function attachmentsFor(recordId) {
   const stmt = db.prepare(
     `SELECT id, filename, mime, size, storage_key, uploaded_at
@@ -3006,7 +2922,6 @@ function attachmentsFor(recordId) {
   stmt.free();
   return out;
 }
-
 function orphanAttachments() {
   const stmt = db.prepare(`
     SELECT a.id, a.filename, a.record_id
@@ -3019,7 +2934,6 @@ function orphanAttachments() {
   stmt.free();
   return out;
 }
-
 async function getAttachmentBlob(id, mime) {
   const stmt = db.prepare('SELECT mime, storage_key, data FROM attachments WHERE id=?');
   stmt.bind([id]);
@@ -3035,7 +2949,6 @@ async function getAttachmentBlob(id, mime) {
   }
   return blob;
 }
-
 function isImageFile(name, mime) {
   name = (name || '').toLowerCase(); mime = (mime || '').toLowerCase();
   return mime.startsWith('image/') || /\.(png|jpe?g|gif|webp|svg|bmp)$/.test(name);
@@ -3077,7 +2990,6 @@ function cutsList(filterMarka, filterDate) {
   stmt.free();
   return out;
 }
-
 function cutsFor(recordId) {
   const stmt = db.prepare('SELECT * FROM orders WHERE record_id = ? ORDER BY id DESC');
   stmt.bind([recordId]);
@@ -3086,7 +2998,6 @@ function cutsFor(recordId) {
   stmt.free();
   return out;
 }
-
 function getCut(id) {
   const stmt = db.prepare('SELECT * FROM orders WHERE id = ?');
   stmt.bind([id]);
@@ -3346,7 +3257,7 @@ function renderActiveFilters() {
 }
 
 /* ==========================================================================
-   РЕНДЕР: ТАБЛИЦА КАТАЛОГА
+   РЕНДЕР: ТАБЛИЦА
    ========================================================================== */
 
 function updateSortIndicators() {
@@ -3439,7 +3350,6 @@ function render() {
   const cutMap = {};
   const readyMap = totalReadyByRecord();
 
-  // Сколько нарезано по каждому лекалу
   try {
     const stmt = db.prepare('SELECT record_id, COALESCE(SUM(qty),0) AS s FROM orders GROUP BY record_id');
     while (stmt.step()) {
@@ -3585,7 +3495,7 @@ function openCtxMenu(e, recordId) {
   if (!rec) return;
 
   const items = [
-    { icon: 'scissors',  label: 'Нарезать',         action: () => openCutForm(null, recordId) },
+    { icon: 'scissors',  label: 'Записать нарезку', action: () => openCutForm(null, recordId) },
     { sep: true },
     { icon: 'paperclip', label: 'Карточка лекала',  action: () => openDetail(recordId) },
     { icon: 'tag',       label: 'Печать этикетки',  action: () => openLabelFormSingle(recordId) },
@@ -3644,26 +3554,27 @@ function openForm(id = null) {
         ${hint}
       </div>`;
   }).join('');
-    // Если редактируем существующее — блок файлов не показываем (они в карточке)
+  refreshDatalists();
+
+  // Блок файлов: при редактировании скрываем (они в карточке)
   const formFilesField = $('formFilesField');
   if (formFilesField) formFilesField.style.display = id ? 'none' : '';
-
-  // Список файлов (для новых)
   renderPendingFiles();
-  refreshDatalists();
+
   $('modal').classList.remove('hidden');
   setTimeout(() => {
     const first = $('modalFields').querySelector('input');
     if (first) first.focus();
   }, 50);
 }
-  function renderPendingFiles() {
+
+function renderPendingFiles() {
   const el = $('formFilesList');
   if (!el) return;
   if (!_pendingFormFiles.length) { el.innerHTML = ''; return; }
   el.innerHTML = _pendingFormFiles.map((f, i) => `
     <div class="file-row">
-      <div class="file-thumb">${isImageFile(f.name, f.type) ? icon('fileText', 20) : icon('paperclip', 20)}</div>
+      <div class="file-thumb">${icon('paperclip', 20)}</div>
       <div class="file-name">
         ${esc(f.name)}
         <div class="file-meta">${humanSize(f.size)}</div>
@@ -3679,37 +3590,10 @@ function openForm(id = null) {
   });
 }
 
-function setupFormFilesHandlers() {
-  const drop = $('formDrop');
-  const fileAttach = $('formFileAttach');
-  if (!drop || !fileAttach) return;
-  drop.onclick = () => fileAttach.click();
-  fileAttach.onchange = e => {
-    const files = Array.from(e.target.files || []);
-    if (files.length) {
-      _pendingFormFiles = _pendingFormFiles.concat(files);
-      renderPendingFiles();
-    }
-    e.target.value = '';
-  };
-  ['dragenter','dragover'].forEach(ev => {
-    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); });
-  });
-  ['dragleave','drop'].forEach(ev => {
-    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); });
-  });
-  drop.addEventListener('drop', e => {
-    const files = Array.from(e.dataTransfer.files || []);
-    if (files.length) {
-      _pendingFormFiles = _pendingFormFiles.concat(files);
-      renderPendingFiles();
-    }
-  });
-}
-
 function closeForm() {
   $('modal').classList.add('hidden');
   editingId = null;
+  _pendingFormFiles = [];
 }
 
 async function saveForm() {
@@ -3740,8 +3624,8 @@ async function saveForm() {
   }
 
   const fields = COLUMNS.filter(c => c !== 'pp');
+  let newRecordId = null;
 
-    let newRecordId = null;
   if (editingId === null) {
     db.run(
       `INSERT INTO plenki (pp, ${fields.join(',')})
@@ -3768,22 +3652,19 @@ async function saveForm() {
       logHistory({ recordId: editingId, action: 'update', details: 'Изменения: ' + desc });
     }
   }
-   await persist();
+
+  const pendingFiles = _pendingFormFiles.slice();
+  _pendingFormFiles = [];
+
+  await persist();
   refreshDatalists();
   render();
   renderFilters();
   closeForm();
   toast('Сохранено');
 
-  // Прикрепить отложенные файлы (только при создании)
-  if (newRecordId && _pendingFormFiles.length) {
-    const filesToAttach = _pendingFormFiles.slice();
-    _pendingFormFiles = [];
-    addAttachments(newRecordId, filesToAttach).then(() => {
-      render();
-    });
-  } else {
-    _pendingFormFiles = [];
+  if (newRecordId && pendingFiles.length) {
+    addAttachments(newRecordId, pendingFiles).then(() => render());
   }
 }
 
@@ -3841,7 +3722,7 @@ async function deleteRow(id) {
 }
 
 /* ==========================================================================
-   ФОРМА РУЛОНА (склад плёнки)
+   ФОРМА РУЛОНА
    ========================================================================== */
 
 function openRollForm(stockId) {
@@ -3895,7 +3776,7 @@ function openRollForm(stockId) {
       <label>Минимальный остаток (рул.)</label>
       <input type="number" min="0" step="0.5" inputmode="decimal" data-roll-col="min_rolls"
              value="${esc(s?.min_rolls ?? 1)}">
-      <div class="hint">Когда остаток станет ниже — появится напоминание в дашборде</div>
+      <div class="hint">Когда остаток станет ниже — появится напоминание</div>
     </div>
   `;
   $('rollModal').classList.remove('hidden');
@@ -3974,7 +3855,7 @@ async function deleteRollType(stockId) {
 }
 
 /* ==========================================================================
-   РЕНДЕР: СКЛАД ПЛЁНКИ (рулоны)
+   РЕНДЕР: СКЛАД ПЛЁНКИ
    ========================================================================== */
 
 function renderRolls() {
@@ -4001,8 +3882,7 @@ function renderRolls() {
     const percent = Math.min(100, (rolls / visualMax) * 100);
     const rollsText = Number.isInteger(rolls) ? rolls.toString() : rolls.toFixed(2);
     const metersText = Number.isInteger(meters) ? meters.toString() : meters.toFixed(1);
-    const subtitle = [s.color, s.thickness ? s.thickness + ' мкм' : '']
-      .filter(Boolean).join(' · ');
+    const subtitle = [s.color, s.thickness ? s.thickness + ' мкм' : ''].filter(Boolean).join(' · ');
 
     return `
       <div class="roll-card ${low ? 'low' : warn ? 'warn' : ''}">
@@ -4039,7 +3919,7 @@ function renderRolls() {
 }
 
 /* ==========================================================================
-   РЕНДЕР: НАРЕЗКА (журнал)
+   РЕНДЕР: НАРЕЗКА
    ========================================================================== */
 
 function renderCuts() {
@@ -4070,7 +3950,7 @@ function renderCuts() {
       <div class="empty">
         <span class="empty-icon">✂️</span>
         Пока ничего не нарезано
-        <div class="empty-hint">Нажмите <b>Отметить нарезку</b>, чтобы записать</div>
+        <div class="empty-hint">Нажмите <b>Записать нарезку</b>, чтобы записать</div>
       </div>`;
     $('cutsStatus').textContent = '';
     return;
@@ -4114,11 +3994,9 @@ function renderCuts() {
    ========================================================================== */
 
 function renderUsage() {
-  // Список готовой продукции на складе
   const marka = $('usageMarkaFilter').value;
   const usageType = $('usageTypeFilter').value;
 
-  // Собираем марки из готовой продукции
   const markas = new Set();
   try {
     const stmt = db.prepare(`
@@ -4136,12 +4014,9 @@ function renderUsage() {
       `<option value="${esc(m)}" ${m === marka ? 'selected' : ''}>${esc(m)}</option>`
     ).join('');
 
-  // Если выбран фильтр по типу расхода — показываем журнал расхода.
-  // Если нет — показываем текущий склад готовой продукции.
   const el = $('usageList');
 
   if (usageType) {
-    // Журнал расхода
     const list = allUsage({ marka, usage_type: usageType });
     if (!list.length) {
       el.innerHTML = `<div class="empty"><span class="empty-icon">📤</span>Записей расхода нет</div>`;
@@ -4172,7 +4047,6 @@ function renderUsage() {
     return;
   }
 
-  // Иначе — текущий склад готовой продукции
   const ready = allReady();
   const filtered = marka ? ready.filter(r => r.marka === marka) : ready;
   if (!filtered.length) {
@@ -4208,116 +4082,6 @@ function renderUsage() {
 }
 
 /* ==========================================================================
-   ФОРМА РАСХОДА
-   ========================================================================== */
-
-function openUsageForm(readyId) {
-  _currentUsageReadyId = readyId;
-  editingUsageId = null;
-  const r = readyId ? getReady(readyId) : null;
-  if (!r) { toastError('Нет строки готовой продукции'); return; }
-
-  const rec = getRecord(r.record_id);
-  const label = [r.tip_plenki, r.color, r.thickness ? r.thickness + ' мкм' : ''].filter(Boolean).join(' · ');
-  const car = [(rec?.marka || ''), (rec?.model || '')].filter(Boolean).join(' ');
-
-  $('usageModalTitle').textContent = 'Израсходовать';
-  $('usageFields').innerHTML = `
-    <div class="cut-preview" style="margin-bottom:12px;">
-      <div class="row"><span>Позиция:</span><b>${esc(car)}</b></div>
-      <div class="row"><span>Плёнка:</span><b>${esc(label || '—')}</b></div>
-      <div class="row"><span>На складе:</span><b class="accent">${r.qty} шт</b></div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Сколько израсходовать, шт</label>
-        <input type="number" min="1" max="${r.qty}" step="1" inputmode="numeric" id="usageQty" value="${Math.min(1, r.qty)}">
-      </div>
-      <div class="field">
-        <label>Дата</label>
-        <input type="date" id="usageDate" value="${todayIso()}">
-      </div>
-    </div>
-    <div class="field">
-      <label>Куда израсходовано</label>
-      <select id="usageType">
-        <option value="">— выберите —</option>
-        ${USAGE_TYPES.map(t => `<option value="${esc(t.id)}">${esc(t.label)}</option>`).join('')}
-      </select>
-    </div>
-    <div class="field" id="usageCustomField" style="display:none;">
-      <label>Уточнение</label>
-      <input id="usageCustom" placeholder="Например: возврат клиенту" autocomplete="off">
-    </div>
-    <div class="field">
-      <label>Заметка</label>
-      <input id="usageNotes" placeholder="Опционально" autocomplete="off">
-    </div>
-  `;
-  $('usageModal').classList.remove('hidden');
-  $('usageType').onchange = () => {
-    $('usageCustomField').style.display = $('usageType').value === 'other' ? 'block' : 'none';
-  };
-  setTimeout(() => { $('usageQty').focus(); $('usageQty').select(); }, 50);
-}
-
-function closeUsageForm() {
-  $('usageModal').classList.add('hidden');
-  editingUsageId = null;
-}
-
-async function saveUsageForm() {
-  const readyId = _currentUsageReadyId;
-  if (!readyId) { toastError('Нет строки готовой продукции'); return; }
-  const r = getReady(readyId);
-  if (!r) { toastError('Строка не найдена'); return; }
-
-  const qty = parseInt($('usageQty').value, 10) || 0;
-  if (qty < 1) { toastError('Укажите количество'); return; }
-  if (qty > r.qty) { toastError(`На складе только ${r.qty} шт`); return; }
-
-  const usageType = $('usageType').value;
-  if (!usageType) { toastError('Выберите куда израсходовано'); return; }
-
-  const custom = $('usageCustom')?.value.trim() || '';
-  if (usageType === 'other' && !custom) { toastError('Укажите куда именно'); return; }
-
-  const usageDate = $('usageDate').value || todayIso();
-  const notes = $('usageNotes').value.trim();
-
-  subReady(readyId, qty);
-
-  addUsage({
-    ready_id: readyId,
-    record_id: r.record_id,
-    tip_plenki: r.tip_plenki,
-    color: r.color,
-    thickness: r.thickness,
-    qty,
-    usage_type: usageType,
-    usage_type_custom: custom,
-    usage_date: usageDate,
-    notes
-  });
-
-  await persist();
-  closeUsageForm();
-
-  const typeLabel = usageType === 'other' && custom
-    ? custom : (USAGE_TYPES.find(t => t.id === usageType)?.label || usageType);
-  toastBig(`
-    <span class="check">✓</span>
-    <div>
-      <div style="font-weight:700;margin-bottom:3px;">Израсходовано ${qty} шт</div>
-      <div style="font-size:12.5px;opacity:.9;">${esc(typeLabel)}</div>
-    </div>
-  `);
-
-  renderUsage();
-  renderStats();
-}
-
-/* ==========================================================================
    КАРТОЧКА ЛЕКАЛА (просмотр)
    ========================================================================== */
 
@@ -4329,10 +4093,9 @@ function openDetail(recordId, subtab) {
   if (mm) parts.push(mm);
   if (r?.artikul) parts.push(r.artikul);
   $('detailTitle').textContent = parts.length ? parts.join(' · ') : 'Карточка';
-  switchDetailSubtab(subtab || 'ready');
-  renderReadyStock();
+  switchDetailSubtab(subtab || 'files');
   renderFilesList();
-  renderDetailHistory();
+  renderReadyStock();
   renderDetailCuts();
   $('detailModal').classList.remove('hidden');
 }
@@ -4344,8 +4107,8 @@ function closeDetail() {
 }
 
 function switchDetailSubtab(name) {
-  $$('.subtab').forEach(t => {
-    if (t.dataset.subtab) t.classList.toggle('active', t.dataset.subtab === name);
+  $$('.subtab[data-subtab]').forEach(t => {
+    t.classList.toggle('active', t.dataset.subtab === name);
   });
   $$('.subtab-panel').forEach(p =>
     p.classList.toggle('active', p.id === 'subtab-' + name));
@@ -4367,28 +4130,6 @@ function renderReadyStock() {
         <div class="ready-qty">${r.qty} шт</div>
       </div>
     `;
-  }).join('');
-}
-
-function renderDetailHistory() {
-  if (detailRecordId === null) return;
-  const list = historyFor(detailRecordId);
-  const el = $('detailHistory');
-  if (!list.length) {
-    el.innerHTML = '<div class="empty" style="padding:20px;">Пока изменений нет</div>';
-    return;
-  }
-  el.innerHTML = list.map(h => {
-    const meta = actionMeta(h.action);
-    return `
-      <div class="hist-item">
-        <div class="hist-icon ${meta.cls}">${meta.icon}</div>
-        <div class="hist-body">
-          <div class="hist-title">${esc(meta.label)}</div>
-          ${h.details ? `<div class="hist-desc">${esc(h.details)}</div>` : ''}
-          <div class="hist-time">${esc(fmtDate(h.created_at))}</div>
-        </div>
-      </div>`;
   }).join('');
 }
 
@@ -4439,7 +4180,7 @@ function renderDetailCuts() {
 function openCutForm(cutId, presetRecordId) {
   editingCutId = cutId || null;
   const c = cutId ? getCut(cutId) : null;
-    $('cutModalTitle').textContent = cutId ? 'Изменить запись нарезки' : 'Записать нарезку';
+  $('cutModalTitle').textContent = cutId ? 'Изменить запись нарезки' : 'Записать нарезку';
 
   const records = allRows('');
   if (!records.length && !cutId) {
@@ -4454,7 +4195,6 @@ function openCutForm(cutId, presetRecordId) {
     </option>`
   ).join('');
 
-  // Список рулонов со склада
   const stockList = allStock();
   const stockOptions = stockList.map(s => {
     const label = [s.tip_plenki, s.color, s.thickness ? s.thickness + ' мкм' : '']
@@ -4511,7 +4251,6 @@ function openCutForm(cutId, presetRecordId) {
     <div class="cut-preview" id="cutPreview"></div>
   `;
 
-  // При редактировании — предзаполнить рулон
   if (c && c.stock_id) {
     const stockSel = $('cutStockSelect');
     if (stockSel) stockSel.value = String(c.stock_id);
@@ -4545,7 +4284,7 @@ function openCutForm(cutId, presetRecordId) {
       preview.innerHTML = `
         <div class="row"><span>Расход плёнки:</span><b class="warn">не задан</b></div>
         <div class="row" style="color:var(--text-3);font-size:11.5px;margin-top:6px;">
-          У лекала не указан расход на 1 шт. Откройте его и заполните «Расход, м», чтобы плёнка списывалась.
+          У лекала не указан расход на 1 шт. Откройте его и заполните «Расход, м».
         </div>`;
       return;
     }
@@ -4625,25 +4364,20 @@ async function saveCutForm() {
   const good = Math.max(0, qty - defect);
   const wasEditing = editingCutId;
 
-  // Снимок плёнки
   const tipSnap = stock ? (stock.tip_plenki || '') : '';
   const colorSnap = stock ? (stock.color || '') : '';
   const thickSnap = stock ? parseNum(stock.thickness) : 0;
 
   const now = new Date().toISOString();
 
-  // Если редактируем — сначала вернуть плёнку и готовые штуки
   if (wasEditing) {
     const old = getCut(wasEditing);
     if (old) {
-      // Возврат плёнки на рулон
       if (old.meters_consumed && old.stock_id) {
         returnFilm(Number(old.stock_id), old.meters_consumed);
       }
-      // Убрать готовые штуки, добавленные предыдущей версией
       const oldGood = Math.max(0, (old.qty || 0) - (old.defect_qty || 0));
       if (oldGood > 0) {
-        // Найти строку stock_ready и вычесть
         const stmt = db.prepare(
           "SELECT * FROM stock_ready WHERE record_id=? AND COALESCE(tip_plenki,'')=? AND COALESCE(color,'')=? AND COALESCE(thickness,0)=?"
         );
@@ -4660,12 +4394,9 @@ async function saveCutForm() {
   let consumeInfo = null;
   let usageReadyInfo = null;
 
-  // Списываем плёнку с рулона
   if (stock && meters) {
     consumeInfo = consumeFilm(stock.id, meters);
   }
-
-  // Прибавляем готовые штуки
   if (rec && good > 0) {
     usageReadyInfo = addReady(data.record_id, tipSnap, colorSnap, thickSnap, good);
   }
@@ -4708,10 +4439,10 @@ async function saveCutForm() {
   await persist();
   closeCutForm();
 
-  // Тост с результатом
   const parts = [];
   if (meters && consumeInfo) {
-    parts.push(`Списано <b>${meters.toFixed(1)} м</b> с «${esc(stock.tip_plenki)}»${stock.color ? ' ' + esc(stock.color) : ''}${stock.thickness ? ' ' + stock.thickness + ' мкм' : ''}`);
+    const lab = [stock.tip_plenki, stock.color, stock.thickness ? stock.thickness + ' мкм' : ''].filter(Boolean).join(' · ');
+    parts.push(`Списано <b>${meters.toFixed(1)} м</b> с «${esc(lab)}»`);
     parts.push(`Остаток: ${consumeInfo.before.toFixed(2)} → <b>${consumeInfo.after.toFixed(2)} рул.</b>`);
   }
   if (good && usageReadyInfo) {
@@ -4757,12 +4488,10 @@ async function deleteCut(id) {
   });
   if (!yes) return;
 
-  // Возвращаем плёнку на рулон
   if (c.meters_consumed && c.stock_id) {
     returnFilm(Number(c.stock_id), c.meters_consumed);
   }
 
-  // Убираем готовые штуки со склада
   const good = Math.max(0, (c.qty || 0) - (c.defect_qty || 0));
   if (good > 0) {
     const stmt = db.prepare(
@@ -4791,12 +4520,123 @@ async function deleteCut(id) {
 }
 
 /* ==========================================================================
+   ФОРМА РАСХОДА
+   ========================================================================== */
+
+function openUsageForm(readyId) {
+  _currentUsageReadyId = readyId;
+  editingUsageId = null;
+  const r = readyId ? getReady(readyId) : null;
+  if (!r) { toastError('Нет строки готовой продукции'); return; }
+
+  const rec = getRecord(r.record_id);
+  const label = [r.tip_plenki, r.color, r.thickness ? r.thickness + ' мкм' : ''].filter(Boolean).join(' · ');
+  const car = [(rec?.marka || ''), (rec?.model || '')].filter(Boolean).join(' ');
+
+  $('usageModalTitle').textContent = 'Израсходовать';
+  $('usageFields').innerHTML = `
+    <div class="cut-preview" style="margin-bottom:12px;">
+      <div class="row"><span>Позиция:</span><b>${esc(car)}</b></div>
+      <div class="row"><span>Плёнка:</span><b>${esc(label || '—')}</b></div>
+      <div class="row"><span>На складе:</span><b class="accent">${r.qty} шт</b></div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Сколько израсходовать, шт</label>
+        <input type="number" min="1" max="${r.qty}" step="1" inputmode="numeric" id="usageQty" value="${Math.min(1, r.qty)}">
+      </div>
+      <div class="field">
+        <label>Дата</label>
+        <input type="date" id="usageDate" value="${todayIso()}">
+      </div>
+    </div>
+    <div class="field">
+      <label>Куда израсходовано</label>
+      <select id="usageType">
+        <option value="">— выберите —</option>
+        ${USAGE_TYPES.map(t => `<option value="${esc(t.id)}">${esc(t.label)}</option>`).join('')}
+      </select>
+    </div>
+    <div class="field" id="usageCustomField" style="display:none;">
+      <label>Уточнение</label>
+      <input id="usageCustom" placeholder="Например: возврат клиенту" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Заметка</label>
+      <input id="usageNotes" placeholder="Опционально" autocomplete="off">
+    </div>
+  `;
+  $('usageModal').classList.remove('hidden');
+  $('usageType').onchange = () => {
+    $('usageCustomField').style.display = $('usageType').value === 'other' ? 'block' : 'none';
+  };
+  setTimeout(() => { $('usageQty').focus(); $('usageQty').select(); }, 50);
+}
+
+function closeUsageForm() {
+  $('usageModal').classList.add('hidden');
+  editingUsageId = null;
+  _currentUsageReadyId = 0;
+}
+
+async function saveUsageForm() {
+  const readyId = _currentUsageReadyId;
+  if (!readyId) { toastError('Нет строки готовой продукции'); return; }
+  const r = getReady(readyId);
+  if (!r) { toastError('Строка не найдена'); return; }
+
+  const qty = parseInt($('usageQty').value, 10) || 0;
+  if (qty < 1) { toastError('Укажите количество'); return; }
+  if (qty > r.qty) { toastError(`На складе только ${r.qty} шт`); return; }
+
+  const usageType = $('usageType').value;
+  if (!usageType) { toastError('Выберите куда израсходовано'); return; }
+
+  const custom = $('usageCustom')?.value.trim() || '';
+  if (usageType === 'other' && !custom) { toastError('Укажите куда именно'); return; }
+
+  const usageDate = $('usageDate').value || todayIso();
+  const notes = $('usageNotes').value.trim();
+
+  subReady(readyId, qty);
+
+  addUsage({
+    ready_id: readyId,
+    record_id: r.record_id,
+    tip_plenki: r.tip_plenki,
+    color: r.color,
+    thickness: r.thickness,
+    qty,
+    usage_type: usageType,
+    usage_type_custom: custom,
+    usage_date: usageDate,
+    notes
+  });
+
+  await persist();
+  closeUsageForm();
+
+  const typeLabel = usageType === 'other' && custom
+    ? custom : (USAGE_TYPES.find(t => t.id === usageType)?.label || usageType);
+  toastBig(`
+    <span class="check">✓</span>
+    <div>
+      <div style="font-weight:700;margin-bottom:3px;">Израсходовано ${qty} шт</div>
+      <div style="font-size:12.5px;opacity:.9;">${esc(typeLabel)}</div>
+    </div>
+  `);
+
+  renderUsage();
+  renderStats();
+}
+
+/* ==========================================================================
    ЭТИКЕТКИ
    ========================================================================== */
 
 function drawLabel(ctx, x, y, w, h, rec, opts) {
   opts = opts || {};
-  const film = opts.film || null;   // {tip_plenki, color, thickness}
+  const film = opts.film || null;
   const pad = Math.round(h * 0.06);
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(x, y, w, h);
@@ -4804,7 +4644,6 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
   ctx.lineWidth = Math.max(1, Math.round(h * 0.008));
   ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
 
-  // Цветная плашка сверху
   const barH = Math.round(h * 0.08);
   ctx.fillStyle = colorForFilm(film);
   ctx.fillRect(x, y, w, barH);
@@ -4812,7 +4651,6 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
   const centerX = x + w / 2;
   let curY = y + barH + pad;
 
-  // Строка с плёнкой (мелкая, сверху)
   if (film && film.tip_plenki) {
     const filmText = [film.tip_plenki, film.color, film.thickness ? film.thickness + ' мкм' : '']
       .filter(Boolean).join(' · ');
@@ -4821,7 +4659,6 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     let filmLines = wrapCanvasText(ctx, filmText, w - pad * 2);
-    // Обрезаем до 2 строк
     filmLines = filmLines.slice(0, 2);
     filmLines.forEach((line, i) => {
       ctx.fillText(line, centerX, curY + i * Math.round(h * 0.065));
@@ -4829,7 +4666,6 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
     curY += filmLines.length * Math.round(h * 0.065) + Math.round(h * 0.02);
   }
 
-  // Марка + модель
   const car = [(rec.marka || ''), (rec.model || '')].filter(Boolean).join(' ');
   ctx.fillStyle = '#14122e';
   let carSize = Math.round(h * 0.14);
@@ -4847,7 +4683,6 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
   });
   curY += carLines.slice(0, 2).length * (carSize + 2) + Math.round(h * 0.03);
 
-  // Расположение
   if (rec.raspolozhenie) {
     ctx.fillStyle = '#6b7280';
     ctx.font = `${Math.round(h * 0.075)}px Arial`;
@@ -4856,7 +4691,6 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
     curY += Math.round(h * 0.10);
   }
 
-  // Разделитель
   ctx.strokeStyle = '#e0deef';
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -4864,7 +4698,6 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
   ctx.lineTo(x + w - pad * 1.5, curY);
   ctx.stroke();
 
-  // Артикул снизу
   const art = (rec.artikul || '—').toUpperCase();
   ctx.fillStyle = '#4f46e5';
   let artSize = Math.round(h * 0.18);
@@ -4882,7 +4715,6 @@ function drawLabel(ctx, x, y, w, h, rec, opts) {
   ctx.textBaseline = 'alphabetic';
 }
 
-// Цвет плашки по плёнке — если выбрана
 function colorForFilm(film) {
   if (!film || !film.tip_plenki) return '#6366f1';
   const t = String(film.color || '').toLowerCase();
@@ -4894,8 +4726,8 @@ function colorForFilm(film) {
   if (t.includes('син'))     return '#2563eb';
   if (t.includes('желт'))    return '#f59e0b';
   const t2 = String(film.tip_plenki || '').toLowerCase();
-  if (t2.includes('пвх'))     return '#6366f1';
-  if (t2.includes('полиур'))  return '#10b981';
+  if (t2.includes('пвх'))    return '#6366f1';
+  if (t2.includes('полиур')) return '#10b981';
   return '#8b5cf6';
 }
 
@@ -4950,7 +4782,6 @@ async function buildLabelsPdf(records, layoutKey) {
   }
 
   newPage();
-  // records — массив объектов {rec, film}
   for (const item of records) {
     if (idx > 0 && idx % perPage === 0) { await flush(); newPage(); }
     const slot = idx % perPage;
@@ -4991,21 +4822,15 @@ function openLabelForm(recordIds) {
   const layoutSaved = localStorage.getItem('label_layout') || '8';
   const lastCopies = Number(localStorage.getItem('label_copies_' + recordIds.length)) || 1;
 
-  // Собираем доступные плёнки для выбранных лекал из склада готовой продукции
   const filmsByRecord = {};
   for (const r of records) {
     filmsByRecord[r.id] = readyForRecord(r.id);
   }
 
-  // Для одиночной печати — общий селект плёнки
   let filmSelectorHtml = '';
-  let autoSelectFilmId = null;
 
   if (records.length === 1) {
     const readyList = filmsByRecord[records[0].id] || [];
-    if (readyList.length === 1) {
-      autoSelectFilmId = readyList[0].id;
-    }
     const options = readyList.map(rw => {
       const label = [rw.tip_plenki, rw.color, rw.thickness ? rw.thickness + ' мкм' : '']
         .filter(Boolean).join(' · ');
@@ -5025,11 +4850,9 @@ function openLabelForm(recordIds) {
       </div>
     `;
   } else {
-    // Пакетная печать — автоподстановка плёнки по каждому лекалу
     filmSelectorHtml = `
       <div class="hint" style="background:var(--surface-2);padding:8px 11px;border-radius:8px;margin-bottom:10px;">
         Плёнка будет выбрана автоматически по каждой позиции (первая доступная на складе).
-        Если у лекала несколько плёнок — берётся та, у которой больше остаток.
       </div>
     `;
   }
@@ -5119,23 +4942,17 @@ async function buildAndDownloadLabels() {
   const copiesList = $('labelCopiesList');
   const filmSelect = $('labelFilm');
 
-  const flatItems = [];   // [{rec, film}]
+  const flatItems = [];
 
   if (copiesInput) {
-    // Одиночная печать
     const rec = currentLabelSingleRecord;
     if (!rec) { toastError('Нет этикетки для печати'); return; }
 
-    // Плёнка, если выбрана
     let film = null;
     if (filmSelect && filmSelect.value) {
       const rw = getReady(Number(filmSelect.value));
       if (rw) {
-        film = {
-          tip_plenki: rw.tip_plenki,
-          color: rw.color,
-          thickness: rw.thickness
-        };
+        film = { tip_plenki: rw.tip_plenki, color: rw.color, thickness: rw.thickness };
       }
     }
 
@@ -5143,7 +4960,6 @@ async function buildAndDownloadLabels() {
     localStorage.setItem('label_copies_1', String(n));
     for (let i = 0; i < n; i++) flatItems.push({ rec, film });
   } else if (copiesList) {
-    // Пакетная печать
     const inputs = $('labelFields').querySelectorAll('[data-copy-rec]');
     inputs.forEach(inp => {
       const id = Number(inp.dataset.copyRec);
@@ -5152,16 +4968,11 @@ async function buildAndDownloadLabels() {
       const rec = getRecord(id);
       if (!rec) return;
 
-      // Автоматически подбираем плёнку: та, у которой больше остаток
       const readyList = readyForRecord(id);
       let film = null;
       if (readyList.length) {
         const best = readyList.slice().sort((a, b) => (b.qty || 0) - (a.qty || 0))[0];
-        film = {
-          tip_plenki: best.tip_plenki,
-          color: best.color,
-          thickness: best.thickness
-        };
+        film = { tip_plenki: best.tip_plenki, color: best.color, thickness: best.thickness };
       }
       for (let i = 0; i < n; i++) flatItems.push({ rec, film });
     });
@@ -5555,14 +5366,14 @@ async function migrateAttachmentsToIdb() {
    ========================================================================== */
 
 const REPORTS = [
-  { id: 'efficiency',  icon: 'chart',   title: 'Эффективность раскроя',        desc: 'Нарезано, брак, расход плёнки по типам' },
-  { id: 'consumption', icon: 'package', title: 'Расход плёнки по месяцам',     desc: 'Помесячно для планирования закупок' },
-  { id: 'catalog',     icon: 'fileText',title: 'Движение по каталогу',         desc: 'Что режется, что лежит без движения' },
+  { id: 'efficiency',  icon: 'chart',   title: 'Эффективность раскроя',         desc: 'Нарезано, брак, расход плёнки по типам' },
+  { id: 'consumption', icon: 'package', title: 'Расход плёнки по месяцам',      desc: 'Помесячно для планирования закупок' },
+  { id: 'catalog',     icon: 'fileText',title: 'Движение по каталогу',          desc: 'Что режется, что лежит без движения' },
   { id: 'stock',       icon: 'package', title: 'Склад плёнки на текущий момент',desc: 'Остатки, минимумы, статус' },
-  { id: 'ready',       icon: 'package', title: 'Склад готовой продукции',      desc: 'Что лежит на складе по позициям' },
-  { id: 'usage',       icon: 'upload',  title: 'Расход готовой продукции',     desc: 'Сводка по типам расхода' },
-  { id: 'defects',     icon: 'warn',    title: 'Брак — детализация',           desc: 'По причинам: где теряем деньги' },
-  { id: 'movement',    icon: 'refresh', title: 'Движение плёнки',              desc: 'Журнал приходов и расходов' }
+  { id: 'ready',       icon: 'package', title: 'Склад готовой продукции',       desc: 'Что лежит на складе по позициям' },
+  { id: 'usage',       icon: 'upload',  title: 'Расход готовой продукции',      desc: 'Сводка по типам расхода' },
+  { id: 'defects',     icon: 'warn',    title: 'Брак — детализация',            desc: 'По причинам: где теряем деньги' },
+  { id: 'movement',    icon: 'refresh', title: 'Движение плёнки',               desc: 'Журнал приходов и расходов' }
 ];
 
 function renderReportsList() {
@@ -5980,7 +5791,7 @@ function printTable() {
 }
 
 /* ==========================================================================
-   БЭКАПЫ UI
+   БЭКАПЫ
    ========================================================================== */
 
 async function renderBackups() {
@@ -6078,13 +5889,7 @@ async function showOrphanFiles() {
 }
 
 </script>
-
 <script>
-/* ==========================================================================
-   ПЕРЕМЕННАЯ ДЛЯ ФОРМЫ РАСХОДА
-   ========================================================================== */
-let _currentUsageReadyId = 0;
-
 /* ==========================================================================
    ХОТКЕИ
    ========================================================================== */
@@ -6315,8 +6120,18 @@ async function _initAuth() {
       const signup = await window.__supaClient.auth.signUp({
         email: SUPABASE_EMAIL, password: SUPABASE_PASSWORD
       });
-      if (signup.error) { setSyncState('offline'); toastError('Синхронизация недоступна — работаю локально'); return; }
-      if (!signup.data.session) { setSyncState('offline'); toastError('Требуется подтверждение почты'); return; }
+      if (signup.error) {
+        console.warn('signup error', signup.error);
+        setSyncState('offline');
+        toastError('Синхронизация недоступна — работаю локально');
+        return;
+      }
+      if (!signup.data.session) {
+        console.warn('signup requires email confirmation');
+        setSyncState('offline');
+        toastError('Синхронизация требует подтверждения почты — работаю локально');
+        return;
+      }
     }
   } catch (e) {
     console.warn('auth/network', e);
@@ -6398,7 +6213,7 @@ function moveFocus(delta) {
 })();
 
 /* ==========================================================================
-   ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+   ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК + СВОРАЧИВАНИЕ ПАНЕЛЕЙ
    ========================================================================== */
 function setupTabs() {
   $$('.tab').forEach(t => {
@@ -6410,6 +6225,7 @@ function setupTabs() {
       if (currentTab === 'usage') renderUsage();
     };
   });
+
   // Кнопка сворачивания верхних панелей
   const main = document.querySelector('main');
   const btnToggle = $('btnTogglePanels');
@@ -6423,6 +6239,7 @@ function setupTabs() {
       if (poly) poly.setAttribute('points', isCollapsed ? '6 9 12 15 18 9' : '18 15 12 9 6 15');
     };
   }
+
   $$('.subtab[data-settings-tab]').forEach(t => {
     t.onclick = () => {
       const name = t.dataset.settingsTab;
@@ -6439,7 +6256,11 @@ function setupTabs() {
    ФИЛЬТРЫ
    ========================================================================== */
 function setupFilters() {
-    
+  $('filterMarka').onchange = e => {
+    filterState.marka = e.target.value;
+    filterState.model = '';
+    renderFilters(); render();
+  };
   $('filterModel').onchange = e => { filterState.model = e.target.value; render(); };
   $('filterRasp').onchange  = e => { filterState.raspolozhenie = e.target.value; render(); };
   $('btnResetFilters').onclick = resetAllFilters;
@@ -6581,7 +6402,10 @@ function setupUsageHandlers() {
     const add = e.target.closest('[data-usage-add]');
     const del = e.target.closest('[data-usage-del]');
     if (add) openUsageForm(Number(add.dataset.usageAdd));
-    if (del) deleteUsage(Number(del.dataset.usageDel));
+    if (del) deleteUsage(Number(del.dataset.usageDel)).then(() => {
+      renderUsage();
+      renderStats();
+    });
   };
 
   $('btnUsageCancel').onclick = closeUsageForm;
@@ -6592,7 +6416,6 @@ function setupUsageHandlers() {
 function openUsagePicker() {
   const ready = allReady();
   if (!ready.length) return;
-  // Просто открываем форму для первой позиции, но даём выбрать
   const options = ready.map(r => {
     const label = [r.tip_plenki, r.color, r.thickness ? r.thickness + ' мкм' : ''].filter(Boolean).join(' · ');
     const car = ((r.marka || '') + ' ' + (r.model || '')).trim();
@@ -6648,10 +6471,42 @@ function setupDetailHandlers() {
 
   const drop = $('drop');
   const fileAttach = $('fileAttach');
+  if (drop && fileAttach) {
+    drop.onclick = () => fileAttach.click();
+    fileAttach.onchange = e => {
+      if (e.target.files.length && detailRecordId !== null) {
+        addAttachments(detailRecordId, Array.from(e.target.files));
+      }
+      e.target.value = '';
+    };
+    ['dragenter','dragover'].forEach(ev => {
+      drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); });
+    });
+    ['dragleave','drop'].forEach(ev => {
+      drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); });
+    });
+    drop.addEventListener('drop', e => {
+      if (detailRecordId === null) return;
+      const files = Array.from(e.dataTransfer.files || []);
+      if (files.length) addAttachments(detailRecordId, files);
+    });
+  }
+}
+
+/* ==========================================================================
+   ФОРМА ЛЕКАЛА: ФАЙЛЫ
+   ========================================================================== */
+function setupFormFilesHandlers() {
+  const drop = $('formDrop');
+  const fileAttach = $('formFileAttach');
+  if (!drop || !fileAttach) return;
+
   drop.onclick = () => fileAttach.click();
   fileAttach.onchange = e => {
-    if (e.target.files.length && detailRecordId !== null) {
-      addAttachments(detailRecordId, Array.from(e.target.files));
+    const files = Array.from(e.target.files || []);
+    if (files.length) {
+      _pendingFormFiles = _pendingFormFiles.concat(files);
+      renderPendingFiles();
     }
     e.target.value = '';
   };
@@ -6662,9 +6517,11 @@ function setupDetailHandlers() {
     drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); });
   });
   drop.addEventListener('drop', e => {
-    if (detailRecordId === null) return;
     const files = Array.from(e.dataTransfer.files || []);
-    if (files.length) addAttachments(detailRecordId, files);
+    if (files.length) {
+      _pendingFormFiles = _pendingFormFiles.concat(files);
+      renderPendingFiles();
+    }
   });
 }
 
@@ -6676,7 +6533,7 @@ function setupModalHandlers() {
   $('btnSave').onclick   = saveForm;
   $('btnCancel').onclick = closeForm;
   $('modal').onclick = e => { if (e.target.id === 'modal') closeForm(); };
-    setupFormFilesHandlers();
+  setupFormFilesHandlers();
 
   $('btnAddRollType').onclick = () => openRollForm(null);
   $('btnRollSave').onclick    = saveRollForm;
@@ -6832,18 +6689,15 @@ async function initApp() {
         <div>
           <div style="font-weight:700;margin-bottom:4px;">Добро пожаловать!</div>
           <div style="font-size:12.5px;opacity:.9;line-height:1.55;">
-            <b>Склад</b> — где лежат плёнка и лекала<br>
-            <b>Нарезка</b> — отмечаете что и из какой плёнки резали<br>
-            <b>Расход</b> — списываете готовую продукцию
+            <b>Склад</b> — плёнка и каталог лекал<br>
+            <b>Нарезка</b> — что и из какой плёнки резали<br>
+            <b>Расход</b> — списание готовой продукции
           </div>
         </div>
       `);
     }, 800);
   }
 }
-
-// Исправление: привязка readyId к форме
-
 
 initApp().catch(e => {
   console.error('Init error:', e);
