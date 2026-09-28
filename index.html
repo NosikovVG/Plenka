@@ -6410,7 +6410,19 @@ function setupTabs() {
       if (currentTab === 'usage') renderUsage();
     };
   });
-
+  // Кнопка сворачивания верхних панелей
+  const main = document.querySelector('main');
+  const btnToggle = $('btnTogglePanels');
+  const btnToggleText = $('btnTogglePanelsText');
+  if (btnToggle && main) {
+    btnToggle.onclick = () => {
+      main.classList.toggle('panels-collapsed');
+      const isCollapsed = main.classList.contains('panels-collapsed');
+      if (btnToggleText) btnToggleText.textContent = isCollapsed ? 'Развернуть' : 'Свернуть';
+      const poly = btnToggle.querySelector('svg polyline');
+      if (poly) poly.setAttribute('points', isCollapsed ? '6 9 12 15 18 9' : '18 15 12 9 6 15');
+    };
+  }
   $$('.subtab[data-settings-tab]').forEach(t => {
     t.onclick = () => {
       const name = t.dataset.settingsTab;
@@ -6427,32 +6439,7 @@ function setupTabs() {
    ФИЛЬТРЫ
    ========================================================================== */
 function setupFilters() {
-    // Сворачивание верхних панелей
-  const main = document.querySelector('main');
-  if (localStorage.getItem('panels_collapsed') === '1') {
-    main.classList.add('panels-collapsed');
-  }
-  const btnToggle = $('btnTogglePanels');
-  const btnToggleText = $('btnTogglePanelsText');
-  const updateToggleBtn = () => {
-    const isCollapsed = main.classList.contains('panels-collapsed');
-    if (btnToggleText) btnToggleText.textContent = isCollapsed ? 'Развернуть' : 'Свернуть';
-    const icon = btnToggle?.querySelector('svg polyline');
-    if (icon) icon.setAttribute('points', isCollapsed ? '6 9 12 15 18 9' : '18 15 12 9 6 15');
-  };
-  if (btnToggle) {
-    btnToggle.onclick = () => {
-      main.classList.toggle('panels-collapsed');
-      localStorage.setItem('panels_collapsed', main.classList.contains('panels-collapsed') ? '1' : '0');
-      updateToggleBtn();
-    };
-    updateToggleBtn();
-  }
-  $('filterMarka').onchange = e => {
-    filterState.marka = e.target.value;
-    filterState.model = '';
-    renderFilters(); render();
-  };
+    
   $('filterModel').onchange = e => { filterState.model = e.target.value; render(); };
   $('filterRasp').onchange  = e => { filterState.raspolozhenie = e.target.value; render(); };
   $('btnResetFilters').onclick = resetAllFilters;
