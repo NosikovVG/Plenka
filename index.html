@@ -2576,7 +2576,7 @@ function countWithFiles() {
 }
 
 function getRecord(id) {
-  const stmt = db.prepare(`SELECT ${COLUMNS.join(',')} FROM plenki WHERE id = ?`);
+  const stmt = db.prepare(`SELECT id, ${COLUMNS.join(',')} FROM plenki WHERE id = ?`);
   stmt.bind([id]);
   const row = stmt.step() ? stmt.getAsObject() : null;
   stmt.free();
