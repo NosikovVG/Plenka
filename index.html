@@ -3464,6 +3464,17 @@ function startInlineEdit(td) {
           render();
           return;
         }
+        
+        // Проверка уникальности артикула
+        if (col === 'artikul' && newVal) {
+          const clash = findByArtikul(newVal, id);
+          if (clash) {
+            toastError(`Артикул «${newVal}» уже используется: №${clash.pp} ${clash.marka} ${clash.model}`);
+            render();
+            return;
+          }
+        }
+        
         db.run(`UPDATE plenki SET ${col} = ? WHERE id = ?`, [newVal, id]);
         logHistory({
           recordId: id, action: 'update',
@@ -3611,6 +3622,14 @@ async function saveForm() {
   for (const k in data) if (data[k]) data[k] = normalizeText(data[k]);
   if (data.marka) data.marka = normalizeTitle(data.marka);
 
+  // Жёсткая проверка: артикул не должен повторяться
+  const artClash = findByArtikul(data.artikul, editingId);
+  if (artClash) {
+    toastError(`Артикул «${data.artikul}» уже используется: №${artClash.pp} ${artClash.marka} ${artClash.model}`);
+    return;
+  }
+
+  
   if (editingId === null) {
     const dup = findDuplicate(data.marka, data.model, data.artikul);
     if (dup) {
@@ -3668,13 +3687,24 @@ async function saveForm() {
   }
 }
 
+// Возвращает лекало с таким артикулом, если оно есть (кроме указанного id)
+function findByArtikul(artikul, excludeId) {
+  artikul = String(artikul || '').trim();
+  if (!artikul) return null;
+  let sql = 'SELECT id, pp, marka, model, artikul FROM plenki WHERE artikul = ?';
+  const params = [artikul];
+  if (excludeId) { sql += ' AND id != ?'; params.push(excludeId); }
+  sql += ' LIMIT 1';
+  const stmt = db.prepare(sql);
+  stmt.bind(params);
+  const row = stmt.step() ? stmt.getAsObject() : null;
+  stmt.free();
+  return row;
+}
+
+// Похожие лекала по марке и модели (для предупреждения)
 function findDuplicate(marka, model, artikul) {
-  if (artikul) {
-    const stmt = db.prepare('SELECT * FROM plenki WHERE artikul = ? LIMIT 1');
-    stmt.bind([artikul]);
-    if (stmt.step()) { const r = stmt.getAsObject(); stmt.free(); return r; }
-    stmt.free();
-  }
+  // точное совпадение артикула — уже проверяется отдельно
   const stmt = db.prepare('SELECT * FROM plenki WHERE marka = ?');
   stmt.bind([marka || '']);
   let best = null, bestDist = 4;
@@ -5702,8 +5732,20 @@ async function importCsv(file) {
       okText: 'Импортировать'
     });
     if (!yes) return;
-    showOverlay('Импортирую CSV…');
+      showOverlay('Импортирую CSV…');
     let added = 0;
+    let skippedDup = 0;
+
+    // Сначала соберём все артикулы, уже существующие в базе
+    const existingArtikuls = new Set();
+    try {
+      const stmtA = db.prepare("SELECT artikul FROM plenki WHERE artikul IS NOT NULL AND TRIM(artikul) <> ''");
+      while (stmtA.step()) existingArtikuls.add(String(stmtA.getAsObject().artikul).trim());
+      stmtA.free();
+    } catch(e) {}
+
+    const seenInCsv = new Set();  // дубликаты внутри самого файла
+
     for (const r of dataRows) {
       const map = {};
       if (hasHeader) {
@@ -5721,13 +5763,25 @@ async function importCsv(file) {
       for (const k in map) if (map[k]) map[k] = normalizeText(map[k]);
       if (map.marka) map.marka = normalizeTitle(map.marka);
 
+      // Проверка артикула на дубликат
+      const art = String(map.artikul || '').trim();
+      if (art) {
+        if (existingArtikuls.has(art) || seenInCsv.has(art)) {
+          skippedDup++;
+          continue;
+        }
+      }
+
       const fields = COLUMNS.filter(c => c !== 'pp');
       db.run(
-        `INSERT INTO plenki (pp, ${fields.join(',')}) VALUES (?, ${fields.map(() => '?').join(',')})`,
+        `INSERT INTO plenki (pp, ${fields.join(',')})
+         VALUES (?, ${fields.map(() => '?').join(',')})`,
         [nextPp(), ...fields.map(f => map[f] ?? '')]
       );
       const newId = db.exec('SELECT last_insert_rowid() AS id')[0].values[0][0];
       logHistory({ recordId: newId, action: 'create', details: `Импорт: ${map.marka || ''} ${map.model || ''}` });
+
+      if (art) { existingArtikuls.add(art); seenInCsv.add(art); }
       added++;
     }
     await persist();
@@ -5736,7 +5790,20 @@ async function importCsv(file) {
     render();
     renderFilters();
     renderStats();
-    toast(`Импортировано: ${added}`);
+        if (skippedDup) {
+      toastBig(`
+        <span class="check">✓</span>
+        <div>
+          <div style="font-weight:700;margin-bottom:3px;">Импорт завершён</div>
+          <div style="font-size:12.5px;opacity:.9;">
+            Добавлено: <b>${added}</b><br>
+            Пропущено дубликатов артикула: <b>${skippedDup}</b>
+          </div>
+        </div>
+      `);
+    } else {
+      toast(`Импортировано: ${added}`);
+    }
   } catch (e) {
     hideOverlay();
     toastError('Ошибка импорта: ' + e.message);
